@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://ideScreen.caption">
+    <layout spacing="true">
+        <sourceCodeEditor id="sourceCodeEditor" caption="IDE" handleTabKey="true"
+                          height="350px" width="500px"/>
+        <hbox id="editActions" spacing="true">
+            <button id="okBtn" caption="OK" icon="EDITOR_OK"/>
+            <button id="cancelBtn" caption="Cancel" icon="EDITOR_CANCEL"/>
+        </hbox>
+    </layout>
+</window>

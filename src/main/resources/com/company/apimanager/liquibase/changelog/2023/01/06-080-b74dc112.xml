@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="ApiManager">
+        <addColumn tableName="BALANCING_HOST_GROUP">
+            <column name="OWNER_GROUP" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="OWNER_GROUP" defaultNullValue="''" tableName="BALANCING_HOST_GROUP"/>
+    </changeSet>
+    <changeSet id="2" author="ApiManager">
+        <addColumn tableName="BACKEND_HOST">
+            <column name="OWNER_HOSTGROUP_NAME" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="OWNER_HOSTGROUP_NAME" defaultNullValue="''" tableName="BACKEND_HOST"/>
+    </changeSet>
+    <changeSet id="3" author="ApiManager">
+        <addUniqueConstraint columnNames="OWNER_HOSTGROUP_NAME" constraintName="UC_BACKENDHOST_OWNERHOSTGROUPN"
+                             tableName="BACKEND_HOST"/>
+    </changeSet>
+    <changeSet id="4" author="ApiManager">
+        <addUniqueConstraint columnNames="OWNER_GROUP" constraintName="UC_BALANCINGHOSTGRO_OWNERGROUP"
+                             tableName="BALANCING_HOST_GROUP"/>
+    </changeSet>
+</databaseChangeLog>

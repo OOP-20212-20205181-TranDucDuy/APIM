@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://balancedHostEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="balancedHostDc"
+                  class="com.company.apimanager.entity.BalancedHost">
+            <fetchPlan extends="_base"/>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="balancedHostDc">
+            <column width="350px">
+                <textField id="nameField" property="name" caption="Name" visible="false"/>
+                <textField id="hostnameField" property="hostname" caption="Host name"/>
+                <textField id="host_portField" property="host_port" caption="Host port"/>
+                <textField id="weightField" property="weight" caption="Weight"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

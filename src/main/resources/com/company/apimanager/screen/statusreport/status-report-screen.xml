@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:chart="http://jmix.io/schema/ui/charts"
+        caption="msg://statusReportScreen.caption">
+    <layout>
+        <cssLayout stylename="layout-chart-flex">
+            <cssLayout stylename="summaryCards">
+                <cssLayout stylename="summaryCard">
+                    <label stylename="summaryTitle" value="Total API calls"/>
+                    <label stylename="summaryValue" value="11" id="totalApiCallsLabel"/>
+                    <label stylename="summaryLabel" value="API called"/>
+                </cssLayout>
+                <cssLayout stylename="summaryCard">
+                    <label stylename="summaryTitle" value="Total errors"/>
+                    <label stylename="summaryValue" value="50" id="totalErrorsLabel"/>
+                    <label stylename="summaryLabel" value="Errors"/>
+                </cssLayout>
+            </cssLayout>
+            <cssLayout stylename="summaryCharts">
+                <cssLayout stylename="summaryChart">
+                    <cssLayout stylename="chart-layout">
+                        <label value="Status codes (detailed)" width="100%" stylename="charts-title"/>
+                        <chart:pieChart id="donutChart"
+                                        height="100%"
+                                        innerRadius="60%"
+                                        labelRadius="5"
+                                        labelText="[[title]]: [[value]]"
+                                        radius="42%"
+                                        titleField="title"
+                                        valueField="value"
+                                        width="100%">
+                            <chart:legend
+                                    position="BOTTOM"
+                                    markerType="CIRCLE"
+                                    markerSize="12"
+                                    labelText="[[title]]:"
+                                    align="CENTER"
+                                    spacing="20"
+                                    fontSize="14"
+                                    color="#444"
+                                    backgroundColor="#f9f9f9"
+                                    valueText="[[value]]"
+                                    valueWidth="30"
+                            />
+                            <chart:export/>
+                        </chart:pieChart>
+                    </cssLayout>
+                </cssLayout>
+
+                <cssLayout stylename="summaryChart">
+                    <cssLayout stylename="chart-layout">
+                        <label value="Success rate" width="100%" stylename="charts-title"/>
+                        <chart:serialChart id="lineChart"
+                                           autoMarginOffset="20"
+                                           categoryField="date"
+                                           height="100%"
+                                           marginRight="40"
+                                           marginLeft="40"
+                                           mouseWheelZoomEnabled="true"
+                                           width="100%">
+                            <chart:legend
+                                    position="BOTTOM"
+                                    markerType="SQUARE"
+                                    align="CENTER"
+                                    fontSize="12"
+                                    color="black"
+                                    labelText="[[title]]:"
+                            />
+                            <chart:valueAxes>
+                                <chart:axis id="v1"
+                                            axisAlpha="1"
+                                            centerLabels="true"
+                                            ignoreAxisWidth="true"
+                                            position="LEFT"
+                                            title="API call count" />
+                            </chart:valueAxes>
+                            <chart:graphs>
+                                <chart:graph id="g1"
+                                             bullet="ROUND"
+                                             bulletSize="8"
+                                             type="SMOOTHED_LINE"
+                                             bulletBorderAlpha="1"
+                                             lineColor="#24a148"
+                                             lineThickness="2"
+                                             valueField="value"
+                                             balloonText="&lt;span style='font-size:18px;'&gt;[[value]]&lt;/span&gt;">
+                                    <chart:balloon color="#e63a3a"/>
+                                    <chart:fillColors>
+                                        <chart:color value="#e63a3a"/>
+                                    </chart:fillColors>
+                                </chart:graph>
+                            </chart:graphs>
+                            <chart:categoryAxis dashLength="1"
+                                                gridAlpha="0.2"
+                                                centerLabels="true"
+                                                minorGridEnabled="true"
+                                                title="Date(Local time)" />
+                            <chart:chartCursor cursorAlpha="1"
+                                               cursorColor="#e63a3a"
+                                               cursorPosition="MOUSE"
+                                               limitToGraph="g1"
+                                               pan="true"
+                                               valueLineAlpha="0.2"
+                                               valueLineEnabled="true"
+                                               valueLineBalloonEnabled="true"
+                                               valueZoomable="true"/>
+                            <chart:export/>
+                        </chart:serialChart>
+                    </cssLayout>
+                </cssLayout>
+            </cssLayout>
+        </cssLayout>
+    </layout>
+</window>

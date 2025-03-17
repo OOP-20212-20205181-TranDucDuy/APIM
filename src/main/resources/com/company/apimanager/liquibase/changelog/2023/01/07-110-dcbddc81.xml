@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+<!--    <changeSet id="1" author="ApiManager">-->
+<!--        <dropForeignKeyConstraint baseTableName="backend_host" constraintName="fk_backend_host_on_owner"/>-->
+<!--    </changeSet>-->
+    <changeSet id="2" author="ApiManager">
+        <dropForeignKeyConstraint baseTableName="backend_host" constraintName="fk_backendhost_on_balancinghos"/>
+    </changeSet>
+    <changeSet id="3" author="ApiManager">
+        <dropForeignKeyConstraint baseTableName="balancing_host_group" constraintName="fk_balancinghostgroup_on_owner"/>
+    </changeSet>
+    <changeSet id="4" author="ApiManager">
+        <dropUniqueConstraint constraintName="uc_backendhost_ownerhostgroupn" tableName="backend_host"/>
+    </changeSet>
+    <changeSet id="5" author="ApiManager">
+        <dropUniqueConstraint constraintName="uc_balancinghostgro_ownergroup" tableName="balancing_host_group"/>
+    </changeSet>
+    <changeSet id="6" author="ApiManager">
+        <dropTable cascadeConstraints="true" tableName="backend_host"/>
+    </changeSet>
+    <changeSet id="7" author="ApiManager">
+        <dropTable cascadeConstraints="true" tableName="balancing_host_group"/>
+    </changeSet>
+</databaseChangeLog>

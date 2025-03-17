@@ -1,0 +1,90 @@
+@import "bss-theme-defaults";
+@import "addons";
+@import "bss-theme";
+
+.bss-theme {
+  @include addons;
+  @include bss-theme;
+}
+
+/* General styling */
+.jmix-drawer-layout {
+  display: flex;
+  height: 100vh;
+  background-color: #1A2D7D;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+/* Logo Section */
+.logo {
+  background-color: #1A2D7D; /* Match with sidebar color */
+  text-align: center;
+  padding: 20px;
+}
+
+.app-title {
+  font-size: 16px;
+  color: #FF6E2F;
+}
+
+/* Menu styling */
+//.custom-sidemenu {
+//  list-style-type: none;
+//  padding: 0;
+//  margin: 0;
+//}
+
+.custom-sidemenu .menu-item {
+  margin: 10px 0;
+}
+
+.custom-sidemenu .menu-item a {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: white;
+  transition: background 0.3s;
+}
+
+.custom-sidemenu .menu-item a:hover,
+.custom-sidemenu .menu-item a.active {
+  background-color: #2C3C8B; /* Active and hover background color */
+  border-radius: 6px; /* Rounded corners on hover */
+}
+
+.custom-sidemenu .menu-item i {
+  margin-right: 15px;
+}
+
+/* Footer (Logout, Collapse Button) */
+.jmix-drawer-footer {
+  text-align: center;
+  padding: 20px;
+}
+
+.jmix-drawer-collapse-button,
+#logoutButton {
+  background-color: #2C3C8B;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 4px; /* Rounded buttons */
+  transition: background 0.3s;
+}
+
+.jmix-drawer-collapse-button:hover,
+#logoutButton:hover {
+  background-color: #FF6E2F;
+}
+
+/* Work Area */
+.jmix-workarea {
+  flex-grow: 1;
+  background-color: white;
+  border-radius: 10px; /* Rounded corners for the work area */
+}

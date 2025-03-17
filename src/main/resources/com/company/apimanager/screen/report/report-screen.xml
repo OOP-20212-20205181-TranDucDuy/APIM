@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:chart="http://jmix.io/schema/ui/charts"
+        caption="msg://reportScreen.caption">
+    <layout>
+        <hbox spacing="true">
+            <comboBox id="analyticsUrl"
+                      nullName="(not selected)"
+                      property="id"
+                      caption="msg://com.company.apimanager.screen.analyticsservice/analyticsServiceBrowse.site"/>
+        </hbox>>
+        <chart:serialChart id="chart"
+                           categoryField="name"
+                           height="100%"
+                           marginLeft="0"
+                           marginTop="10"
+                           plotAreaBorderAlpha="0"
+                           width="100%">
+            <chart:chartCursor cursorAlpha="0"/>
+            <chart:legend equalWidths="false"
+                          periodValueText="total: [[value.sum]]"
+                          position="TOP"
+                          valueAlign="LEFT"
+                          valueWidth="100"/>
+            <chart:valueAxes>
+                <chart:axis gridAlpha="0.07"
+                            position="LEFT"
+                            stackType="REGULAR"
+                            title="Traffic incidents"/>
+            </chart:valueAxes>
+            <chart:categoryAxis axisColor="#DADADA"
+                                gridAlpha="0.07"
+                                startOnAxis="true"
+                                title="User">
+            </chart:categoryAxis>
+            <chart:export/>
+        </chart:serialChart>
+
+        <chart:serialChart id="api_chart"
+                           categoryField="api"
+                           height="100%"
+                           marginLeft="0"
+                           marginTop="10"
+                           plotAreaBorderAlpha="0"
+                           width="100%">
+            <chart:chartCursor cursorAlpha="0"/>
+            <chart:legend equalWidths="false"
+                          periodValueText="total: [[value.sum]]"
+                          position="TOP"
+                          valueAlign="LEFT"
+                          valueWidth="100"/>
+            <chart:valueAxes>
+                <chart:axis gridAlpha="0.07"
+                            position="LEFT"
+                            stackType="REGULAR"
+                            title="Traffic incidents"/>
+            </chart:valueAxes>
+            <chart:categoryAxis axisColor="#DADADA"
+                                gridAlpha="0.07"
+                                startOnAxis="true"
+                                title="Api name">
+            </chart:categoryAxis>
+            <chart:export/>
+        </chart:serialChart>
+        <chart:serialChart id="topo_consumer_chart"
+                           categoryField="name"
+                           height="100%"
+                           marginLeft="0"
+                           marginTop="10"
+                           plotAreaBorderAlpha="0"
+                           width="100%">
+            <chart:chartCursor cursorAlpha="0"/>
+            <chart:legend equalWidths="false"
+                          periodValueText="total: [[value.sum]]"
+                          position="TOP"
+                          valueAlign="LEFT"
+                          valueWidth="100"/>
+            <chart:valueAxes>
+                <chart:axis gridAlpha="0.07"
+                            position="LEFT"
+                            stackType="REGULAR"
+                            title="Traffic incidents"/>
+            </chart:valueAxes>
+            <chart:categoryAxis axisColor="#DADADA"
+                                gridAlpha="0.07"
+                                startOnAxis="true"
+                                title="Api provider">
+            </chart:categoryAxis>
+            <chart:export/>
+        </chart:serialChart>
+    </layout>
+</window>

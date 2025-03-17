@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://apiInSiteBrowse.caption"
+        focusComponent="apiInSitesTable">
+    <data readOnly="true">
+        <collection id="apiInSitesDc"
+                    class="com.company.apimanager.entity.ApiInSite"/>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="apiInSitesTable" spacing="true">
+        <label id="siteApisLabel" value=""/>
+        <entityComboBox id="consumerField" caption="Subscribed consumer"/>
+        <groupTable id="apiInSitesTable"
+                    width="100%"
+                    dataContainer="apiInSitesDc">
+            <actions>
+                <action id="create" type="create" visible="false"/>
+                <action id="edit" type="edit" visible="true" enable="true" caption="View"/>
+                <action id="remove" type="remove" visible="false"/>
+            </actions>
+            <columns>
+                <column id="name" caption="Name"/>
+                <column id="host" caption="Target URL"/>
+                <column id="api_url" caption="API Endpoint"/>
+                <column id="consent_url" caption="OAuth Consent URL"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="false">
+                <button id="createBtn" action="apiInSitesTable.create" visible="false"/>
+                <button id="editBtn" action="apiInSitesTable.edit" caption="View"/>
+                <button id="removeBtn" action="apiInSitesTable.remove" visible="false"/>
+                <button id="testBtn" caption="Test API"/>
+                <button id="testWithConsumerBtn" caption="Test With Consumer"/>
+                <button id="turnOffBtn" caption="Turn off"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

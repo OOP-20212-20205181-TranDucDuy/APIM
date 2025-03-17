@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://loggingScreen.caption">
+    <layout expand="logging" spacing="true">
+        <hbox spacing="true">
+            <comboBox id="consumers"
+                      nullName="(not selected)"
+                      property="id"
+                      caption="msg://com.company.apimanager.screenscreen.consumer/consumerBrowse.caption"/>
+<!--            <jsComponent id="datetimePicker"-->
+<!--                         caption="msg://com.company.apimanager.screen.report/loggingScreen.timePicker"-->
+<!--                         initFunctionName="io_jmix_sampler_screen_ui_components_javascript_component_TimePicker">-->
+<!--                <dependencies>-->
+<!--                    <dependency path="webjar://jquery:jquery.min.js"/>-->
+<!--                    <dependency path="vaadin://timepicker/wickedpicker.min.js"/>-->
+<!--                    <dependency path="vaadin://timepicker/moment.min.js"/>-->
+<!--                    <dependency path="vaadin://timepicker/wickedpicker.min.css"/>-->
+<!--                    <dependency path="vaadin://timepicker/time-picker-connector.js"/>-->
+<!--                </dependencies>-->
+<!--            </jsComponent>-->
+        </hbox>
+        <sourceCodeEditor id="logging"
+                          handleTabKey="true"
+                          mode="Text"
+                          width="100%">
+        </sourceCodeEditor>
+    </layout>
+</window>

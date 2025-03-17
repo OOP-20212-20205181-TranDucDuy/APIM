@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://pricingPlanEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="pricingPlanDc"
+                  class="com.company.apimanager.entity.PricingPlan">
+            <fetchPlan extends="_base"/>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="pricingPlanDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="rate_limitField" property="rate_limit"/>
+                <checkBox id="developer_portalField" property="developer_portal"/>
+                <checkBox id="custom_domainField" property="custom_domain"/>
+                <checkBox id="self_hosted_gatewayField" property="self_hosted_gateway"/>
+                <textField id="message_sizeField" property="message_size"/>
+                <textField id="loging_retentionField" property="loging_retention"/>
+                <textField id="slaField" property="sla"/>
+                <textField id="priceField" property="price"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

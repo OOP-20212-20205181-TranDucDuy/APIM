@@ -1,0 +1,69 @@
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:chart="http://jmix.io/schema/ui/charts" caption="msg://apiReportScreen.caption">
+    <layout height="AUTO" width="100%">
+        <cssLayout stylename="layout-chart-flex">
+            <tabSheet id="tabSheet" width="100%">
+                <tab id="recapTab" caption="Summary"/>
+                <tab id="apiTab" caption="API"/>
+                <tab id="productTab" caption="Product"/>
+                <tab id="consumerTab" caption="Consumer"/>
+                <tab id="applicationTab" caption="Application"/>
+                <tab id="environmentTab" caption="Client"/>
+                <tab id="statusTab" caption="Status"/>
+                <tab id="waitTimeTab" caption="Latency"/>
+                <tab id="dataTab" caption="Data"/>
+                <tab id="consumptionTab" caption="Consumption"/>
+                <tab id="gatewayTab" caption="Gateway"/>
+            </tabSheet>
+            <cssLayout id="summaryCards" stylename="summaryCards">
+                <cssLayout id="totalApiCard" stylename="summaryCard">
+                    <label value="Total APIs" stylename="summaryTitle"/>
+                    <label value="11" stylename="summaryValue" id="totalApiLabel"/>
+                    <label value="API called" stylename="summaryLabel"/>
+                </cssLayout>
+                <cssLayout id="totalPathsCard" stylename="summaryCard">
+                    <label value="Total paths" stylename="summaryTitle"/>
+                    <label value="50" stylename="summaryValue" id="totalPathLabel"/>
+                    <label value="Paths called" stylename="summaryLabel"/>
+                </cssLayout>
+                <cssLayout id="totalOperationsCard" stylename="summaryCard">
+                    <label value="Total operations" stylename="summaryTitle"/>
+                    <label value="62" stylename="summaryValue" id="totalOperationLabel"/>
+                    <label value="Operations called" stylename="summaryLabel"/>
+                </cssLayout>
+            </cssLayout>
+            <cssLayout stylename="summaryCharts">
+                <cssLayout stylename="summaryChart">
+                    <cssLayout stylename="chart-layout">
+                        <label value="Top APIs over time" width="100%" stylename="charts-title"/>
+                        <chart:serialChart id="columnChart"  categoryField="date" height="100%" marginLeft="0" marginTop="10" plotAreaBorderAlpha="0" width="100%" columnWidth="0.2">
+                            <chart:chartCursor cursorAlpha="0"/>
+                            <chart:legend fontSize="12" equalWidths="false" periodValueText="total: [[value.sum]]" position="BOTTOM" valueAlign="LEFT" valueWidth="80" spacing="30"/>
+                            <chart:valueAxes>
+                                <chart:axis gridAlpha="0.07" position="LEFT" stackType="REGULAR" title="API call count"/>
+                            </chart:valueAxes>
+                            <chart:graphs/>
+                            <chart:categoryAxis axisColor="#DADADA" gridAlpha="0.07" startOnAxis="true" title="Date (Local time)"/>
+                            <chart:export/>
+                        </chart:serialChart>
+                    </cssLayout>
+                </cssLayout>
+                <cssLayout stylename="summaryChart">
+                    <cssLayout stylename="chart-layout">
+                        <label value="Top APIs by calls" width="100%" stylename="charts-title"/>
+                        <chart:serialChart id="apiByCallChart" categoryField="date" height="100%" marginLeft="0" marginTop="10" plotAreaBorderAlpha="0" width="100%" columnWidth="0.2">
+                            <chart:chartCursor cursorAlpha="0"/>
+                            <chart:legend equalWidths="false" periodValueText="total: [[value.sum]]" position="BOTTOM" valueAlign="LEFT" valueWidth="80" spacing="30" fontSize="12"/>
+                            <chart:valueAxes>
+                                <chart:axis gridAlpha="0.07" position="LEFT" stackType="REGULAR" title="API call count"/>
+                            </chart:valueAxes>
+                            <chart:graphs/>
+                            <chart:categoryAxis axisColor="#DADADA" gridAlpha="0.07" startOnAxis="true" title="API"/>
+                            <chart:export/>
+                        </chart:serialChart>
+                    </cssLayout>
+                </cssLayout>
+            </cssLayout>
+        </cssLayout>
+    </layout>
+</window>

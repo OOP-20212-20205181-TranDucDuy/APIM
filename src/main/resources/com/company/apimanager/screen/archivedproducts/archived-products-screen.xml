@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://archivedProductsScreen.caption">
+    <data readOnly="true">
+        <collection id="publishedProductsDc"
+                    class="com.company.apimanager.entity.PublishedProduct">
+            <fetchPlan extends="_base">
+                <property name="product" fetchPlan="_base"/>
+                <property name="site" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="publishedProductsDl">
+                <query>
+                    <![CDATA[select e from PublishedProduct e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.state = :archive_state</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <layout>
+        <groupTable id="publishedProductsTable"
+                    width="100%"
+                    dataContainer="publishedProductsDc">
+            <columns>
+                <column id="product"/>
+                <column id="site"/>
+                <column id="state" caption="State"/>
+                <column id="published_date" caption="Staged date"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <hbox>
+                    <button id="unArchiveBtn" caption="Unarchive"/>
+                </hbox>
+            </buttonsPanel>
+        </groupTable>
+    </layout>
+</window>

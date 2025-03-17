@@ -1,0 +1,142 @@
+stages:
+  - build 
+  - push
+  - deploy
+
+build_image_dev:
+  stage: build 
+  tags:
+    - dev
+  only:
+    refs:
+      - dev
+  script:
+    - cd /opt/Tomcat
+    - git checkout dev 
+    - git pull
+    - /root/.sdkman/candidates/gradle/current/bin/gradle clean build -x test 
+    - docker build -t registry.fke.fptcloud.com/b7df2d20-64f7-4303-9b4c-f49100546349/tomcat:dev .
+
+build_image_staging:
+  stage: build 
+  tags:
+    - staging
+  only:
+    refs:
+      - staging
+  script:
+    - cd /opt/Tomcat
+    - git checkout staging
+    - git pull
+    - /root/.sdkman/candidates/gradle/current/bin/gradle clean build -x test 
+    - docker build -t registry.fke.fptcloud.com/b7df2d20-64f7-4303-9b4c-f49100546349/tomcat:stg .
+
+build_image_main:
+  stage: build 
+  tags:
+    - product
+  only:
+    refs:
+      - main
+  script:
+    - cd /opt/Tomcat/main
+    - git checkout main 
+    - git pull
+    - /root/.sdkman/candidates/gradle/current/bin/gradle clean build -x test 
+    - docker build -t registry.fke.fptcloud.com/00b624de-ea42-4777-a25a-0714da9584f4/tomcat .
+
+push_image_dev:
+  stage: push 
+  tags:
+    - dev
+  # needs:
+  #   - build_image_dev
+  only:
+    refs:
+      - dev
+  script:
+    - cd /opt/Tomcat
+    - docker push registry.fke.fptcloud.com/b7df2d20-64f7-4303-9b4c-f49100546349/tomcat:dev
+
+push_image_staging:
+  stage: push 
+  tags:
+    - staging
+  # needs:
+  #   - build_image_staging
+  only:
+    refs:
+      - staging
+  script:
+    - cd /opt/Tomcat
+    - docker push registry.fke.fptcloud.com/b7df2d20-64f7-4303-9b4c-f49100546349/tomcat:stg
+    
+push_image_main:
+  stage: push 
+  tags:
+    - product
+  # needs:
+  #   - build_image_main
+  only:
+    refs:
+      - main
+  script:
+    - cd /opt/Tomcat/main
+    - docker push registry.fke.fptcloud.com/00b624de-ea42-4777-a25a-0714da9584f4/tomcat
+
+deploy_dev:
+  stage: deploy
+  # needs:
+  #   - push_image_dev
+  variables:
+    HOST: 'https://console-dev.apim.fptcloud.com'
+  only:
+    refs:
+      - dev
+  tags:
+    - dev
+  script:
+    - argocd app actions run api-manager-dev restart --kind Deployment
+    - sleep 7
+  environment:
+    name: dev
+    url: https://console-dev.apim.fptcloud.com
+
+deploy_staging:
+  stage: deploy
+  # needs:
+  #   - push_image_staging
+  variables:
+    HOST: 'https://console-stg.apim.fptcloud.com'
+  only:
+    refs:
+      - staging
+  tags:
+    - staging
+  script:
+    - argocd app actions run api-manager-stg restart --kind Deployment
+    - sleep 7
+    - while [[ "$(curl -k -s -o /dev/null -w "%{http_code}" ${HOST})" != 200 ]]; do echo "website ${HOST} not up yet";sleep 5;done
+  environment:
+    name: dev
+    url: https://console-stg.apim.fptcloud.com
+
+deploy_main:
+  stage: deploy
+  # needs:
+  #   - push_image_main
+  variables:
+    HOST: 'https://console.apim.fptcloud.com'
+  only:
+    refs:
+      - main
+  tags:
+    - product
+  script:
+    - argocd app actions run api-manager-prod restart --kind Deployment
+    - sleep 7
+    - while [[ "$(curl -k -s -o /dev/null -w "%{http_code}" ${HOST})" != 200 ]]; do echo "website ${HOST} not up yet";sleep 5;done
+  environment:
+    name: main
+    url: https://console.apim.fptcloud.com
+    

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://publishToOtherGatewayScreen.caption">
+    <data>
+        <collection id="siteGatewaysDc" class="com.company.apimanager.entity.SiteGateway">
+            <fetchPlan extends="_base"/>
+            <loader id="siteGatewaysDl">
+                <query>
+                    <![CDATA[select e from SiteGateway e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.site = :site</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.gateway &lt;&gt; :default_gateway</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <layout>
+        <vbox id="editActions" spacing="true">
+            <entityComboBox id="gatewayComboBox" optionsContainer="siteGatewaysDc" caption="Gateway"/>
+            <hbox id="buttonHbox" spacing="true">
+                <button id="publishAndCloseBtn" caption="Publish"/>
+                <button id="closeBtn" caption="Close"/>
+            </hbox>
+        </vbox>
+    </layout>
+</window>

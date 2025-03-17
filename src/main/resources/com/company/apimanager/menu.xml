@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/ui/menu">
+
+    <menu id="application" caption="msg://com.company.apimanager/menu.application" insertBefore="administration">
+        <item screen="Homepage" caption="msg://com.company.apimanager.screen.homepage/homepage.caption"/>
+        <item screen="User.browse" caption="msg://com.company.apimanager.screen.user/UserBrowse.caption"/>
+        <item screen="themeSettingsScreen" caption="msg://io.jmix.ui.app.themesettings/themeSettings.caption"/>
+        <menu id="topology_manager" caption="Api Topology Manager">
+            <item screen="GatewayType.browse"
+                  caption="msg://com.company.apimanager.screen.gatewaytype/gatewayTypeBrowse.menu"/>
+            <item screen="PortalService.browse"
+                  caption="msg://com.company.apimanager.screen.portalservice/portalServiceBrowse.menu"/>
+            <item screen="AnalyticsService.browse"
+                  caption="msg://com.company.apimanager.screen.analyticsservice/analyticsServiceBrowse.menu"/>
+            <item screen="ApiSecurityMethod.browse"
+                  caption="msg://com.company.apimanager.screen.apisecuritymethod/apiSecurityMethodBrowse.menu"/>
+            <item screen="sec_RoleAssignmentEntity.browse"
+                  caption="msg://com.company.apimanager.screen.roleassignmententity/roleAssignmentEntityBrowse.menu"/>
+            <item screen="Provider.browse" caption="msg://com.company.apimanager.screen.user/providerBrowse.menu"/>
+            <item screen="VirtualArea.browse"
+                  caption="msg://com.company.apimanager.screen.virtualarea/virtualAreaBrowse.menu"/>
+            <item screen="GatewayService.browse"
+                  caption="msg://com.company.apimanager.screen.gatewayservice/gatewayServiceBrowse.menu"/>
+            <item screen="GatewayAnalyticsAssociation"
+                  caption="msg://com.company.apimanager.screen.gatewayanalyticsassociation/gatewayAnalyticsAssociation.caption"/>
+            <item screen="GatewayUsagePermission.browse"
+                  caption="msg://com.company.apimanager.screen.gatewayusagepermission/gatewayUsagePermissionBrowse.menu"/>
+            <item screen="PortalUsagePermission.browse"
+                  caption="msg://com.company.apimanager.screen.portalusagepermission/portalUsagePermissionBrowse.menu"/>
+            <item screen="AppConfiguration.browse"
+                  caption="msg://com.company.apimanager.screen.appconfiguration/appConfigurationBrowse.menu"/>
+            <item screen="CheckDnsNgixScreen"
+                  caption="msg://com.company.apimanager.screen.checkdnsngix/checkDnsNgixScreen.caption"/>
+            <item screen="PricingPlan.browse"
+                  caption="msg://com.company.apimanager.screen.pricingplan/pricingPlanBrowse.menu"/>
+        </menu>
+        <menu id="apimanager" caption="API Manager">
+            <item screen="DraftProduct.browse"
+                  caption="msg://com.company.apimanager.screen.draftproduct/draftProductBrowse.menu"/>
+            <item screen="Product.browse" caption="msg://com.company.apimanager.screen.product/productBrowse.menu"/>
+            <item screen="RestApi.browse" caption="msg://com.company.apimanager.screen.restapi/restApiBrowse.menu"/>
+            <item screen="Site.browse" caption="msg://com.company.apimanager.screen.site/siteBrowse.menu"/>
+            <item screen="ApiRegister.browse"
+                  caption="msg://com.company.apimanager.screen.apiregister/apiRegisterBrowse.menu"/>
+            <item screen="PublishedProduct.browse"
+                  caption="msg://com.company.apimanager.screen.publishedproduct/publishedProductBrowse.menu"/>
+            <item screen="Consumer.browse" caption="msg://com.company.apimanager.screen.consumer/consumerBrowse.menu"/>
+            <item screen="ProductSubscription.browse"
+                  caption="msg://com.company.apimanager.screen.productsubscription/productSubscriptionBrowse.menu"/>
+            <item screen="ApiInSite.browse"
+                  caption="msg://com.company.apimanager.screen.apiinsite/apiInSiteBrowse.menu"/>
+            <item screen="SiteGateway.browse"
+                  caption="msg://com.company.apimanager.screen.sitegateway/siteGatewayBrowse.menu"/>
+            <menu id="report" caption="msg://com.company.apimanager.screen.report/reportScreen.caption">
+                <item screen="ReportScreen" caption="msg://com.company.apimanager.screen.report/reportScreen.caption"/>
+                <item screen="LoggingScreen" caption="msg://com.company.apimanager.screen.report/loggingScreen.caption"/>
+<<<<<<< HEAD
+                <item screen="Dashboard" caption="msg://com.company.apimanager.screen.dashboard/dashboard.caption"/>
+=======
+                <item screen="ApiReportScreen" caption="msg://com.company.apimanager.screen.apireport/apiReportScreen.caption"/>
+                <item screen="StatusReportScreen"
+                      caption="msg://com.company.apimanager.screen.statusreport/statusReportScreen.caption"/>
+>>>>>>> 25f9c8b1b0b0eacf7670369dcc63d22765e9a0d0
+            </menu>
+            <menu id="archived" caption="Archived">
+                <item screen="ArchivedProductsScreen"
+                      caption="msg://com.company.apimanager.screen.archivedproducts/archivedProductsScreen.caption"/>
+            </menu>
+            <menu id="utility" caption="Utility">
+                <item screen="UserPlan.browse" caption="msg://com.company.apimanager.screen.user/userPlan.menu"/>
+                <item screen="ImportApisScreen" caption="msg://com.company.apimanager.screen.importapis/importApisScreen.caption"/>
+            </menu>
+        </menu>
+        <item screen="VisibilyType.browse"
+              caption="msg://com.company.apimanager.screen.visibilytype/visibilyTypeBrowse.menu"/>
+        <menu id="app_admin" caption="msg://com.company.apimanager/menu_config.app_admin">
+            <item screen="ChangePassScreen"
+                  caption="msg://com.company.apimanager.screen.changepass/changepassScreen.caption"/>
+        </menu>
+        <item screen="TestpageScreen" caption="msg://com.company.apimanager.screen.testpage/testpageScreen.caption"/>
+        <item screen="PublishToOtherGatewayScreen"
+              caption="msg://com.company.apimanager.screen.publishtoothergateway/publishToOtherGatewayScreen.caption"/>
+        <item screen="TestIframeScreen"
+              caption="msg://com.company.apimanager.screen.testiframe/testIframeScreen.caption"/>
+<!--        <menu id="gatewaymanager" caption="Gateway Management">-->
+<!--        <item screen="SelfHostedGateway.browse"-->
+<!--              caption="msg://com.company.apimanager.screen.selfhostedgateway/selfHostedGatewayBrowse.menu"/>-->
+<!--        </menu>-->
+        <item screen="PublishedRestApi.browse"
+              caption="msg://com.company.apimanager.screen.publishedrestapi/publishedRestApiBrowse.menu"/>
+        <item screen="BalancedHost.browse"
+              caption="msg://com.company.apimanager.screen.balancedhost/balancedHostBrowse.menu"/>
+    </menu>
+    <menu id="Help" caption="msg://com.company.apimanager/menu_config.Help" insertAfter="administration">
+        <item screen="GettingstartedScreen"
+              caption="msg://com.company.apimanager.screen.gettingstarted/gettingstartedScreen.caption"/>
+        <item screen="AboutScreen" caption="msg://com.company.apimanager.screen.about/aboutScreen.caption"/>
+    </menu>
+
+</menu-config>

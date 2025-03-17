@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="ApiManager">
+        <addUniqueConstraint columnNames="NAME" constraintName="UC_ANALYTICS_SERVICE_NAME"
+                             tableName="ANALYTICS_SERVICE"/>
+    </changeSet>
+    <changeSet id="2" author="ApiManager">
+        <addUniqueConstraint columnNames="API_PRODUCT_ID" constraintName="UC_API_REGISTER_API_PRODUCT"
+                             tableName="API_REGISTER"/>
+    </changeSet>
+    <changeSet id="3" author="ApiManager">
+        <addUniqueConstraint columnNames="NAME" constraintName="UC_API_SECURITY_METHOD_NAME"
+                             tableName="API_SECURITY_METHOD"/>
+    </changeSet>
+    <changeSet id="4" author="ApiManager">
+        <addUniqueConstraint columnNames="NAME" constraintName="UC_APP_CONFIGURATION_NAME"
+                             tableName="APP_CONFIGURATION"/>
+    </changeSet>
+    <changeSet id="5" author="ApiManager">
+        <addUniqueConstraint columnNames="PROVIDER_GATEWAY_ID" constraintName="UC_GATEWAYUSAGEP_PROVIDERGATEW"
+                             tableName="GATEWAY_USAGE_PERMISSION"/>
+    </changeSet>
+    <changeSet id="6" author="ApiManager">
+        <addUniqueConstraint columnNames="NAME" constraintName="UC_GATEWAY_SERVICE_NAME" tableName="GATEWAY_SERVICE"/>
+    </changeSet>
+    <changeSet id="7" author="ApiManager">
+        <addUniqueConstraint columnNames="PROVIDER_PORTAL_ID" constraintName="UC_PORTALUSAGEPE_PROVIDERPORTA"
+                             tableName="PORTAL_USAGE_PERMISSION"/>
+    </changeSet>
+    <changeSet id="8" author="ApiManager">
+        <addUniqueConstraint columnNames="NAME" constraintName="UC_PORTAL_SERVICE_NAME" tableName="PORTAL_SERVICE"/>
+    </changeSet>
+    <changeSet id="9" author="ApiManager">
+        <addUniqueConstraint columnNames="PRODUCT_API" constraintName="UC_PRODUCTAPIREGIST_PRODUCTAPI"
+                             tableName="PRODUCT_API_REGISTER"/>
+    </changeSet>
+    <changeSet id="10" author="ApiManager">
+        <addUniqueConstraint columnNames="KONG_CONSUMER_GROUP_ID" constraintName="UC_PRODUCTSUBSCR_KONGCONSUMERG"
+                             tableName="PRODUCT_SUBSCRIPTION"/>
+    </changeSet>
+    <changeSet id="11" author="ApiManager">
+        <addUniqueConstraint columnNames="PRODUCT_CONSUMER_ID" constraintName="UC_PRODUCTSUBSCR_PRODUCTCONSUM"
+                             tableName="PRODUCT_SUBSCRIPTION"/>
+    </changeSet>
+    <changeSet id="12" author="ApiManager">
+        <addUniqueConstraint columnNames="OWNER_PRDNAME" constraintName="UC_PRODUCT_OWNER_PRDNAME" tableName="PRODUCT"/>
+    </changeSet>
+    <changeSet id="13" author="ApiManager">
+        <addUniqueConstraint columnNames="PRODUCT_SITE_ID" constraintName="UC_PUBLISHEDPRODUC_PRODUCTSITE"
+                             tableName="PUBLISHED_PRODUCT"/>
+    </changeSet>
+    <changeSet id="14" author="ApiManager">
+        <addUniqueConstraint columnNames="OWNER_APINAME" constraintName="UC_REST_API_OWNER_APINAME"
+                             tableName="REST_API"/>
+    </changeSet>
+    <changeSet id="15" author="ApiManager">
+        <addUniqueConstraint columnNames="OWNER_GATEWAYNAME" constraintName="UC_SELFHOSTEDGAT_OWNERGATEWAYN"
+                             tableName="SELF_HOSTED_GATEWAY"/>
+    </changeSet>
+    <changeSet id="16" author="ApiManager">
+        <addUniqueConstraint columnNames="SITE_GATEWAY_ID" constraintName="UC_SITE_GATEWAY_SITE_GATEWAY"
+                             tableName="SITE_GATEWAY"/>
+    </changeSet>
+    <changeSet id="17" author="ApiManager">
+        <addUniqueConstraint columnNames="OWNER_SITENAME" constraintName="UC_SITE_OWNER_SITENAME" tableName="SITE"/>
+    </changeSet>
+    <changeSet id="18" author="ApiManager">
+        <dropIndex indexName="kong_api_id_index" tableName="drupal_link"/>
+    </changeSet>
+    <changeSet id="19" author="ApiManager">
+        <modifyDataType columnName="DRUPAL_API_ID" newDataType="VARCHAR(50)" tableName="DRUPAL_LINK"/>
+    </changeSet>
+    <changeSet id="20" author="ApiManager">
+        <addNotNullConstraint columnDataType="VARCHAR(50)" columnName="DRUPAL_API_ID" tableName="DRUPAL_LINK"
+                              validate="true"/>
+    </changeSet>
+    <changeSet id="21" author="ApiManager">
+        <modifyDataType columnName="KONG_API_ID" newDataType="VARCHAR(50)" tableName="DRUPAL_LINK"/>
+    </changeSet>
+    <changeSet id="22" author="ApiManager">
+        <modifyDataType columnName="KONG_MAPPING_INFO" newDataType="VARCHAR(9000)" tableName="PUBLISHED_PRODUCT"/>
+    </changeSet>
+</databaseChangeLog>

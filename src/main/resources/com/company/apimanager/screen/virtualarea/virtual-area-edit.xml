@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://virtualAreaEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="virtualAreaDc"
+                  class="com.company.apimanager.entity.VirtualArea">
+            <fetchPlan extends="_base">
+                <property name="gateways" fetchPlan="_base"/>
+                <property name="portals" fetchPlan="_base"/>
+                <property name="analytics" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="gatewaysDc" property="gateways"/>
+            <collection id="portalsDc" property="portals"/>
+            <collection id="analyticsDc" property="analytics"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="virtualAreaDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="titleField" property="title"/>
+                <textField id="descriptionField" property="description"/>
+                <checkBox id="isActiveField" property="is_active"/>
+                <checkBox id="is_defaultField" property="is_default"/>
+            </column>
+        </form>
+        <groupBox id="gatewaysBox" caption="msg://com.company.apimanager.entity/VirtualArea.gateways">
+            <table id="gatewaysTable" dataContainer="gatewaysDc" width="100%" height="200px">
+                <actions>
+                    <action id="create" type="create"/>
+                    <action id="edit" type="edit"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <columns>
+                    <column id="name"/>
+                    <column id="management_endpoint"/>
+                    <column id="invocation_endpoint"/>
+                    <column id="title"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="gatewaysTable.create"/>
+                    <button action="gatewaysTable.edit"/>
+                    <button action="gatewaysTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <groupBox id="portalsBox" caption="msg://com.company.apimanager.entity/VirtualArea.portals">
+            <table id="portalsTable" dataContainer="portalsDc" width="100%" height="200px">
+                <actions>
+                    <action id="create" type="create"/>
+                    <action id="edit" type="edit"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <columns>
+                    <column id="name"/>
+                    <column id="title"/>
+                    <column id="management_endpoint"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="portalsTable.create"/>
+                    <button action="portalsTable.edit"/>
+                    <button action="portalsTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <groupBox id="analyticsBox" caption="msg://com.company.apimanager.entity/VirtualArea.analytics">
+            <table id="analyticsTable" dataContainer="analyticsDc" width="100%" height="200px">
+                <actions>
+                    <action id="create" type="create"/>
+                    <action id="edit" type="edit"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <columns>
+                    <column id="name"/>
+                    <column id="title"/>
+                    <column id="management_endpoint"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="analyticsTable.create"/>
+                    <button action="analyticsTable.edit"/>
+                    <button action="analyticsTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

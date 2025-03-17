@@ -1,0 +1,2549 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.2
+-- Dumped by pg_dump version 14.2
+
+-- Started on 2022-06-17 16:59:55
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 209 (class 1259 OID 21115)
+-- Name: analytics_service; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.analytics_service (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    title character varying(255) NOT NULL,
+    management_endpoint character varying(255) NOT NULL,
+    virtual_area_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.analytics_service OWNER TO user1;
+
+--
+-- TOC entry 210 (class 1259 OID 21120)
+-- Name: api_register; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.api_register (
+    id uuid NOT NULL,
+    api_id uuid NOT NULL,
+    product_id uuid NOT NULL,
+    api_product_id character varying(255) NOT NULL,
+    register_datetime date NOT NULL
+);
+
+
+ALTER TABLE public.api_register OWNER TO user1;
+
+--
+-- TOC entry 211 (class 1259 OID 21123)
+-- Name: api_security_method; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.api_security_method (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    description character varying(255)
+);
+
+
+ALTER TABLE public.api_security_method OWNER TO user1;
+
+--
+-- TOC entry 212 (class 1259 OID 21126)
+-- Name: api_subcription; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.api_subcription (
+    id uuid NOT NULL,
+    consumer_id uuid NOT NULL,
+    subcribed_api_id uuid NOT NULL,
+    subcribed_date date NOT NULL
+);
+
+
+ALTER TABLE public.api_subcription OWNER TO user1;
+
+--
+-- TOC entry 213 (class 1259 OID 21134)
+-- Name: consumer; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.consumer (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    api_key character varying(255),
+    title character varying(255) NOT NULL,
+    security_method_id uuid NOT NULL,
+    provider_id uuid NOT NULL,
+    password character varying(50),
+    site_id uuid NOT NULL,
+    provider_site_consumer_name character varying(255) NOT NULL,
+    kong_consumer_id character varying(255) NOT NULL,
+    kong_rate_limit_id character varying(255),
+    max_per_hour bigint,
+    max_per_minute bigint,
+    max_per_second bigint
+);
+
+
+ALTER TABLE public.consumer OWNER TO user1;
+
+--
+-- TOC entry 214 (class 1259 OID 21139)
+-- Name: databasechangelog; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.databasechangelog (
+    id character varying(255) NOT NULL,
+    author character varying(255) NOT NULL,
+    filename character varying(255) NOT NULL,
+    dateexecuted timestamp without time zone NOT NULL,
+    orderexecuted integer NOT NULL,
+    exectype character varying(10) NOT NULL,
+    md5sum character varying(35),
+    description character varying(255),
+    comments character varying(255),
+    tag character varying(255),
+    liquibase character varying(20),
+    contexts character varying(255),
+    labels character varying(255),
+    deployment_id character varying(10)
+);
+
+
+ALTER TABLE public.databasechangelog OWNER TO user1;
+
+--
+-- TOC entry 215 (class 1259 OID 21144)
+-- Name: databasechangeloglock; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.databasechangeloglock (
+    id integer NOT NULL,
+    locked boolean NOT NULL,
+    lockgranted timestamp without time zone,
+    lockedby character varying(255)
+);
+
+
+ALTER TABLE public.databasechangeloglock OWNER TO user1;
+
+--
+-- TOC entry 216 (class 1259 OID 21147)
+-- Name: draft_plan; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.draft_plan (
+    id uuid NOT NULL,
+    name character varying(255),
+    ratelimit integer,
+    draft_product_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.draft_plan OWNER TO user1;
+
+--
+-- TOC entry 217 (class 1259 OID 21150)
+-- Name: draft_product; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.draft_product (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    title character varying(255)
+);
+
+
+ALTER TABLE public.draft_product OWNER TO user1;
+
+--
+-- TOC entry 218 (class 1259 OID 21153)
+-- Name: gateway_service; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.gateway_service (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    management_endpoint character varying(255) NOT NULL,
+    invocation_endpoint character varying(255),
+    title character varying(100),
+    virtual_area_id uuid NOT NULL,
+    gateway_type_id uuid NOT NULL,
+    analytics_associated_id uuid
+);
+
+
+ALTER TABLE public.gateway_service OWNER TO user1;
+
+--
+-- TOC entry 219 (class 1259 OID 21158)
+-- Name: gateway_type; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.gateway_type (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    title character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.gateway_type OWNER TO user1;
+
+--
+-- TOC entry 220 (class 1259 OID 21161)
+-- Name: gateway_usage_permission; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.gateway_usage_permission (
+    id uuid NOT NULL,
+    name character varying(255) NOT NULL,
+    api_provider_id uuid NOT NULL,
+    gateway_id uuid NOT NULL,
+    provider_gateway_id character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.gateway_usage_permission OWNER TO user1;
+
+--
+-- TOC entry 221 (class 1259 OID 21166)
+-- Name: persistent_logins; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.persistent_logins (
+    series character varying(64) NOT NULL,
+    username character varying(64) NOT NULL,
+    token character varying(64) NOT NULL,
+    last_used timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.persistent_logins OWNER TO user1;
+
+--
+-- TOC entry 222 (class 1259 OID 21169)
+-- Name: plan_; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.plan_ (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    persecond bigint,
+    perminute bigint,
+    perhour bigint,
+    product_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.plan_ OWNER TO user1;
+
+--
+-- TOC entry 223 (class 1259 OID 21172)
+-- Name: portal_service; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.portal_service (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    title character varying(255),
+    management_endpoint character varying(255) NOT NULL,
+    virtual_area_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.portal_service OWNER TO user1;
+
+--
+-- TOC entry 224 (class 1259 OID 21177)
+-- Name: portal_usage_permission; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.portal_usage_permission (
+    id uuid NOT NULL,
+    name character varying(255) NOT NULL,
+    provider_portal_id character varying(255) NOT NULL,
+    api_provider_id uuid NOT NULL,
+    portal_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.portal_usage_permission OWNER TO user1;
+
+--
+-- TOC entry 225 (class 1259 OID 21182)
+-- Name: product; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.product (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    title character varying(255),
+    visibility_type_id uuid NOT NULL,
+    owner_id uuid NOT NULL,
+    owner_prdname character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.product OWNER TO user1;
+
+--
+-- TOC entry 226 (class 1259 OID 21187)
+-- Name: product_api_register; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.product_api_register (
+    id uuid NOT NULL,
+    product_id uuid NOT NULL,
+    rest_api_id uuid NOT NULL,
+    product_api character varying(255) NOT NULL,
+    register_datetime date
+);
+
+
+ALTER TABLE public.product_api_register OWNER TO user1;
+
+--
+-- TOC entry 227 (class 1259 OID 21193)
+-- Name: product_subscription; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.product_subscription (
+    id uuid NOT NULL,
+    product_consumer_id character varying(255) NOT NULL,
+    consumer_id uuid NOT NULL,
+    published_product_id uuid NOT NULL,
+    subcription_date date NOT NULL,
+    kong_consumer_group_id character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.product_subscription OWNER TO user1;
+
+--
+-- TOC entry 228 (class 1259 OID 21198)
+-- Name: published_product; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.published_product (
+    id uuid NOT NULL,
+    product_id uuid NOT NULL,
+    site_id uuid NOT NULL,
+    published_date date NOT NULL,
+    product_site_id character varying(255) NOT NULL,
+    name character varying(255),
+    kong_object_ids character varying(9000),
+    state character varying(50) NOT NULL,
+    kong_object_json character varying(10000)
+);
+
+
+ALTER TABLE public.published_product OWNER TO user1;
+
+--
+-- TOC entry 229 (class 1259 OID 21203)
+-- Name: rest_api; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.rest_api (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    title character varying(255),
+    base_path character varying(255) NOT NULL,
+    target_endpoint character varying(255) NOT NULL,
+    security_method_id uuid NOT NULL,
+    owner_id uuid NOT NULL,
+    owner_apiname character varying(255) NOT NULL,
+    path_in_gw character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.rest_api OWNER TO user1;
+
+--
+-- TOC entry 230 (class 1259 OID 21208)
+-- Name: sec_resource_policy; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.sec_resource_policy (
+    id uuid NOT NULL,
+    version integer DEFAULT 1 NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    update_ts timestamp without time zone,
+    updated_by character varying(50),
+    delete_ts timestamp without time zone,
+    deleted_by character varying(50),
+    type_ character varying(255) NOT NULL,
+    policy_group character varying(255),
+    resource_ character varying(1000) NOT NULL,
+    action_ character varying(255) NOT NULL,
+    effect character varying(255) NOT NULL,
+    role_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.sec_resource_policy OWNER TO user1;
+
+--
+-- TOC entry 231 (class 1259 OID 21214)
+-- Name: sec_resource_role; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.sec_resource_role (
+    id uuid NOT NULL,
+    version integer DEFAULT 1 NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    update_ts timestamp without time zone,
+    updated_by character varying(50),
+    delete_ts timestamp without time zone,
+    deleted_by character varying(50),
+    name character varying(255) NOT NULL,
+    code character varying(255) NOT NULL,
+    child_roles text,
+    sys_tenant_id character varying(255),
+    description text,
+    scopes character varying(1000)
+);
+
+
+ALTER TABLE public.sec_resource_role OWNER TO user1;
+
+--
+-- TOC entry 232 (class 1259 OID 21220)
+-- Name: sec_role_assignment; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.sec_role_assignment (
+    id uuid NOT NULL,
+    version integer DEFAULT 1 NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    update_ts timestamp without time zone,
+    updated_by character varying(50),
+    delete_ts timestamp without time zone,
+    deleted_by character varying(50),
+    username character varying(255) NOT NULL,
+    role_code character varying(255) NOT NULL,
+    role_type character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.sec_role_assignment OWNER TO user1;
+
+--
+-- TOC entry 233 (class 1259 OID 21226)
+-- Name: sec_row_level_policy; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.sec_row_level_policy (
+    id uuid NOT NULL,
+    version integer DEFAULT 1 NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    update_ts timestamp without time zone,
+    updated_by character varying(50),
+    delete_ts timestamp without time zone,
+    deleted_by character varying(50),
+    type_ character varying(255) NOT NULL,
+    action_ character varying(255) NOT NULL,
+    entity_name character varying(255) NOT NULL,
+    where_clause text,
+    join_clause text,
+    script_ text,
+    role_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.sec_row_level_policy OWNER TO user1;
+
+--
+-- TOC entry 234 (class 1259 OID 21232)
+-- Name: sec_row_level_role; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.sec_row_level_role (
+    id uuid NOT NULL,
+    version integer DEFAULT 1 NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    update_ts timestamp without time zone,
+    updated_by character varying(50),
+    delete_ts timestamp without time zone,
+    deleted_by character varying(50),
+    name character varying(255) NOT NULL,
+    code character varying(255) NOT NULL,
+    child_roles text,
+    sys_tenant_id character varying(255),
+    description text
+);
+
+
+ALTER TABLE public.sec_row_level_role OWNER TO user1;
+
+--
+-- TOC entry 235 (class 1259 OID 21238)
+-- Name: sec_user_substitution; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.sec_user_substitution (
+    id uuid NOT NULL,
+    version integer DEFAULT 1 NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    update_ts timestamp without time zone,
+    updated_by character varying(50),
+    delete_ts timestamp without time zone,
+    deleted_by character varying(50),
+    username character varying(255) NOT NULL,
+    substituted_username character varying(255) NOT NULL,
+    start_date timestamp without time zone,
+    end_date timestamp without time zone
+);
+
+
+ALTER TABLE public.sec_user_substitution OWNER TO user1;
+
+--
+-- TOC entry 236 (class 1259 OID 21244)
+-- Name: site; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.site (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    owner_id uuid NOT NULL,
+    portal_admin character varying(50) NOT NULL,
+    oauth_provider character varying(255),
+    gateway_id uuid NOT NULL,
+    portal_id uuid NOT NULL,
+    owner_sitename character varying(255) NOT NULL,
+    virtual_area_id uuid,
+    title character varying(255),
+    production_mode boolean NOT NULL
+);
+
+
+ALTER TABLE public.site OWNER TO user1;
+
+--
+-- TOC entry 237 (class 1259 OID 21249)
+-- Name: site_gateway; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.site_gateway (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    site_id uuid NOT NULL,
+    gateway_id uuid NOT NULL,
+    site_gateway_id character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.site_gateway OWNER TO user1;
+
+--
+-- TOC entry 238 (class 1259 OID 21252)
+-- Name: ui_filter_configuration; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.ui_filter_configuration (
+    id uuid NOT NULL,
+    component_id character varying(255) NOT NULL,
+    configuration_id character varying(255) NOT NULL,
+    username character varying(255),
+    root_condition text,
+    sys_tenant_id character varying(255),
+    name character varying(255),
+    default_for_all boolean
+);
+
+
+ALTER TABLE public.ui_filter_configuration OWNER TO user1;
+
+--
+-- TOC entry 239 (class 1259 OID 21257)
+-- Name: ui_setting; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.ui_setting (
+    id uuid NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    username character varying(255),
+    name character varying(255),
+    value_ text
+);
+
+
+ALTER TABLE public.ui_setting OWNER TO user1;
+
+--
+-- TOC entry 240 (class 1259 OID 21262)
+-- Name: ui_table_presentation; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.ui_table_presentation (
+    id uuid NOT NULL,
+    create_ts timestamp without time zone,
+    created_by character varying(50),
+    component character varying(255),
+    name character varying(255),
+    settings character varying(4000),
+    username character varying(255),
+    is_auto_save boolean,
+    update_ts timestamp without time zone,
+    updated_by character varying(50),
+    sys_tenant_id character varying(255),
+    is_default boolean
+);
+
+
+ALTER TABLE public.ui_table_presentation OWNER TO user1;
+
+--
+-- TOC entry 241 (class 1259 OID 21267)
+-- Name: user_; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.user_ (
+    id uuid NOT NULL,
+    version integer NOT NULL,
+    username character varying(255) NOT NULL,
+    first_name character varying(255),
+    last_name character varying(255),
+    password character varying(255),
+    email character varying(255),
+    active boolean,
+    time_zone_id character varying(255),
+    provider_plan character varying(255)
+);
+
+
+ALTER TABLE public.user_ OWNER TO user1;
+
+--
+-- TOC entry 242 (class 1259 OID 21272)
+-- Name: virtual_area; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.virtual_area (
+    id uuid NOT NULL,
+    name character varying(50) NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying(255)
+);
+
+
+ALTER TABLE public.virtual_area OWNER TO user1;
+
+--
+-- TOC entry 243 (class 1259 OID 21275)
+-- Name: visibily_type; Type: TABLE; Schema: public; Owner: user1
+--
+
+CREATE TABLE public.visibily_type (
+    id uuid NOT NULL,
+    name character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.visibily_type OWNER TO user1;
+
+--
+-- TOC entry 3604 (class 0 OID 21115)
+-- Dependencies: 209
+-- Data for Name: analytics_service; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.analytics_service (id, name, title, management_endpoint, virtual_area_id) FROM stdin;
+87cfda3b-a684-d3bd-4a27-20221f84741c	Analytics1	Title123abc	/	9d924865-db8d-9c07-df43-10c3a65ba5b8
+6adad7a6-d438-4979-0496-2906930bf59b	HCM_Analytics1	Title123abc	/	5a4bed22-296d-4201-b1a7-8e26d479111d
+748494eb-d869-e73e-afac-fb2b0b5837ce	Analytics2	Title123abc	/	9d924865-db8d-9c07-df43-10c3a65ba5b8
+99037f76-626e-68fa-4579-7c3f425674cc	Analytics3	Title123abc	/	9d924865-db8d-9c07-df43-10c3a65ba5b8
+\.
+
+
+--
+-- TOC entry 3605 (class 0 OID 21120)
+-- Dependencies: 210
+-- Data for Name: api_register; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.api_register (id, api_id, product_id, api_product_id, register_datetime) FROM stdin;
+24e6abf7-55e5-0478-783f-6405d71d4a27	a7e99031-b205-7c9b-5424-b4ea611171c4	eb214f08-dda2-f4ad-7408-0aef117490a8	a7e99031-b205-7c9b-5424-b4ea611171c4_eb214f08-dda2-f4ad-7408-0aef117490a8	2022-05-04
+e89e3716-00de-a9bf-b886-291ac3efc5d3	ae5a0bce-7187-90f6-ab13-cc19090bf966	eb214f08-dda2-f4ad-7408-0aef117490a8	ae5a0bce-7187-90f6-ab13-cc19090bf966_eb214f08-dda2-f4ad-7408-0aef117490a8	2022-05-18
+44fa220f-4303-17a7-9832-3c1d0406f82e	a7e99031-b205-7c9b-5424-b4ea611171c4	e9301b31-c806-810e-743f-b6fd477a4b4b	a7e99031-b205-7c9b-5424-b4ea611171c4_e9301b31-c806-810e-743f-b6fd477a4b4b	2022-05-18
+786c52fc-7e30-9fb7-8581-45c0a28a43fc	683bf36f-0937-e726-979a-2ee0d0162568	eb214f08-dda2-f4ad-7408-0aef117490a8	683bf36f-0937-e726-979a-2ee0d0162568_eb214f08-dda2-f4ad-7408-0aef117490a8	2022-05-19
+3b9864a7-143d-64c5-15c4-41ef523a293e	fd942c53-5c6e-dc5d-4dd3-e2d9a0215cab	d13620e0-f0f5-39f6-e39e-fb5e1a7cc14f	fd942c53-5c6e-dc5d-4dd3-e2d9a0215cab_d13620e0-f0f5-39f6-e39e-fb5e1a7cc14f	2022-06-13
+\.
+
+
+--
+-- TOC entry 3606 (class 0 OID 21123)
+-- Dependencies: 211
+-- Data for Name: api_security_method; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.api_security_method (id, name, description) FROM stdin;
+77d5601e-78d0-4ba4-2020-f8ad4197d8f1	Basic	Basic
+\.
+
+
+--
+-- TOC entry 3607 (class 0 OID 21126)
+-- Dependencies: 212
+-- Data for Name: api_subcription; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.api_subcription (id, consumer_id, subcribed_api_id, subcribed_date) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3608 (class 0 OID 21134)
+-- Dependencies: 213
+-- Data for Name: consumer; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.consumer (id, name, api_key, title, security_method_id, provider_id, password, site_id, provider_site_consumer_name, kong_consumer_id, kong_rate_limit_id, max_per_hour, max_per_minute, max_per_second) FROM stdin;
+a4b88d7e-43bc-115e-e774-77d58d857b4e	momo	\N	Mono app	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	d77976e9-650d-86e5-8f92-253572aa26a9	\N	8d44c1aa-a6da-f7fe-d5fb-e4931449390b	bidv.Closed.momo	8411612a-5593-4514-aaba-1272bbb3428a	\N	\N	\N	\N
+881d387e-e2cb-bfb2-e80c-fb4f7d71ab75	vietjet	\N	Vietjet Air	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	d77976e9-650d-86e5-8f92-253572aa26a9	\N	8d44c1aa-a6da-f7fe-d5fb-e4931449390b	bidv.Closed.vietjet	253c4898-dda6-487c-a42e-bbb5ae5f32c5	\N	\N	\N	20
+03d2a302-b650-50cf-05b4-bb876a246def	testapp	Test	Test	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	d77976e9-650d-86e5-8f92-253572aa26a9	\N	8d44c1aa-a6da-f7fe-d5fb-e4931449390b	bidv.Closed.testapp	2eadb16d-7f40-45ff-9c29-0856b752ae4a	4f1ba294-10a4-447d-a3ed-2a7f10d570c1	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 3609 (class 0 OID 21139)
+-- Dependencies: 214
+-- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.databasechangelog (id, author, filename, dateexecuted, orderexecuted, exectype, md5sum, description, comments, tag, liquibase, contexts, labels, deployment_id) FROM stdin;
+1	ui-data	io/jmix/uidata/liquibase/changelog/001-ui-data.xml	2022-04-17 15:00:03.712579	1	EXECUTED	8:eb9a995e63e9721e5c0d41ef59d75f53	createTable tableName=UI_SETTING		\N	4.5.0	\N	\N	0182403276
+2	ui-data	io/jmix/uidata/liquibase/changelog/001-ui-data.xml	2022-04-17 15:00:03.735314	2	EXECUTED	8:9b2741cf42ed98a04110bdc8eda09792	createTable tableName=UI_FILTER_CONFIGURATION		\N	4.5.0	\N	\N	0182403276
+3	ui-data	io/jmix/uidata/liquibase/changelog/001-ui-data.xml	2022-04-17 15:00:03.740665	3	EXECUTED	8:5bde97a30f2ad570342f7733ebd74776	addColumn tableName=UI_FILTER_CONFIGURATION		\N	4.5.0	\N	\N	0182403276
+4	ui-data	io/jmix/uidata/liquibase/changelog/001-ui-data.xml	2022-04-17 15:00:03.748049	4	EXECUTED	8:8d5d3ffa3d4b15a3dfd956e818bbd5b5	addColumn tableName=UI_FILTER_CONFIGURATION; renameColumn newColumnName=CONFIGURATION_ID, oldColumnName=CODE, tableName=UI_FILTER_CONFIGURATION		\N	4.5.0	\N	\N	0182403276
+5	ui-data	io/jmix/uidata/liquibase/changelog/001-ui-data.xml	2022-04-17 15:00:03.765755	5	EXECUTED	8:e61cc50fd8b4a76acd0ce1c6fcd6c77a	createTable tableName=UI_TABLE_PRESENTATION		\N	4.5.0	!cuba	\N	0182403276
+1	security-data	io/jmix/securitydata/liquibase/changelog/001-security-data.xml	2022-04-17 15:00:03.85003	6	EXECUTED	8:503f3f1463afb1a6ee2f72a85913268d	createTable tableName=SEC_RESOURCE_ROLE; createTable tableName=SEC_ROW_LEVEL_ROLE; createTable tableName=SEC_RESOURCE_POLICY; createTable tableName=SEC_ROW_LEVEL_POLICY; createTable tableName=SEC_ROLE_ASSIGNMENT		\N	4.5.0	\N	\N	0182403276
+2-postgresql	security-data	io/jmix/securitydata/liquibase/changelog/001-security-data.xml	2022-04-17 15:00:03.861789	7	EXECUTED	8:5e8fed89820fc19ad46bac760946611f	createIndex indexName=IDX_RESOURCE_ROLE_UN_C, tableName=SEC_RESOURCE_ROLE		\N	4.5.0	\N	\N	0182403276
+3-postgresql	security-data	io/jmix/securitydata/liquibase/changelog/001-security-data.xml	2022-04-17 15:00:03.872552	8	EXECUTED	8:feaca99b2547af6854072f5ee7940485	createIndex indexName=IDX_ROW_LEVEL_ROLE_UN_C, tableName=SEC_ROW_LEVEL_ROLE		\N	4.5.0	\N	\N	0182403276
+4	security-data	io/jmix/securitydata/liquibase/changelog/001-security-data.xml	2022-04-17 15:00:03.883075	9	EXECUTED	8:604553db900aa6050bcdd0bd49ff2085	createTable tableName=persistent_logins		\N	4.5.0	\N	\N	0182403276
+1	security-data	io/jmix/securitydata/liquibase/changelog/002-security-data.xml	2022-04-17 15:00:03.888503	10	EXECUTED	8:37a554d561f02064fd71dfd0f02278f7	addColumn tableName=SEC_RESOURCE_ROLE; addColumn tableName=SEC_ROW_LEVEL_ROLE		\N	4.5.0	\N	\N	0182403276
+2	security-data	io/jmix/securitydata/liquibase/changelog/002-security-data.xml	2022-04-17 15:00:03.893015	11	EXECUTED	8:5c34b3970ba6bbc4416659e74155e59b	addColumn tableName=SEC_RESOURCE_ROLE		\N	4.5.0	\N	\N	0182403276
+1	security-data	io/jmix/securitydata/liquibase/changelog/003-security-data.xml	2022-04-17 15:00:03.924679	12	EXECUTED	8:d98c112d8f942229e70a9b60fdeeca4f	createTable tableName=SEC_USER_SUBSTITUTION		\N	4.5.0	!cuba	\N	0182403276
+1	ApiManager	com/company/apimanager/liquibase/changelog/010-init-user.xml	2022-04-17 15:00:03.951834	13	EXECUTED	8:1d9ed0cf021da9c0832f9557ecfba176	createTable tableName=USER_		\N	4.5.0	!cuba	\N	0182403276
+2	ApiManager	com/company/apimanager/liquibase/changelog/010-init-user.xml	2022-04-17 15:00:03.967104	14	EXECUTED	8:63c5b17e175271a24edc8e664beca638	createIndex indexName=IDX_USER__ON_USERNAME, tableName=USER_		\N	4.5.0	!cuba	\N	0182403276
+3	ApiManager	com/company/apimanager/liquibase/changelog/010-init-user.xml	2022-04-17 15:00:03.974114	15	EXECUTED	8:ac158511d8a5a5c827cd6f3ff858ac4a	insert tableName=USER_; insert tableName=USER_		\N	4.5.0	!cuba	\N	0182403276
+4	ApiManager	com/company/apimanager/liquibase/changelog/010-init-user.xml	2022-04-17 15:00:03.990975	16	EXECUTED	8:eb22dd77008053ea3412055fa334d8af	insert tableName=SEC_ROLE_ASSIGNMENT; insert tableName=SEC_ROLE_ASSIGNMENT		\N	4.5.0	!cuba	\N	0182403276
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-010-b74dc112.xml	2022-04-17 15:00:04.042023	17	EXECUTED	8:1090626119556afea1b3cb66da5987b8	createTable tableName=ANALYTICS_SERVICE		\N	4.5.0	\N	\N	0182403276
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-010-b74dc112.xml	2022-04-17 15:00:04.061067	18	EXECUTED	8:2df48b9269b09ecebc1602db613e148a	createTable tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0182403276
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-010-b74dc112.xml	2022-04-17 15:00:04.082524	19	EXECUTED	8:08e808ea7ea64980cc2c6aac3495ae15	createTable tableName=PORTAL_SERVICE		\N	4.5.0	\N	\N	0182403276
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-010-b74dc112.xml	2022-04-17 15:00:04.09278	20	EXECUTED	8:8e99a133410fa0a70a1adf936404d167	createTable tableName=VIRTUAL_AREA		\N	4.5.0	\N	\N	0182403276
+5	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-010-b74dc112.xml	2022-04-17 15:00:04.10761	21	EXECUTED	8:a35e781a9ec5b674f26fb31520983c5e	createIndex indexName=IDX_ANALYTICSSERVICE, tableName=ANALYTICS_SERVICE; addForeignKeyConstraint baseTableName=ANALYTICS_SERVICE, constraintName=FK_ANALYTICSSER_ON_VIRTUALAREA, referencedTableName=VIRTUAL_AREA		\N	4.5.0	\N	\N	0182403276
+6	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-010-b74dc112.xml	2022-04-17 15:00:04.119592	22	EXECUTED	8:b34d5fb578c7006f282e8a44a338376b	createIndex indexName=IDX_GATEWAYSERVICE, tableName=GATEWAY_SERVICE; addForeignKeyConstraint baseTableName=GATEWAY_SERVICE, constraintName=FK_GATEWAYSERVI_ON_VIRTUALAREA, referencedTableName=VIRTUAL_AREA		\N	4.5.0	\N	\N	0182403276
+7	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-010-b74dc112.xml	2022-04-17 15:00:04.139001	23	EXECUTED	8:c8c0f36c4e02cf7c22e23557666edb44	createIndex indexName=IDX_PORTALSERVICE, tableName=PORTAL_SERVICE; addForeignKeyConstraint baseTableName=PORTAL_SERVICE, constraintName=FK_PORTALSERVIC_ON_VIRTUALAREA, referencedTableName=VIRTUAL_AREA		\N	4.5.0	\N	\N	0182403276
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-020-b74dc112.xml	2022-04-17 15:00:04.154494	24	EXECUTED	8:4bb98738c90d4ffbdafcf91975cd5e73	createTable tableName=GATEWAY_TYPE		\N	4.5.0	\N	\N	0182403276
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-020-b74dc112.xml	2022-04-17 15:00:04.165562	25	EXECUTED	8:0737db92da2a170e3acdd0e9ab590a96	addColumn tableName=GATEWAY_SERVICE; addNotNullConstraint columnName=GATEWAY_TYPE_ID, tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0182403276
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-020-b74dc112.xml	2022-04-17 15:00:04.172812	26	EXECUTED	8:8c7494af96a7b852b9b37202de462a31	addForeignKeyConstraint baseTableName=GATEWAY_SERVICE, constraintName=FK_GATEWAYSERVI_ON_GATEWAYTYPE, referencedTableName=GATEWAY_TYPE		\N	4.5.0	\N	\N	0182403276
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-020-b74dc112.xml	2022-04-17 15:00:04.182687	27	EXECUTED	8:90d028eacb44837ba62095b11fd17706	dropColumn columnName=gateway_type, tableName=gateway_service		\N	4.5.0	\N	\N	0182403276
+5	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-020-b74dc112.xml	2022-04-17 15:00:04.191084	28	EXECUTED	8:34550cf58dfa172430a57029a5ee28fa	dropIndex indexName=IDX_GATEWAYSERVICE, tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0182403276
+6	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-020-b74dc112.xml	2022-04-17 15:00:04.202715	29	EXECUTED	8:5a028291aab5626ea6efab2e433d1e0c	createIndex indexName=IDX_GATEWAYSERVICE, tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0182403276
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-030-b74dc112.xml	2022-04-17 15:00:04.22646	30	EXECUTED	8:f1dc2d00f16267c3ab88ecc61308f9d0	createTable tableName=API_SECURITY_METHOD		\N	4.5.0	\N	\N	0182403276
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-030-b74dc112.xml	2022-04-17 15:00:04.248905	31	EXECUTED	8:01a47f79851dcecd6b4ecf827bdac1a2	createTable tableName=REST_API		\N	4.5.0	\N	\N	0182403276
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-030-b74dc112.xml	2022-04-17 15:00:04.263744	32	EXECUTED	8:bf3eb73ad69eb918c0e0f9b5c1835657	addUniqueConstraint constraintName=UC_API_SECURITY_METHOD_NAME, tableName=API_SECURITY_METHOD		\N	4.5.0	\N	\N	0182403276
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-030-b74dc112.xml	2022-04-17 15:00:04.276394	33	EXECUTED	8:e5af994dc35f8a1c34e02567398b8e63	createIndex indexName=IDX_RESTAPI_OWNER_ID, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_OWNER, referencedTableName=USER_		\N	4.5.0	\N	\N	0182403276
+5	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/16-030-b74dc112.xml	2022-04-17 15:00:04.289291	34	EXECUTED	8:c44d2779752f3ee7261a0dbb2f70ee76	createIndex indexName=IDX_RESTAPI_SECURITYMETHOD_ID, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_SECURITYMETHOD, referencedTableName=API_SECURITY_METHOD		\N	4.5.0	\N	\N	0182403276
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-040-b74dc112.xml	2022-04-17 20:47:06.311313	35	EXECUTED	8:9a47e4a5300395b140ed05de8ebf322a	createTable tableName=REST_API		\N	4.5.0	\N	\N	0203225958
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-040-b74dc112.xml	2022-04-17 20:47:06.342176	36	EXECUTED	8:e5af994dc35f8a1c34e02567398b8e63	createIndex indexName=IDX_RESTAPI_OWNER_ID, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_OWNER, referencedTableName=USER_		\N	4.5.0	\N	\N	0203225958
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-040-b74dc112.xml	2022-04-17 20:47:06.364577	37	EXECUTED	8:c44d2779752f3ee7261a0dbb2f70ee76	createIndex indexName=IDX_RESTAPI_SECURITYMETHOD_ID, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_SECURITYMETHOD, referencedTableName=API_SECURITY_METHOD		\N	4.5.0	\N	\N	0203225958
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-050-b74dc112.xml	2022-04-17 21:06:59.384518	38	EXECUTED	8:3e29b388067e55c0e8a6259d56998be2	createTable tableName=REST_API		\N	4.5.0	\N	\N	0204418822
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-050-b74dc112.xml	2022-04-17 21:06:59.413284	39	EXECUTED	8:d8e2e4aa9a9c6bcad2647dd3bcdb0098	createIndex indexName=IDX_RESTAPI, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_SECURITY_METHOD, referencedTableName=API_SECURITY_METHOD		\N	4.5.0	\N	\N	0204418822
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-050-b74dc112.xml	2022-04-17 21:06:59.431813	40	EXECUTED	8:e5af994dc35f8a1c34e02567398b8e63	createIndex indexName=IDX_RESTAPI_OWNER_ID, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_OWNER, referencedTableName=USER_		\N	4.5.0	\N	\N	0204418822
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-060-b74dc112.xml	2022-04-17 21:15:10.542836	41	EXECUTED	8:4d35a7796643046c51e7119516eba1de	createTable tableName=PRODUCT		\N	4.5.0	\N	\N	0204910224
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/17-060-b74dc112.xml	2022-04-17 21:15:10.565826	42	EXECUTED	8:2557e2bce2db8af8cf4835e4e9e77444	createIndex indexName=IDX_PRODUCT_OWNER_ID, tableName=PRODUCT; addForeignKeyConstraint baseTableName=PRODUCT, constraintName=FK_PRODUCT_ON_OWNER, referencedTableName=USER_		\N	4.5.0	\N	\N	0204910224
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/19-070-b74dc112.xml	2022-04-19 10:39:18.458719	43	EXECUTED	8:bf4792216a12145ec500325b7e3eb1a2	addColumn tableName=PRODUCT		\N	4.5.0	\N	\N	0339558273
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/19-080-b74dc112.xml	2022-04-19 11:02:49.892866	44	EXECUTED	8:2eb3ce2ed4fbe851c13cfd63d7fc728d	dropColumn columnName=provider_id, tableName=rest_api		\N	4.5.0	\N	\N	0340969720
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/19-090-b74dc112.xml	2022-04-19 11:21:55.087498	45	EXECUTED	8:59f07641440520a6be36e50fe9464547	addColumn tableName=REST_API		\N	4.5.0	\N	\N	0342114919
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/19-100-b74dc112.xml	2022-04-19 11:29:31.301682	46	EXECUTED	8:2f9a5425471a3b72262fdb7dfc23fdba	addUniqueConstraint constraintName=UC_REST_API_OWNER_NAME, tableName=REST_API		\N	4.5.0	\N	\N	0342571041
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/19-110-b74dc112.xml	2022-04-19 14:39:43.403169	47	EXECUTED	8:44a373dda9c106268e9dc894240b63c7	createTable tableName=DRAFT_PLAN		\N	4.5.0	\N	\N	0353983068
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/19-110-b74dc112.xml	2022-04-19 14:39:43.420722	48	EXECUTED	8:37639e760909afaa20c6de19cb2da09a	createTable tableName=DRAFT_PRODUCT		\N	4.5.0	\N	\N	0353983068
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/19-110-b74dc112.xml	2022-04-19 14:39:43.440798	49	EXECUTED	8:9b83b0a5e430e619ef4bdb0ec8f0e472	createIndex indexName=IDX_DRAFTPLAN, tableName=DRAFT_PLAN; addForeignKeyConstraint baseTableName=DRAFT_PLAN, constraintName=FK_DRAFT_PLAN_ON_DRAFT_PRODUCT, referencedTableName=DRAFT_PRODUCT		\N	4.5.0	\N	\N	0353983068
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/21-120-b74dc112.xml	2022-04-21 15:54:48.593096	50	EXECUTED	8:74b8f1e949fb29effb2c5fbcb1ed4a35	addUniqueConstraint constraintName=UC_ANALYTICS_SERVICE_NAME, tableName=ANALYTICS_SERVICE		\N	4.5.0	\N	\N	0531288380
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/21-120-b74dc112.xml	2022-04-21 15:54:48.609537	51	EXECUTED	8:aae26831f727ac1153a7b5fcf17c0773	addUniqueConstraint constraintName=UC_GATEWAY_SERVICE_NAME, tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0531288380
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/21-120-b74dc112.xml	2022-04-21 16:02:58.73448	52	EXECUTED	8:f64884b9d376c2d43fd9e6c5e918d16e	addUniqueConstraint constraintName=UC_PORTAL_SERVICE_NAME, tableName=PORTAL_SERVICE		\N	4.5.0	\N	\N	0531778515
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/21-130-b74dc112.xml	2022-04-21 17:45:35.466993	53	EXECUTED	8:3fac0b464f52e69751b0fab70c5c1aa6	addColumn tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0537935196
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/21-130-b74dc112.xml	2022-04-21 17:45:35.482706	54	EXECUTED	8:b7e8c2883cbd9cf991a77bfdc5233d76	addForeignKeyConstraint baseTableName=GATEWAY_SERVICE, constraintName=FK_GATEWAYSERV_ON_ANALYTICSAS, referencedTableName=ANALYTICS_SERVICE		\N	4.5.0	\N	\N	0537935196
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/21-130-b74dc112.xml	2022-04-21 17:45:35.493314	55	EXECUTED	8:34550cf58dfa172430a57029a5ee28fa	dropIndex indexName=IDX_GATEWAYSERVICE, tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0537935196
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/21-130-b74dc112.xml	2022-04-21 17:45:35.507323	56	EXECUTED	8:c9cd1fbd5bcd29414e6fd2570b903edf	createIndex indexName=IDX_GATEWAYSERVICE, tableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	0537935196
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-140-b74dc112.xml	2022-04-22 14:25:34.702973	57	EXECUTED	8:f0c3aa03240fefa800bee7430b972952	createTable tableName=PRODUCT_STATE		\N	4.5.0	\N	\N	0612334478
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-150-b74dc112.xml	2022-04-22 14:37:12.974827	58	EXECUTED	8:5d17ce20c72a0fc6798af68d8599d825	dropForeignKeyConstraint baseTableName=product, constraintName=fk_product_on_owner		\N	4.5.0	\N	\N	0613032742
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-150-b74dc112.xml	2022-04-22 14:37:13.000044	59	EXECUTED	8:170987a9dd579122fe0560173cae2d78	dropTable tableName=product		\N	4.5.0	\N	\N	0613032742
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.564461	60	EXECUTED	8:f4c00b4e340b43fa187ed94c5988d873	createTable tableName=PLAN_		\N	4.5.0	\N	\N	0616128139
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.591201	61	EXECUTED	8:67aab43dcc7c9549899476c5e6d3e40a	createTable tableName=PRODUCT		\N	4.5.0	\N	\N	0616128139
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.604076	62	EXECUTED	8:a97e2ca91d6f989fa0d8e610ab9cf7ec	createTable tableName=VISIBILY_TYPE		\N	4.5.0	\N	\N	0616128139
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.618759	63	EXECUTED	8:b53a4392ec6a19019b74a1f4c2dd0c02	addUniqueConstraint constraintName=UC_PRODUCT_OWNER_PRDNAME, tableName=PRODUCT		\N	4.5.0	\N	\N	0616128139
+5	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.641586	64	EXECUTED	8:3a55230c8bbaeab40e1e8be44274e54e	createIndex indexName=IDX_PLAN_PRODUCT_ID, tableName=PLAN_; addForeignKeyConstraint baseTableName=PLAN_, constraintName=FK_PLAN__ON_PRODUCT, referencedTableName=PRODUCT		\N	4.5.0	\N	\N	0616128139
+6	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.656344	65	EXECUTED	8:d4cd121c53f9ef1407daa22f893a6c74	createIndex indexName=IDX_PRODUCT, tableName=PRODUCT; addForeignKeyConstraint baseTableName=PRODUCT, constraintName=FK_PRODUCT_ON_VISIBILITY_TYPE, referencedTableName=VISIBILY_TYPE		\N	4.5.0	\N	\N	0616128139
+7	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.67409	66	EXECUTED	8:2557e2bce2db8af8cf4835e4e9e77444	createIndex indexName=IDX_PRODUCT_OWNER_ID, tableName=PRODUCT; addForeignKeyConstraint baseTableName=PRODUCT, constraintName=FK_PRODUCT_ON_OWNER, referencedTableName=USER_		\N	4.5.0	\N	\N	0616128139
+8	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.685363	67	EXECUTED	8:0015d25c7a536ff81ebd5b05bdf19da3	dropForeignKeyConstraint baseTableName=rest_api, constraintName=fk_rest_api_on_owner		\N	4.5.0	\N	\N	0616128139
+9	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.690567	68	EXECUTED	8:2a5a086ff23450b6a2c573fd59be4c64	dropForeignKeyConstraint baseTableName=rest_api, constraintName=fk_rest_api_on_security_method		\N	4.5.0	\N	\N	0616128139
+10	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.701232	69	EXECUTED	8:68fe86a846ad6277660a81083600399e	dropUniqueConstraint constraintName=uc_rest_api_owner_name, tableName=rest_api		\N	4.5.0	\N	\N	0616128139
+11	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-160-b74dc112.xml	2022-04-22 15:28:48.715274	70	EXECUTED	8:11c4b710d8105ad8699aad71d6dc36cd	dropTable tableName=rest_api		\N	4.5.0	\N	\N	0616128139
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-170-b74dc112.xml	2022-04-22 16:30:39.639824	71	EXECUTED	8:c07d6c487865c4f717bf1b3de27b428a	addColumn tableName=PRODUCT; addNotNullConstraint columnName=STATE, tableName=PRODUCT		\N	4.5.0	\N	\N	0619839218
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-180-b74dc112.xml	2022-04-22 16:44:07.851767	72	EXECUTED	8:8cea2ba7c8c2ed43177e57a10ca3e5dc	addNotNullConstraint columnName=VISIBILITY_TYPE_ID, tableName=PRODUCT		\N	4.5.0	\N	\N	0620647628
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-190-b74dc112.xml	2022-04-22 17:30:27.416369	73	EXECUTED	8:56fa0e670b47f8ea27282756f1be337f	createTable tableName=REST_API		\N	4.5.0	\N	\N	0623427115
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-190-b74dc112.xml	2022-04-22 17:30:27.432768	74	EXECUTED	8:40ce04643ad8aaee28c82ae657e6ab08	addUniqueConstraint constraintName=UC_REST_API_OWNER_APINAME, tableName=REST_API		\N	4.5.0	\N	\N	0623427115
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-190-b74dc112.xml	2022-04-22 17:30:27.450594	75	EXECUTED	8:d8e2e4aa9a9c6bcad2647dd3bcdb0098	createIndex indexName=IDX_RESTAPI, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_SECURITY_METHOD, referencedTableName=API_SECURITY_METHOD		\N	4.5.0	\N	\N	0623427115
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/22-190-b74dc112.xml	2022-04-22 17:30:27.467749	76	EXECUTED	8:e5af994dc35f8a1c34e02567398b8e63	createIndex indexName=IDX_RESTAPI_OWNER_ID, tableName=REST_API; addForeignKeyConstraint baseTableName=REST_API, constraintName=FK_REST_API_ON_OWNER, referencedTableName=USER_		\N	4.5.0	\N	\N	0623427115
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-200-039e7a93.xml	2022-04-27 10:28:09.257385	77	EXECUTED	8:acd2269ae7e71eb480cfe13260fa2a05	createTable tableName=PRODUCT_API_REGISTER		\N	4.5.0	\N	\N	1030088868
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-200-039e7a93.xml	2022-04-27 10:28:09.280381	78	EXECUTED	8:359d0ae859ecf46596d898735e67e1b5	addUniqueConstraint constraintName=UC_PRODUCTAPIREGIST_PRODUCTAPI, tableName=PRODUCT_API_REGISTER		\N	4.5.0	\N	\N	1030088868
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-200-039e7a93.xml	2022-04-27 10:28:09.302449	79	EXECUTED	8:f903bd5ff982019125b78135fe4ddbaa	createIndex indexName=IDX_PRODUCTAPIREGISTER, tableName=PRODUCT_API_REGISTER; addForeignKeyConstraint baseTableName=PRODUCT_API_REGISTER, constraintName=FK_PRODUCTAPIREGIST_ON_RESTAPI, referencedTableName=REST_API		\N	4.5.0	\N	\N	1030088868
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-200-039e7a93.xml	2022-04-27 10:28:09.313866	80	EXECUTED	8:28f7173df898c9a09d5f96cf42ed01e8	addForeignKeyConstraint baseTableName=PRODUCT_API_REGISTER, constraintName=FK_PRODUCTAPIREGIST_ON_PRODUCT, referencedTableName=PRODUCT		\N	4.5.0	\N	\N	1030088868
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-210-039e7a93.xml	2022-04-27 14:47:30.319294	81	EXECUTED	8:77d5dadf1e25ab7dd7ac0277f7dde52b	createTable tableName=CATALOG_		\N	4.5.0	\N	\N	1045649601
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-210-039e7a93.xml	2022-04-27 14:47:30.348381	82	EXECUTED	8:73b43efe780208601e75def804e82e97	createTable tableName=SITE		\N	4.5.0	\N	\N	1045649601
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-210-039e7a93.xml	2022-04-27 14:47:30.36499	83	EXECUTED	8:7f1b6b5415ca32029e43406486523b60	addUniqueConstraint constraintName=UC_SITE_OWNER_SITENAME, tableName=SITE		\N	4.5.0	\N	\N	1045649601
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/17-160-1aa274f6.xml	2022-05-17 13:51:13.910729	136	EXECUTED	8:694b182353859d45a82b4e434f6fd95a	addColumn tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	2770273507
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-210-039e7a93.xml	2022-04-27 14:47:30.393403	84	EXECUTED	8:3af3b6e7f9b3a0a59ccccb4029c973b9	createIndex indexName=IDX_SITE_GATEWAY_ID, tableName=SITE; addForeignKeyConstraint baseTableName=SITE, constraintName=FK_SITE_ON_GATEWAY, referencedTableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	1045649601
+5	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-210-039e7a93.xml	2022-04-27 14:47:30.415864	85	EXECUTED	8:5482e2b8b99f25fd2a82fe2c3113f7fe	createIndex indexName=IDX_SITE_OWNER_ID, tableName=SITE; addForeignKeyConstraint baseTableName=SITE, constraintName=FK_SITE_ON_OWNER, referencedTableName=USER_		\N	4.5.0	\N	\N	1045649601
+6	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-210-039e7a93.xml	2022-04-27 14:47:30.434639	86	EXECUTED	8:f91147a061598fdd8305ec898b2eee5a	createIndex indexName=IDX_SITE_PORTAL_ID, tableName=SITE; addForeignKeyConstraint baseTableName=SITE, constraintName=FK_SITE_ON_PORTAL, referencedTableName=PORTAL_SERVICE		\N	4.5.0	\N	\N	1045649601
+7	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-210-039e7a93.xml	2022-04-27 14:47:30.460631	87	EXECUTED	8:a9caa6626202c2e870cd8abc0dde5d5c	createIndex indexName=IDX_SITE_VIRTUAL_AREA_ID, tableName=SITE; addForeignKeyConstraint baseTableName=SITE, constraintName=FK_SITE_ON_VIRTUAL_AREA, referencedTableName=VIRTUAL_AREA		\N	4.5.0	\N	\N	1045649601
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-220-ab1df340.xml	2022-04-27 20:53:11.306688	88	EXECUTED	8:b104d39eff9d898c3bc9c26672eec265	addColumn tableName=CATALOG_; addNotNullConstraint columnName=DESCRIPTION, tableName=CATALOG_		\N	4.5.0	\N	\N	1067590782
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-220-ab1df340.xml	2022-04-27 20:53:11.328894	89	EXECUTED	8:fd0ba2ebe28dc1208123feb7e43d8478	addColumn tableName=CATALOG_; addNotNullConstraint columnName=SITE_ID, tableName=CATALOG_		\N	4.5.0	\N	\N	1067590782
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-220-ab1df340.xml	2022-04-27 20:53:11.339403	90	EXECUTED	8:60beb79d63f9cac69e565c5b797d6927	addColumn tableName=SITE		\N	4.5.0	\N	\N	1067590782
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-220-ab1df340.xml	2022-04-27 20:53:11.370315	91	EXECUTED	8:0786bb3ac0e8c8958c62b1fd20e6d653	createIndex indexName=IDX_CATALOG_SITE_ID, tableName=CATALOG_; addForeignKeyConstraint baseTableName=CATALOG_, constraintName=FK_CATALOG__ON_SITE, referencedTableName=SITE		\N	4.5.0	\N	\N	1067590782
+5	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/27-220-ab1df340.xml	2022-04-27 20:53:11.384397	92	EXECUTED	8:cf06fff05da9d4dc40c778ea8daf2f43	addNotNullConstraint columnName=TITLE, tableName=CATALOG_		\N	4.5.0	\N	\N	1067590782
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-230-039e7a93.xml	2022-04-28 14:20:40.62513	93	EXECUTED	8:c62fd682a718536759dc78a22f3d23c6	createTable tableName=API_REGISTER		\N	4.5.0	\N	\N	1130440299
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-230-039e7a93.xml	2022-04-28 14:20:40.642335	94	EXECUTED	8:8aa7f7af6fc3520880a138dc0235edc7	addUniqueConstraint constraintName=UC_API_REGISTER_API_PRODUCT, tableName=API_REGISTER		\N	4.5.0	\N	\N	1130440299
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-230-039e7a93.xml	2022-04-28 14:20:40.664255	95	EXECUTED	8:5862611ba74a7ad59f3751f549499568	createIndex indexName=IDX_APIREGISTER_API_ID, tableName=API_REGISTER; addForeignKeyConstraint baseTableName=API_REGISTER, constraintName=FK_API_REGISTER_ON_API, referencedTableName=REST_API		\N	4.5.0	\N	\N	1130440299
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-230-039e7a93.xml	2022-04-28 14:20:40.692694	96	EXECUTED	8:ca81fe8c22ac9683502e44dab98e9cbc	createIndex indexName=IDX_APIREGISTER_PRODUCT_ID, tableName=API_REGISTER; addForeignKeyConstraint baseTableName=API_REGISTER, constraintName=FK_API_REGISTER_ON_PRODUCT, referencedTableName=PRODUCT		\N	4.5.0	\N	\N	1130440299
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-240-039e7a93.xml	2022-04-28 16:43:32.179665	97	EXECUTED	8:992fc44708711e2cf12a326e318357e3	dropColumn columnName=REGISTER_DATETIME, tableName=API_REGISTER		\N	4.5.0	\N	\N	1139011577
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-240-039e7a93.xml	2022-04-28 16:43:32.207284	98	EXECUTED	8:a3c3b1216ee9c8da94b370f2bd9c1be7	addColumn tableName=API_REGISTER		\N	4.5.0	\N	\N	1139011577
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-240-039e7a93.xml	2022-04-28 16:43:32.217238	99	EXECUTED	8:f4d6aed01213b8cf906efc526d577041	dropColumn columnName=REGISTER_DATETIME, tableName=PRODUCT_API_REGISTER		\N	4.5.0	\N	\N	1139011577
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/28-240-039e7a93.xml	2022-04-28 16:43:32.224645	100	EXECUTED	8:07c7565fe36098907d7c9b67e34daa09	addColumn tableName=PRODUCT_API_REGISTER		\N	4.5.0	\N	\N	1139011577
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/29-250-3dae7048.xml	2022-04-29 10:10:56.486269	101	EXECUTED	8:39d7854806256abb380a41b3e15a6834	createTable tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	1201856037
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/29-250-3dae7048.xml	2022-04-29 10:10:56.542034	102	EXECUTED	8:e9795f3580b1fe977e583f1bf1fac036	createIndex indexName=IDX_PUBLISHEDPRODUCT, tableName=PUBLISHED_PRODUCT; addForeignKeyConstraint baseTableName=PUBLISHED_PRODUCT, constraintName=FK_PUBLISHEDPRODUCT_ON_PRODUCT, referencedTableName=PRODUCT		\N	4.5.0	\N	\N	1201856037
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/29-250-3dae7048.xml	2022-04-29 10:10:56.562664	103	EXECUTED	8:2d151cd06760a57ddb12256286a8da9a	createIndex indexName=IDX_PUBLISHEDPRODUCT_SITE_ID, tableName=PUBLISHED_PRODUCT; addForeignKeyConstraint baseTableName=PUBLISHED_PRODUCT, constraintName=FK_PUBLISHED_PRODUCT_ON_SITE, referencedTableName=SITE		\N	4.5.0	\N	\N	1201856037
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/04/29-260-3dae7048.xml	2022-04-29 11:21:12.214798	104	EXECUTED	8:38f0c5c180b5c3535beef129f7176649	addUniqueConstraint constraintName=UC_PUBLISHEDPRODUC_PRODUCTSITE, tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	1206071931
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/03-010-c6690a49.xml	2022-05-03 20:32:16.64931	105	EXECUTED	8:003d636d446850dc44ff027cccdb1ba2	createTable tableName=API_SUBCRIPTION		\N	4.5.0	\N	\N	1584736282
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/03-010-c6690a49.xml	2022-05-03 20:32:16.675845	106	EXECUTED	8:2a0d30123eddc45cf3556d9a07692277	createTable tableName=CONSUMER		\N	4.5.0	\N	\N	1584736282
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/03-010-c6690a49.xml	2022-05-03 20:32:16.688758	107	EXECUTED	8:63a4c8b6f16fe3455927041848393c16	addUniqueConstraint constraintName=UC_CONSUMER_PROVIDERCONSUMERNA, tableName=CONSUMER		\N	4.5.0	\N	\N	1584736282
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/03-010-c6690a49.xml	2022-05-03 20:32:16.713113	108	EXECUTED	8:6ca25a2c077220b5f2460802bcdf0ab9	createIndex indexName=IDX_APISUBCRIPTION, tableName=API_SUBCRIPTION; addForeignKeyConstraint baseTableName=API_SUBCRIPTION, constraintName=FK_APISUBCRIPT_ON_SUBCRIBEDAP, referencedTableName=REST_API		\N	4.5.0	\N	\N	1584736282
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/19-170-1aa274f6.xml	2022-05-19 16:22:44.138062	137	EXECUTED	8:4541a73f02229e418189789ea5c5247c	createTable tableName=GATEWAY_USAGE_PERMISSION		\N	4.5.0	\N	\N	2952163783
+5	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/03-010-c6690a49.xml	2022-05-03 20:32:16.731052	109	EXECUTED	8:c7afef5ff1b14679e5c1b83b2d46697f	createIndex indexName=IDX_CONSUMER, tableName=CONSUMER; addForeignKeyConstraint baseTableName=CONSUMER, constraintName=FK_CONSUMER_ON_SECURITY_METHOD, referencedTableName=API_SECURITY_METHOD		\N	4.5.0	\N	\N	1584736282
+6	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/03-010-c6690a49.xml	2022-05-03 20:32:16.747788	110	EXECUTED	8:10705e21d115931abc5f3a661a0105b1	createIndex indexName=IDX_CONSUMER_PROVIDER_ID, tableName=CONSUMER; addForeignKeyConstraint baseTableName=CONSUMER, constraintName=FK_CONSUMER_ON_PROVIDER, referencedTableName=USER_		\N	4.5.0	\N	\N	1584736282
+7	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/03-010-c6690a49.xml	2022-05-03 20:32:16.752807	111	EXECUTED	8:b469fb3ad0980f522b3b5cf28ec664e0	addForeignKeyConstraint baseTableName=API_SUBCRIPTION, constraintName=FK_API_SUBCRIPTION_ON_CONSUMER, referencedTableName=CONSUMER		\N	4.5.0	\N	\N	1584736282
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-020-3dae7048.xml	2022-05-05 10:37:56.730239	112	EXECUTED	8:dd33afce70d1b20db598429167b7c2ac	addColumn tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	1721876376
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-030-3dae7048.xml	2022-05-05 15:00:30.835667	113	EXECUTED	8:4877375e2bcd8b470a260ea901df7053	modifyDataType columnName=KONG_ROUTE_ID, tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	1737630510
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-030-3dae7048.xml	2022-05-05 15:00:30.851645	114	EXECUTED	8:24599e32f855dc6515bf288c4635a167	modifyDataType columnName=KONG_SERVICE_ID, tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	1737630510
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-040-3dae7048.xml	2022-05-05 17:34:46.852874	115	EXECUTED	8:186bd2258d8aa963060df5fb9dea4243	addColumn tableName=CONSUMER; addNotNullConstraint columnName=SITE_ID, tableName=CONSUMER		\N	4.5.0	\N	\N	1746886483
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-040-3dae7048.xml	2022-05-05 17:34:46.886772	116	EXECUTED	8:65bffcf1bcf2b173a60b1b453443b681	createIndex indexName=IDX_CONSUMER_SITE_ID, tableName=CONSUMER; addForeignKeyConstraint baseTableName=CONSUMER, constraintName=FK_CONSUMER_ON_SITE, referencedTableName=SITE		\N	4.5.0	\N	\N	1746886483
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-050-3dae7048.xml	2022-05-05 17:40:06.258301	117	EXECUTED	8:4c15b9ffd134d4d8c29396977636ef18	addColumn tableName=CONSUMER; addNotNullConstraint columnName=PROVIDER_SITE_CONSUMER_NAME, tableName=CONSUMER		\N	4.5.0	\N	\N	1747205877
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-050-3dae7048.xml	2022-05-05 17:40:06.274994	118	EXECUTED	8:5c8c738f3a0637b8f0f29d60e35dd85c	dropUniqueConstraint constraintName=uc_consumer_providerconsumerna, tableName=consumer		\N	4.5.0	\N	\N	1747205877
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-050-3dae7048.xml	2022-05-05 17:40:06.281463	119	EXECUTED	8:615be04ed492a7de148a15a8d1e4645f	dropColumn columnName=provider_consumer_name, tableName=consumer		\N	4.5.0	\N	\N	1747205877
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/05-060-c6690a49.xml	2022-05-05 21:17:44.37316	120	EXECUTED	8:107b95505bfaa8feb79015811b602730	addColumn tableName=CONSUMER; addNotNullConstraint columnName=KONG_CONSUMER_ID, tableName=CONSUMER		\N	4.5.0	\N	\N	1760263754
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/08-070-c6690a49.xml	2022-05-08 19:54:16.965501	121	EXECUTED	8:279daef07cbf8ff1e479042e8a9bf7b0	createTable tableName=PRODUCT_SUBSCRIPTION		\N	4.5.0	\N	\N	2014456287
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/08-070-c6690a49.xml	2022-05-08 19:54:16.98707	122	EXECUTED	8:e65cd1a489c3c8a6a38a639fd6c350f9	addUniqueConstraint constraintName=UC_PRODUCTSUBSCR_PRODUCTCONSUM, tableName=PRODUCT_SUBSCRIPTION		\N	4.5.0	\N	\N	2014456287
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/08-070-c6690a49.xml	2022-05-08 19:54:17.018941	123	EXECUTED	8:1ea54f5aee103c2eb2e819d5e5c0511f	createIndex indexName=IDX_PRODUCTSUBSCRIPTION, tableName=PRODUCT_SUBSCRIPTION; addForeignKeyConstraint baseTableName=PRODUCT_SUBSCRIPTION, constraintName=FK_PRODUCTSUBS_ON_PUBLISHEDPR, referencedTableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	2014456287
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/08-070-c6690a49.xml	2022-05-08 19:54:17.034382	124	EXECUTED	8:580aa29439106fff5a6acb24276a114c	addForeignKeyConstraint baseTableName=PRODUCT_SUBSCRIPTION, constraintName=FK_PRODUCTSUBSCRIP_ON_CONSUMER, referencedTableName=CONSUMER		\N	4.5.0	\N	\N	2014456287
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/09-080-3dae7048.xml	2022-05-09 09:42:07.921396	125	EXECUTED	8:301320024054abfd25f4c501af46c014	addColumn tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	2064127621
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/09-090-3dae7048.xml	2022-05-09 16:41:02.409333	126	EXECUTED	8:ad9eb146f07c34bdcd1eeedb86607903	addColumn tableName=CONSUMER		\N	4.5.0	\N	\N	2089261664
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/11-100-3dae7048.xml	2022-05-11 11:34:46.229976	127	EXECUTED	8:3883aef86262c34b4ca5a1fbb4ac5793	addColumn tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	2243685930
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/11-100-3dae7048.xml	2022-05-11 11:34:46.245384	128	EXECUTED	8:8325825867143421fde095b861705060	dropColumn columnName=kong_route_id, tableName=published_product; dropColumn columnName=kong_service_id, tableName=published_product		\N	4.5.0	\N	\N	2243685930
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/11-110-3dae7048.xml	2022-05-11 13:38:46.967802	129	EXECUTED	8:73b1e96fc525d700aea976428db1e4d5	modifyDataType columnName=KONG_OBJECT_IDS, tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	2251126679
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/13-120-3dae7048.xml	2022-05-13 11:13:50.43633	130	EXECUTED	8:2683ae113e508fff75f17cd8ddb102e6	addColumn tableName=PRODUCT_SUBSCRIPTION; addNotNullConstraint columnName=KONG_CONSUMER_GROUP_ID, tableName=PRODUCT_SUBSCRIPTION		\N	4.5.0	\N	\N	2415230108
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/13-120-3dae7048.xml	2022-05-13 11:13:50.461159	131	EXECUTED	8:af1a9a9661339646dbf9c5aadd8d84b8	addUniqueConstraint constraintName=UC_PRODUCTSUBSCR_KONGCONSUMERG, tableName=PRODUCT_SUBSCRIPTION		\N	4.5.0	\N	\N	2415230108
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/13-130-3dae7048.xml	2022-05-13 12:49:26.240203	132	EXECUTED	8:65d4c6c173e46856e79d6c6f735e16f1	addColumn tableName=SITE		\N	4.5.0	\N	\N	2420965668
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/13-140-c6690a49.xml	2022-05-13 20:37:20.934838	133	EXECUTED	8:c1ce0c0de446b91402d9db930a9d3e8c	addColumn tableName=PUBLISHED_PRODUCT; addNotNullConstraint columnName=STATE, tableName=PUBLISHED_PRODUCT		\N	4.5.0	\N	\N	2449040272
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/13-140-c6690a49.xml	2022-05-13 20:37:20.957596	134	EXECUTED	8:dfb193f5b6cdbaf7464f6635d4b771e6	dropColumn columnName=state, tableName=product		\N	4.5.0	\N	\N	2449040272
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/16-150-1aa274f6.xml	2022-05-16 14:45:07.893917	135	EXECUTED	8:c67fd76648497f2c36543e26d53a4651	addNotNullConstraint columnName=PRODUCTION_MODE, tableName=SITE		\N	4.5.0	\N	\N	2687107618
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/19-170-1aa274f6.xml	2022-05-19 16:22:44.161711	138	EXECUTED	8:ecd2bb963f2e5a957b617ac3472e3fb8	addForeignKeyConstraint baseTableName=GATEWAY_USAGE_PERMISSION, constraintName=FK_GATEWAYUSAGEPERM_ON_GATEWAY, referencedTableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	2952163783
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/19-170-1aa274f6.xml	2022-05-19 16:22:44.170471	139	EXECUTED	8:f098985b2c6a648755cc99a4a3f1e510	addForeignKeyConstraint baseTableName=GATEWAY_USAGE_PERMISSION, constraintName=FK_GATEWAYUSAGE_ON_APIPROVIDER, referencedTableName=USER_		\N	4.5.0	\N	\N	2952163783
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/19-180-1aa274f6.xml	2022-05-19 17:05:39.017235	140	EXECUTED	8:59c180c878b904033f5f6223219aad55	addColumn tableName=GATEWAY_USAGE_PERMISSION; addNotNullConstraint columnName=PROVIDER_GATEWAY_ID, tableName=GATEWAY_USAGE_PERMISSION		\N	4.5.0	\N	\N	2954738615
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/19-180-1aa274f6.xml	2022-05-19 17:05:39.037747	141	EXECUTED	8:c81ef055b7301045d5369286aa398c4a	addUniqueConstraint constraintName=UC_GATEWAYUSAGEP_PROVIDERGATEW, tableName=GATEWAY_USAGE_PERMISSION		\N	4.5.0	\N	\N	2954738615
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/20-190-1aa274f6.xml	2022-05-20 10:20:44.521973	142	EXECUTED	8:95147cd75f4f34eaed3920796f867690	createTable tableName=PORTAL_USAGE_PERMISSION		\N	4.5.0	\N	\N	3016844053
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/20-190-1aa274f6.xml	2022-05-20 10:20:44.544283	143	EXECUTED	8:3bf93b08b304aa5bd8ffee5de237f5a9	addUniqueConstraint constraintName=UC_PORTALUSAGEPE_PROVIDERPORTA, tableName=PORTAL_USAGE_PERMISSION		\N	4.5.0	\N	\N	3016844053
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/20-190-1aa274f6.xml	2022-05-20 10:20:44.556533	144	EXECUTED	8:9cf4a10467e455cc27a492f4f60c65e7	addForeignKeyConstraint baseTableName=PORTAL_USAGE_PERMISSION, constraintName=FK_PORTALUSAGEPERMIS_ON_PORTAL, referencedTableName=PORTAL_SERVICE		\N	4.5.0	\N	\N	3016844053
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/20-190-1aa274f6.xml	2022-05-20 10:20:44.565373	145	EXECUTED	8:2231c966421e977177c3c1750d892135	addForeignKeyConstraint baseTableName=PORTAL_USAGE_PERMISSION, constraintName=FK_PORTALUSAGEP_ON_APIPROVIDER, referencedTableName=USER_		\N	4.5.0	\N	\N	3016844053
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/26-200-1aa274f6.xml	2022-05-26 09:19:55.802712	146	EXECUTED	8:ba3a6ab44c6bb7c871ccbcdeaab8a204	createTable tableName=SITE_GATEWAY		\N	4.5.0	\N	\N	3531595389
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/26-200-1aa274f6.xml	2022-05-26 09:19:55.827377	147	EXECUTED	8:f63bf0d62ba5c5819a9f732f00a728ed	addUniqueConstraint constraintName=UC_SITE_GATEWAY_SITE_GATEWAY, tableName=SITE_GATEWAY		\N	4.5.0	\N	\N	3531595389
+3	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/26-200-1aa274f6.xml	2022-05-26 09:19:55.840495	148	EXECUTED	8:991d504a204c9a5c8a8553f3e489654f	addForeignKeyConstraint baseTableName=SITE_GATEWAY, constraintName=FK_SITE_GATEWAY_ON_GATEWAY, referencedTableName=GATEWAY_SERVICE		\N	4.5.0	\N	\N	3531595389
+4	ApiManager	com/company/apimanager/liquibase/changelog/2022/05/26-200-1aa274f6.xml	2022-05-26 09:19:55.85258	149	EXECUTED	8:a3dcf337a4ca5adfddfe57ca88f22469	addForeignKeyConstraint baseTableName=SITE_GATEWAY, constraintName=FK_SITE_GATEWAY_ON_SITE, referencedTableName=SITE		\N	4.5.0	\N	\N	3531595389
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/06/08-010-fe988036.xml	2022-06-08 09:46:36.785205	150	EXECUTED	8:000f905d1df365361ab46812b2d1d546	addColumn tableName=USER_		\N	4.5.0	\N	\N	4656396524
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/06/13-020-641bb989.xml	2022-06-13 14:05:38.314968	151	EXECUTED	8:4c9fc426d3aa14d7744f1694f6b88ed0	addColumn tableName=REST_API; addNotNullConstraint columnName=PATH_IN_GW, tableName=REST_API		\N	4.5.0	\N	\N	5103938115
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/06/13-030-641bb989.xml	2022-06-13 14:13:09.809866	152	EXECUTED	8:9fa3d7e351a45566be8ac49550960a58	dropTable tableName=product_state		\N	4.5.0	\N	\N	5104389625
+1	ApiManager	com/company/apimanager/liquibase/changelog/2022/06/15-040-641bb989.xml	2022-06-15 14:25:04.412701	153	EXECUTED	8:eb37b6a1a08e60effab69ef091141855	dropForeignKeyConstraint baseTableName=catalog_, constraintName=fk_catalog__on_site		\N	4.5.0	\N	\N	5277904233
+2	ApiManager	com/company/apimanager/liquibase/changelog/2022/06/15-040-641bb989.xml	2022-06-15 14:25:04.428759	154	EXECUTED	8:3984fcb47a54d75aef33c87029059977	dropTable tableName=catalog_		\N	4.5.0	\N	\N	5277904233
+\.
+
+
+--
+-- TOC entry 3610 (class 0 OID 21144)
+-- Dependencies: 215
+-- Data for Name: databasechangeloglock; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.databasechangeloglock (id, locked, lockgranted, lockedby) FROM stdin;
+1	f	\N	\N
+\.
+
+
+--
+-- TOC entry 3611 (class 0 OID 21147)
+-- Dependencies: 216
+-- Data for Name: draft_plan; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.draft_plan (id, name, ratelimit, draft_product_id) FROM stdin;
+ae6c5f73-2eb9-21a3-c0b1-cea27d2145b8	Plan2	30	12c8f7d5-5952-e2ac-a64c-d45b8e8694e3
+4bcd821a-b4da-59d5-93eb-f16f30d34a37	Plan2	10	12c8f7d5-5952-e2ac-a64c-d45b8e8694e3
+\.
+
+
+--
+-- TOC entry 3612 (class 0 OID 21150)
+-- Dependencies: 217
+-- Data for Name: draft_product; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.draft_product (id, name, title) FROM stdin;
+12c8f7d5-5952-e2ac-a64c-d45b8e8694e3	Product1	First Product
+\.
+
+
+--
+-- TOC entry 3613 (class 0 OID 21153)
+-- Dependencies: 218
+-- Data for Name: gateway_service; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.gateway_service (id, name, management_endpoint, invocation_endpoint, title, virtual_area_id, gateway_type_id, analytics_associated_id) FROM stdin;
+1da33840-8c2d-8a99-7609-99c55ebdb71c	GW3	/	\N	\N	5a4bed22-296d-4201-b1a7-8e26d479111d	eb5ff898-a631-9198-1251-b75a464cff04	6adad7a6-d438-4979-0496-2906930bf59b
+5a34119b-ea7a-9623-db83-1ac05e423115	GW2	/	\N	\N	9d924865-db8d-9c07-df43-10c3a65ba5b8	eb5ff898-a631-9198-1251-b75a464cff04	748494eb-d869-e73e-afac-fb2b0b5837ce
+ac9344d6-50a7-f6ce-0de4-a7f720990a74	Gateway1	http://localhost:8001	http://localhost:8000	gateway in HN: One	9d924865-db8d-9c07-df43-10c3a65ba5b8	eb5ff898-a631-9198-1251-b75a464cff04	748494eb-d869-e73e-afac-fb2b0b5837ce
+\.
+
+
+--
+-- TOC entry 3614 (class 0 OID 21158)
+-- Dependencies: 219
+-- Data for Name: gateway_type; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.gateway_type (id, name, title) FROM stdin;
+eb5ff898-a631-9198-1251-b75a464cff04	Kong	Kong API Gateway
+\.
+
+
+--
+-- TOC entry 3615 (class 0 OID 21161)
+-- Dependencies: 220
+-- Data for Name: gateway_usage_permission; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.gateway_usage_permission (id, name, api_provider_id, gateway_id, provider_gateway_id) FROM stdin;
+130373a5-78af-b2a2-22ee-6a310daf0914	GW3	360b0248-8451-11c5-331b-49eb46906431	1da33840-8c2d-8a99-7609-99c55ebdb71c	360b0248-8451-11c5-331b-49eb46906431_1da33840-8c2d-8a99-7609-99c55ebdb71c
+c1730f89-534f-2cb2-89e3-2c3935d0771f	Gateway1	d77976e9-650d-86e5-8f92-253572aa26a9	ac9344d6-50a7-f6ce-0de4-a7f720990a74	d77976e9-650d-86e5-8f92-253572aa26a9_ac9344d6-50a7-f6ce-0de4-a7f720990a74
+7c25ac90-289d-433f-179d-ca21b058c2b6	GW2	d77976e9-650d-86e5-8f92-253572aa26a9	5a34119b-ea7a-9623-db83-1ac05e423115	d77976e9-650d-86e5-8f92-253572aa26a9_5a34119b-ea7a-9623-db83-1ac05e423115
+98dedc63-774b-7d0a-1539-00cd1d5d20f7	GW3	d77976e9-650d-86e5-8f92-253572aa26a9	1da33840-8c2d-8a99-7609-99c55ebdb71c	d77976e9-650d-86e5-8f92-253572aa26a9_1da33840-8c2d-8a99-7609-99c55ebdb71c
+\.
+
+
+--
+-- TOC entry 3616 (class 0 OID 21166)
+-- Dependencies: 221
+-- Data for Name: persistent_logins; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.persistent_logins (series, username, token, last_used) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3617 (class 0 OID 21169)
+-- Dependencies: 222
+-- Data for Name: plan_; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.plan_ (id, name, persecond, perminute, perhour, product_id) FROM stdin;
+2c459015-ee88-9043-e5c0-8b2d313b162d	Gold	10	100	200	eb214f08-dda2-f4ad-7408-0aef117490a8
+\.
+
+
+--
+-- TOC entry 3618 (class 0 OID 21172)
+-- Dependencies: 223
+-- Data for Name: portal_service; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.portal_service (id, name, title, management_endpoint, virtual_area_id) FROM stdin;
+c7d5b859-7039-bbbd-dcd0-df5b11761a0b	Portal1	\N	/	9d924865-db8d-9c07-df43-10c3a65ba5b8
+3acd6e06-b61c-e0a8-dd7c-dd1d9ca398e7	Portal	\N	//	9d924865-db8d-9c07-df43-10c3a65ba5b8
+7965310d-cb46-9c50-b2d6-9c29d2e2bb29	Portal2	\N	///	9d924865-db8d-9c07-df43-10c3a65ba5b8
+4612c8d6-ba42-046d-78e5-568a5844cc97	Portal1 HCM	HCM Portal 1	/	5a4bed22-296d-4201-b1a7-8e26d479111d
+\.
+
+
+--
+-- TOC entry 3619 (class 0 OID 21177)
+-- Dependencies: 224
+-- Data for Name: portal_usage_permission; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.portal_usage_permission (id, name, provider_portal_id, api_provider_id, portal_id) FROM stdin;
+cf2c423f-cdd7-4286-32eb-af545c325190	Portal1 HCM	d77976e9-650d-86e5-8f92-253572aa26a9_4612c8d6-ba42-046d-78e5-568a5844cc97	d77976e9-650d-86e5-8f92-253572aa26a9	4612c8d6-ba42-046d-78e5-568a5844cc97
+d60bc2ff-5f62-a740-a154-370036366db5	Portal1	d77976e9-650d-86e5-8f92-253572aa26a9_c7d5b859-7039-bbbd-dcd0-df5b11761a0b	d77976e9-650d-86e5-8f92-253572aa26a9	c7d5b859-7039-bbbd-dcd0-df5b11761a0b
+\.
+
+
+--
+-- TOC entry 3620 (class 0 OID 21182)
+-- Dependencies: 225
+-- Data for Name: product; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.product (id, name, title, visibility_type_id, owner_id, owner_prdname) FROM stdin;
+eb214f08-dda2-f4ad-7408-0aef117490a8	Product1	First	eca9f38b-d354-999a-fc50-a52acead4cf1	d77976e9-650d-86e5-8f92-253572aa26a9	bidv_Product1
+995aa311-4eff-fb19-a451-9616c3cd23de	HDBank1	Product 1 in HDBank	eca9f38b-d354-999a-fc50-a52acead4cf1	360b0248-8451-11c5-331b-49eb46906431	hdbank_HDBank1
+e9301b31-c806-810e-743f-b6fd477a4b4b	Product2	Product Two	eca9f38b-d354-999a-fc50-a52acead4cf1	d77976e9-650d-86e5-8f92-253572aa26a9	bidv_Product2
+d13620e0-f0f5-39f6-e39e-fb5e1a7cc14f	Product1	Product 1	eca9f38b-d354-999a-fc50-a52acead4cf1	385e698c-d84e-7fdb-9bf8-1223fdb95aab	ncb_Product1
+51f86602-eb1e-5e1f-943b-9f5453a0b032	VCB123	VCB	ac7aede4-fb73-fe5e-4a78-79aad6898030	7ed6d4af-93e5-07dc-f084-204f7b581bb0	pilotvcb_VCB123
+\.
+
+
+--
+-- TOC entry 3621 (class 0 OID 21187)
+-- Dependencies: 226
+-- Data for Name: product_api_register; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.product_api_register (id, product_id, rest_api_id, product_api, register_datetime) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3622 (class 0 OID 21193)
+-- Dependencies: 227
+-- Data for Name: product_subscription; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.product_subscription (id, product_consumer_id, consumer_id, published_product_id, subcription_date, kong_consumer_group_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3623 (class 0 OID 21198)
+-- Dependencies: 228
+-- Data for Name: published_product; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.published_product (id, product_id, site_id, published_date, product_site_id, name, kong_object_ids, state, kong_object_json) FROM stdin;
+6554ae2a-82e2-6692-7e18-11d9752d5666	eb214f08-dda2-f4ad-7408-0aef117490a8	8d44c1aa-a6da-f7fe-d5fb-e4931449390b	2022-05-26	eb214f08-dda2-f4ad-7408-0aef117490a8_8d44c1aa-a6da-f7fe-d5fb-e4931449390b	Product1	fc3d1253-ed6f-408e-976b-976c60f16768;de2d988a-20d4-4bcd-98cf-fe667c66d15d;72519dd3-9302-44e1-990e-722ea02e211c 5ede747c-55c1-436d-a476-44689085aa90;76f402ac-03b8-471c-9b89-bc60066bed13;e3adaf3b-41bb-4275-886b-73584f3d83b8 224c2dc4-06c1-4601-a4a8-aca04e5449cb;4b3ac1c0-aa53-4404-a689-4fb1da637a1f;df3ab734-919f-4ce6-beac-5049dcb9556d	PUBLISHED	\N
+eb718251-234f-4439-ddf2-76444e92a1ee	d13620e0-f0f5-39f6-e39e-fb5e1a7cc14f	56806724-14fb-9cfa-3b6a-8e740b34bc5b	2022-06-09	d13620e0-f0f5-39f6-e39e-fb5e1a7cc14f_56806724-14fb-9cfa-3b6a-8e740b34bc5b	Product1	\N	STAGED	\N
+ff24a075-cfe2-2d99-6b09-537831d94ab3	51f86602-eb1e-5e1f-943b-9f5453a0b032	051c5504-a197-b9e7-bdd1-299c9604e478	2022-06-14	51f86602-eb1e-5e1f-943b-9f5453a0b032_051c5504-a197-b9e7-bdd1-299c9604e478	VCB123	\N	STAGED	\N
+\.
+
+
+--
+-- TOC entry 3624 (class 0 OID 21203)
+-- Dependencies: 229
+-- Data for Name: rest_api; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.rest_api (id, name, title, base_path, target_endpoint, security_method_id, owner_id, owner_apiname, path_in_gw) FROM stdin;
+683bf36f-0937-e726-979a-2ee0d0162568	Weather	Weather API	/weather	http://weather.com	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	d77976e9-650d-86e5-8f92-253572aa26a9	bidv_Weather	bidv//weather
+ae5a0bce-7187-90f6-ab13-cc19090bf966	Checkbalance	Check balance	/checkbalance	http://mockbin.org/request1234	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	d77976e9-650d-86e5-8f92-253572aa26a9	bidv_Checkbalance	bidv//checkbalance
+a7e99031-b205-7c9b-5424-b4ea611171c4	Customer	Customer API	/customer	https://6266a25963e0f3825684e240.mockapi.io/customers	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	d77976e9-650d-86e5-8f92-253572aa26a9	bidv_Customer	bidv//customer
+5214e20f-2a00-41e5-994d-feecadd92dda	Transfer	Tranfer money	/transfer	http://localhost	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	360b0248-8451-11c5-331b-49eb46906431	hdbank_Transfer	hdbank//transfer
+fd942c53-5c6e-dc5d-4dd3-e2d9a0215cab	API1	API 1	/api1	http://localhost/api1	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	385e698c-d84e-7fdb-9bf8-1223fdb95aab	ncb_API1	ncb//api1
+c8dc18d0-78da-7c4c-b82e-b01f6b3110c7	Api02	\N	/api02	http://localhost:83	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	7ed6d4af-93e5-07dc-f084-204f7b581bb0	pilotvcb_Api02	pilotvcb//api02
+5a495e4b-94c5-e898-454d-1eccf2845756	atm	ATM location	/bankinfo	http://localhost/atm	77d5601e-78d0-4ba4-2020-f8ad4197d8f1	d77976e9-650d-86e5-8f92-253572aa26a9	bidv_atm	bidv//bankinfo
+\.
+
+
+--
+-- TOC entry 3625 (class 0 OID 21208)
+-- Dependencies: 230
+-- Data for Name: sec_resource_policy; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.sec_resource_policy (id, version, create_ts, created_by, update_ts, updated_by, delete_ts, deleted_by, type_, policy_group, resource_, action_, effect, role_id) FROM stdin;
+5612e8ca-8eba-8719-8d0a-c7f90472068c	2	2022-04-17 22:25:29.347	admin	2022-04-17 22:25:29.347	\N	2022-04-17 22:29:20.241	admin	entity	ApiSecurityMethod	ApiSecurityMethod	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+1367d296-2b17-0336-50e9-7499d459b55e	2	2022-04-17 22:26:52.489	admin	2022-04-17 22:26:52.489	\N	2022-04-17 22:29:20.255	admin	entityAttribute	ApiSecurityMethod	ApiSecurityMethod.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+b295cd60-d458-3d30-c1a1-d7f5960866ac	1	2022-04-17 22:29:20.267	admin	2022-04-17 22:29:20.267	\N	\N	\N	screen	ApiSecurityMethod	ApiSecurityMethod.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+165219b0-408a-5f65-cd36-e520927b808c	1	2022-04-17 22:29:20.267	admin	2022-04-17 22:29:20.267	\N	\N	\N	entity	ApiSecurityMethod	ApiSecurityMethod	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+6611f41e-c99d-a591-1903-0e8f23f11c08	1	2022-04-17 22:29:20.267	admin	2022-04-17 22:29:20.267	\N	\N	\N	entityAttribute	ApiSecurityMethod	ApiSecurityMethod.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+3ec054fd-15e4-42aa-a4c2-44b834b48af7	1	2022-04-17 22:31:00.197	admin	2022-04-17 22:31:00.197	\N	\N	\N	entity	ApiSecurityMethod	ApiSecurityMethod	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+0a047bc0-25b6-964e-49e3-0a9d59cf1a82	1	2022-04-17 22:31:00.197	admin	2022-04-17 22:31:00.197	\N	\N	\N	entity	ApiSecurityMethod	ApiSecurityMethod	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+74a4ca7a-4525-74b8-f002-b421be0a6f04	1	2022-04-17 22:31:00.197	admin	2022-04-17 22:31:00.197	\N	\N	\N	entity	ApiSecurityMethod	ApiSecurityMethod	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5eca08a2-3deb-bb90-21e3-4a1ceae3f907	1	2022-04-17 22:31:00.197	admin	2022-04-17 22:31:00.197	\N	\N	\N	entityAttribute	ApiSecurityMethod	ApiSecurityMethod.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+ec218942-8f14-262d-86cf-c8fc2448bf65	1	2022-04-17 22:32:22.549	admin	2022-04-17 22:32:22.549	\N	\N	\N	screen	ApiSecurityMethod	ApiSecurityMethod.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+46e530c6-e7c4-c81d-1e3e-497da00c71d5	1	2022-04-18 16:26:52.567	admin	2022-04-18 16:26:52.567	\N	\N	\N	menu	VirtualArea	VirtualArea.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+7553c31a-90b9-7df7-6af8-4e4b9832d850	1	2022-04-18 16:26:52.566	admin	2022-04-18 16:26:52.566	\N	\N	\N	screen	VirtualArea	VirtualArea.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+dcbcb504-ea1c-a1bc-b730-478a42eddd64	1	2022-04-18 16:26:52.567	admin	2022-04-18 16:26:52.567	\N	\N	\N	screen	VirtualArea	VirtualArea.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+daff81b0-963f-3dd9-8377-f75c6a28794d	1	2022-04-18 16:26:52.567	admin	2022-04-18 16:26:52.567	\N	\N	\N	entityAttribute	VirtualArea	VirtualArea.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+c4a175a7-1797-a0e4-67d3-d125c82ca50e	1	2022-04-18 16:26:52.567	admin	2022-04-18 16:26:52.567	\N	\N	\N	entity	VirtualArea	VirtualArea	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+ce37cbdc-2f53-4d7a-680f-d1205c6ee1df	1	2022-04-18 16:26:52.567	admin	2022-04-18 16:26:52.567	\N	\N	\N	entity	VirtualArea	VirtualArea	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+7130031b-b2ad-5a44-c81d-d7ac4f5bb711	1	2022-04-18 16:26:52.567	admin	2022-04-18 16:26:52.567	\N	\N	\N	entity	VirtualArea	VirtualArea	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+b1dc92c1-a248-1736-2397-71950b7a058e	1	2022-04-18 16:26:52.566	admin	2022-04-18 16:26:52.566	\N	\N	\N	entity	VirtualArea	VirtualArea	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+862f4a89-b323-9540-36d9-16c0e7d55cd3	1	2022-04-18 17:17:01.173	admin	2022-04-18 17:17:01.173	\N	\N	\N	entityAttribute	User	User.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+0e018785-b02b-1f04-fae3-84f81d67e79b	1	2022-04-18 17:17:01.173	admin	2022-04-18 17:17:01.173	\N	\N	\N	entity	User	User	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+0dd83013-cb4b-0a3e-c9c1-c9834e38aa72	1	2022-04-18 17:17:01.173	admin	2022-04-18 17:17:01.173	\N	\N	\N	screen	User	User.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+8c0442e3-eac9-0d1e-acf8-d5614b5b48a0	1	2022-04-18 17:17:01.173	admin	2022-04-18 17:17:01.173	\N	\N	\N	entity	User	User	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+197a13a7-bd16-3381-a1b5-d7f3a7c12a2b	1	2022-04-18 17:17:01.173	admin	2022-04-18 17:17:01.173	\N	\N	\N	entity	User	User	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+d52c505a-a4ca-c1f6-9499-c7334c7b22e3	1	2022-04-18 17:17:01.173	admin	2022-04-18 17:17:01.173	\N	\N	\N	entity	User	User	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+b0ffc353-1d49-0d16-af87-5584f43d29c0	1	2022-04-18 17:17:41.341	admin	2022-04-18 17:17:41.341	\N	\N	\N	menu	User	Provider.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+d9067d23-8975-7457-9f7a-63a189e3f26c	1	2022-04-18 17:17:41.341	admin	2022-04-18 17:17:41.341	\N	\N	\N	screen	User	Provider.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+4ec0245d-fed7-8937-06f9-64aa34e5e205	1	2022-04-18 17:21:46.96	admin	2022-04-18 17:21:46.96	\N	\N	\N	screen	User	User.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+276c04ad-4aaa-22fe-66cb-345d92b094e3	1	2022-04-18 17:23:39.111	admin	2022-04-18 17:23:39.111	\N	\N	\N	entity	sec_RoleAssignmentEntity	sec_RoleAssignmentEntity	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+ecae48a6-64b3-150d-9d20-cced09aa6926	1	2022-04-18 17:23:39.111	admin	2022-04-18 17:23:39.111	\N	\N	\N	entity	sec_RoleAssignmentEntity	sec_RoleAssignmentEntity	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+6995650a-343e-1532-97d7-b84edfdf0822	1	2022-04-18 17:23:39.111	admin	2022-04-18 17:23:39.111	\N	\N	\N	entityAttribute	sec_RoleAssignmentEntity	sec_RoleAssignmentEntity.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+0ed9e041-0b1b-038c-2b62-3d01a1d2fe73	1	2022-04-18 17:23:39.111	admin	2022-04-18 17:23:39.111	\N	\N	\N	entity	sec_RoleAssignmentEntity	sec_RoleAssignmentEntity	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+adcea7ba-5feb-db2a-915b-842e71c15045	1	2022-04-18 17:23:39.111	admin	2022-04-18 17:23:39.111	\N	\N	\N	entity	sec_RoleAssignmentEntity	sec_RoleAssignmentEntity	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+2c4cba1d-8c58-78b8-8c82-8763d13b9d9d	1	2022-04-21 17:12:33.386	admin	2022-04-21 17:12:33.386	\N	\N	\N	entity	GatewayService	GatewayService	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+f6950601-89b0-bd23-5ba3-fc9d167b68a2	1	2022-04-21 17:12:33.386	admin	2022-04-21 17:12:33.386	\N	\N	\N	entityAttribute	GatewayService	GatewayService.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+c2674d93-f52f-c586-688b-7461e18917c3	1	2022-04-21 17:12:33.387	admin	2022-04-21 17:12:33.387	\N	\N	\N	entity	GatewayService	GatewayService	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+fdec63f9-49f8-0a72-a9e6-7825e65fff89	1	2022-04-21 17:12:33.386	admin	2022-04-21 17:12:33.386	\N	\N	\N	entity	GatewayService	GatewayService	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+33f7a17f-e276-dbbb-7b25-2caecd7f02e0	1	2022-04-21 17:12:33.386	admin	2022-04-21 17:12:33.386	\N	\N	\N	screen	GatewayService	GatewayService.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+4f991af4-d6b4-65b4-25fb-ce8446747ba8	1	2022-04-21 17:12:33.386	admin	2022-04-21 17:12:33.386	\N	\N	\N	screen	GatewayService	GatewayService.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+8c442602-768e-a68b-32f7-0f2d58e49551	1	2022-04-21 17:12:33.386	admin	2022-04-21 17:12:33.386	\N	\N	\N	entity	GatewayService	GatewayService	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+a79a0ce3-a06d-7425-1020-4da0b81911be	1	2022-04-21 17:14:13.791	admin	2022-04-21 17:14:13.791	\N	\N	\N	screen	GatewayType	GatewayType.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+9f1a0aa1-f399-9a92-97d5-dfd5588a76a7	1	2022-04-21 17:14:13.792	admin	2022-04-21 17:14:13.792	\N	\N	\N	entity	GatewayType	GatewayType	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+595d135c-103c-1c34-70c0-8b5fe9bf894c	1	2022-04-21 17:14:13.792	admin	2022-04-21 17:14:13.792	\N	\N	\N	screen	GatewayType	GatewayType.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+c1b3648b-3442-1b47-a87a-54de45119673	1	2022-04-21 17:14:13.792	admin	2022-04-21 17:14:13.792	\N	\N	\N	entity	GatewayType	GatewayType	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+c5b77174-ef5d-66c5-3355-94330bc44f0d	1	2022-04-21 17:14:13.792	admin	2022-04-21 17:14:13.792	\N	\N	\N	entity	GatewayType	GatewayType	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+b1d26e00-4e6b-d4f2-6c43-98aacff11399	1	2022-04-21 17:14:13.791	admin	2022-04-21 17:14:13.791	\N	\N	\N	entityAttribute	GatewayType	GatewayType.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+cb91ca11-5fa0-e25c-67cc-c99cfaadfb25	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.216	admin	entity	RestApi	RestApi	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+f8a35de8-e4c8-2cf4-2da7-7150e3c1f5c4	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.22	admin	screen	RestApi	RestApi.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+ae549b64-89a9-242c-7a1c-1c6c1408fb06	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.225	admin	entity	RestApi	RestApi	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+7bd2a01d-8685-e1fb-76ed-8d351bc8c73f	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.23	admin	entity	RestApi	RestApi	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5dfe1dc3-ce53-0f63-5a2a-2971196bccd3	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.235	admin	screen	RestApi	RestApi.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+6f5ce247-ba77-a80f-eb70-44996a44ace1	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.24	admin	entity	RestApi	RestApi	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+f9dac367-e8d9-9221-65f8-fb98071bd784	1	2022-04-21 17:14:13.792	admin	2022-04-21 17:14:13.792	\N	\N	\N	entity	GatewayType	GatewayType	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+f02c3f67-2973-8935-b180-9f3de3a22e08	1	2022-04-21 17:18:27.481	admin	2022-04-21 17:18:27.481	\N	\N	\N	entity	PortalService	PortalService	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+55947041-45b6-3936-be9a-ce165d23730c	1	2022-04-21 17:18:27.482	admin	2022-04-21 17:18:27.482	\N	\N	\N	entityAttribute	PortalService	PortalService.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+2779a800-c59a-c57e-9543-e79b9e1049cc	1	2022-04-21 17:18:27.481	admin	2022-04-21 17:18:27.481	\N	\N	\N	screen	PortalService	PortalService.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+d94bd38d-e8e1-c96b-20c0-52cc39990d71	1	2022-04-21 17:18:27.482	admin	2022-04-21 17:18:27.482	\N	\N	\N	entity	PortalService	PortalService	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+ef76bf36-2e33-17c8-3d2d-f2da0f25512d	1	2022-04-21 17:18:27.481	admin	2022-04-21 17:18:27.481	\N	\N	\N	screen	PortalService	PortalService.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+b1b36325-60c1-97e3-f3bd-499d820f2bfa	1	2022-04-21 17:18:27.482	admin	2022-04-21 17:18:27.482	\N	\N	\N	entity	PortalService	PortalService	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+4fc8771b-b373-7cbc-0d53-84855b8b28f8	1	2022-04-21 17:18:27.482	admin	2022-04-21 17:18:27.482	\N	\N	\N	entity	PortalService	PortalService	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+1d7a399b-6f17-dcbc-84a6-46af9f92ce69	1	2022-04-21 17:19:03.746	admin	2022-04-21 17:19:03.746	\N	\N	\N	entityAttribute	AnalyticsService	AnalyticsService.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+10f2ef69-9a91-69c7-ed06-aa9ff481afcb	1	2022-04-21 17:19:03.746	admin	2022-04-21 17:19:03.746	\N	\N	\N	screen	AnalyticsService	AnalyticsService.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+162e70a2-b8ed-5dff-5a95-da88e2e69637	1	2022-04-21 17:19:03.746	admin	2022-04-21 17:19:03.746	\N	\N	\N	entity	AnalyticsService	AnalyticsService	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+7b3f3352-00c5-787d-e9b8-cd92ae772e35	1	2022-04-21 17:19:03.746	admin	2022-04-21 17:19:03.746	\N	\N	\N	entity	AnalyticsService	AnalyticsService	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+746a615c-f620-28b5-8356-1df88f6bc78a	1	2022-04-21 17:19:03.746	admin	2022-04-21 17:19:03.746	\N	\N	\N	entity	AnalyticsService	AnalyticsService	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+bcd4695f-22f3-ee08-17ab-20127fca1a70	1	2022-04-21 17:19:03.746	admin	2022-04-21 17:19:03.746	\N	\N	\N	screen	AnalyticsService	AnalyticsService.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+7ebd4ec4-d16f-606b-cda1-406a822c3fa7	1	2022-04-21 17:19:03.746	admin	2022-04-21 17:19:03.746	\N	\N	\N	entity	AnalyticsService	AnalyticsService	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+5e2674a3-b31d-d0e1-559a-afe0993f3db2	1	2022-04-22 09:22:50.583	admin	2022-04-22 09:22:50.583	\N	\N	\N	screen	\N	GatewayAnalyticsAssociation	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+e96a43f1-3f62-7850-8e68-8a983ce18746	1	2022-04-22 09:22:50.583	admin	2022-04-22 09:22:50.583	\N	\N	\N	menu	\N	GatewayAnalyticsAssociation	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+d92998e9-c8d1-7e6c-336d-d4bcb2e1dc43	1	2022-04-22 15:38:17.672	admin	2022-04-22 15:38:17.672	\N	\N	\N	screen	ProductState	ProductState.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+6089dcca-8e1d-ef90-7e4e-46bd5c62f4ad	1	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	\N	\N	menu	ProductState	ProductState.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+2c0c53e4-76cd-67fe-ddb9-07ac1d6896a6	2	2022-04-22 15:38:17.672	admin	2022-04-22 15:38:17.672	\N	2022-04-22 15:43:31.126	admin	entity	Product	Product	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+a7a100a5-072d-7bd2-8f57-19e8a542d496	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.142	admin	entity	Plan_	Plan_	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+e241b50f-2c66-4c11-f3c4-ac5a49201657	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.15	admin	entity	Plan_	Plan_	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+175cafb7-57a3-3a9e-8bfc-9914997d2353	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.156	admin	entity	Plan_	Plan_	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+3cda28d8-eb8d-1c6e-c75d-ed2a383c9c8b	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.162	admin	entityAttribute	Plan_	Plan_.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+9ae1388a-965c-f738-67d4-d30fbcb6c4d3	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.168	admin	entity	Product	Product	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+a462956c-8055-b76a-82dc-850d383e657c	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.173	admin	entity	Plan_	Plan_	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+174ee107-2b47-54e1-0273-98a3f1865f3b	2	2022-04-22 15:40:48.521	admin	2022-04-22 15:40:48.521	\N	2022-04-22 15:43:31.178	admin	screen	Plan_	Plan_.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+246ba54b-c75e-3dc0-b839-ce5d3d8edac7	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.183	admin	entity	Product	Product	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+e0a5be42-9e53-1e6c-bd46-dbddc75d71f9	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.188	admin	entityAttribute	Product	Product.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+f0235289-3b6d-895a-4d67-4676af917c85	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.194	admin	entity	Product	Product	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+ab79200c-74da-ae9a-fc68-0b552a01a3c3	2	2022-04-22 15:38:17.673	admin	2022-04-22 15:38:17.673	\N	2022-04-22 15:43:31.199	admin	screen	Product	Product.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+d40e5c81-0081-cf0c-70e7-cccf291a6042	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.204	admin	menu	RestApi	RestApi.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+ebf106ea-c9b9-7342-1681-4c440f89ebfe	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:05:33.939	\N	2022-04-22 15:44:49.21	admin	entityAttribute	RestApi	RestApi.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+f044b6e8-1aed-380b-3268-34d60e866a33	1	2022-04-22 15:45:26.666	admin	2022-04-22 15:45:26.666	\N	\N	\N	entityAttribute	Plan_	Plan_.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8ac9b8a1-7dda-b813-2576-d63c0440660e	1	2022-04-22 15:45:26.666	admin	2022-04-22 15:45:26.666	\N	\N	\N	entity	Plan_	Plan_	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+37c8bc44-c7e7-8142-0cb9-80dbbfde448a	1	2022-04-22 15:45:26.666	admin	2022-04-22 15:45:26.666	\N	\N	\N	screen	Plan_	Plan_.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+296b6750-c42f-ecf5-17b0-3cebc812fb02	1	2022-04-22 15:45:26.666	admin	2022-04-22 15:45:26.666	\N	\N	\N	entity	Plan_	Plan_	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+14486dd5-b5c9-0ed5-da94-02079f0a58ea	1	2022-04-22 15:45:26.666	admin	2022-04-22 15:45:26.666	\N	\N	\N	entity	Plan_	Plan_	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+a80b4c45-e066-41cb-0589-a43f07e8238f	1	2022-04-22 15:45:26.667	admin	2022-04-22 15:45:26.667	\N	\N	\N	entity	Plan_	Plan_	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+530a1c14-c188-0e77-86db-5f163a913a94	1	2022-04-22 15:47:04.819	admin	2022-04-22 15:47:04.819	\N	\N	\N	entity	Product	Product	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8e58f4c5-6e99-68ec-47e3-799464e5fd62	1	2022-04-22 15:47:04.818	admin	2022-04-22 15:47:04.818	\N	\N	\N	screen	ProductState	ProductState.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+bed08087-6f31-0f17-b0f0-eb8a9e643e88	1	2022-04-22 15:47:04.819	admin	2022-04-22 15:47:04.819	\N	\N	\N	entity	Product	Product	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+e28ebb6e-0d47-b194-adfa-ac348344f013	1	2022-04-22 15:47:04.819	admin	2022-04-22 15:47:04.819	\N	\N	\N	entity	Product	Product	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+39460fae-7723-6e45-9202-5bffd3a182e9	1	2022-04-22 15:47:04.819	admin	2022-04-22 15:47:04.819	\N	\N	\N	entityAttribute	Product	Product.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+f7cd35ea-3e88-cbd9-8d57-73e388ccccce	1	2022-04-22 15:47:04.818	admin	2022-04-22 15:47:04.818	\N	\N	\N	entity	ProductState	ProductState	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+052011cf-e2c2-c2cf-1e56-ecd3d2e12e30	1	2022-04-22 15:47:04.819	admin	2022-04-22 15:47:04.819	\N	\N	\N	entity	Product	Product	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+bcc8a66c-ceb7-9152-0760-0266064f3f07	1	2022-04-22 15:47:04.818	admin	2022-04-22 15:47:04.818	\N	\N	\N	entityAttribute	ProductState	ProductState.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+4dd0beeb-f4bb-6471-e0a2-9d458833dedb	1	2022-04-22 15:47:42.928	admin	2022-04-22 15:47:42.928	\N	\N	\N	entity	VisibilyType	VisibilyType	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+3a8aa5b6-3056-b435-fc8a-ab6f6707b79c	1	2022-04-22 15:47:42.928	admin	2022-04-22 15:47:42.928	\N	\N	\N	entityAttribute	VisibilyType	VisibilyType.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+079844f2-5d4c-f9cd-0a6d-bd34d93d67a7	1	2022-04-22 15:47:42.928	admin	2022-04-22 15:47:42.928	\N	\N	\N	screen	VisibilyType	VisibilyType.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+bdd5a633-6cf6-8cd9-6611-1475a1448405	1	2022-04-22 15:51:01.995	admin	2022-04-22 15:51:01.995	\N	\N	\N	menu	\N	apimanager	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5f9641bd-93e5-2ea0-7ee7-86ef88b7285b	2	2022-04-22 15:47:04.818	admin	2022-04-22 15:47:04.818	\N	2022-04-22 15:58:21.535	admin	menu	ProductState	ProductState.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+0b9306ad-839c-ce28-a741-6706ac041ca5	1	2022-04-22 15:54:35.942	admin	2022-04-22 15:54:35.942	\N	\N	\N	menu	Product	Product.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+b4ed734a-bad1-5266-f470-ebc350d4c2e1	1	2022-04-22 15:54:35.942	admin	2022-04-22 15:54:35.942	\N	\N	\N	screen	Product	Product.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+9242631e-e6e1-c17c-ab73-5d39b727e8f2	2	2022-04-22 15:47:04.818	admin	2022-04-22 15:47:04.818	\N	2022-04-22 15:57:02.365	admin	screen	ProductState	ProductState.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+08d4f523-5c03-e02a-b773-d4cd79b50af5	1	2022-04-22 16:00:36.218	admin	2022-04-22 16:00:36.218	\N	\N	\N	screen	Product	Product.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+2faa4a15-4d79-531c-64f6-20a7c2ade904	1	2022-04-22 16:02:51.823	admin	2022-04-22 16:02:51.823	\N	\N	\N	entityAttribute	VisibilyType	VisibilyType.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+b84e90ba-0c24-c4a0-85e2-2e3bc93b4be0	1	2022-04-22 16:05:03.369	admin	2022-04-22 16:05:03.369	\N	\N	\N	screen	VisibilyType	VisibilyType.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+3e2ab9e3-35e7-6967-bfe5-155654155681	1	2022-04-22 17:32:23.989	admin	2022-04-22 17:32:23.989	\N	\N	\N	entityAttribute	RestApi	RestApi.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+1308ad9c-e350-ce1a-947e-efcf4c613c4f	1	2022-04-22 17:32:23.989	admin	2022-04-22 17:32:23.989	\N	\N	\N	entity	RestApi	RestApi	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+27e95596-3836-6317-1b39-db817a694137	1	2022-04-22 17:32:23.989	admin	2022-04-22 17:32:23.989	\N	\N	\N	entity	RestApi	RestApi	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+ae5a93bf-a1ae-bbcb-1a82-39b66fa7cccc	1	2022-04-22 17:32:23.989	admin	2022-04-22 17:32:23.989	\N	\N	\N	screen	RestApi	RestApi.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+ef622a1f-d7f8-4cf1-77c0-49784727f47c	1	2022-04-22 17:32:23.989	admin	2022-04-22 17:32:23.989	\N	\N	\N	entity	RestApi	RestApi	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8a6bcc8b-5470-767b-2233-f9ebdd3236ea	1	2022-04-22 17:32:23.989	admin	2022-04-22 17:32:23.989	\N	\N	\N	entity	RestApi	RestApi	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+4c219ad0-c6a7-3212-3737-c78731c82e3c	1	2022-04-22 17:32:23.988	admin	2022-04-22 17:32:23.988	\N	\N	\N	screen	RestApi	RestApi.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+84d80176-e346-fcdc-8ded-a9fcd7abb875	1	2022-04-22 17:32:23.989	admin	2022-04-22 17:32:23.989	\N	\N	\N	menu	RestApi	RestApi.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+c7aaaa42-c31c-d861-e11d-02ea77846f3a	1	2022-04-27 14:52:06.673	admin	2022-04-27 14:52:06.673	\N	\N	\N	entity	Site	Site	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+1efc524e-55d0-a99d-dba3-5f01252a59ff	1	2022-04-27 14:52:06.673	admin	2022-04-27 14:52:06.673	\N	\N	\N	menu	Site	Site.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5ab39048-ce6a-ef3f-8c0e-a482580a739c	1	2022-04-27 14:52:06.673	admin	2022-04-27 14:52:06.673	\N	\N	\N	entity	Site	Site	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+df96fd66-6591-9fd8-4a4f-aab25cc3bc79	1	2022-04-27 14:52:06.674	admin	2022-04-27 14:52:06.674	\N	\N	\N	screen	Site	Site.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+1ddbbc15-ca16-4494-1299-3bef1c3bc752	1	2022-04-27 14:52:06.673	admin	2022-04-27 14:52:06.673	\N	\N	\N	screen	Site	Site.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+fefe8e86-85ec-7fe2-73a8-1df872c32b02	1	2022-04-27 14:52:06.673	admin	2022-04-27 14:52:06.673	\N	\N	\N	entity	Site	Site	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5ceb447a-a6dc-36b9-d8fd-de6619ea9ff9	1	2022-04-27 14:52:06.674	admin	2022-04-27 14:52:06.674	\N	\N	\N	entityAttribute	Site	Site.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+82f83f71-fb1f-f554-a7b8-9e0b07e301f4	1	2022-04-27 14:52:06.673	admin	2022-04-27 14:52:06.673	\N	\N	\N	entity	Site	Site	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+6d6e317b-02dc-2125-b37a-3ed56102c025	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	screen	GatewayService	GatewayService.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+b0b1bdac-018e-7086-bebe-3cc8dcb9f816	1	2022-04-27 15:05:33.776	admin	2022-04-27 15:05:33.776	\N	\N	\N	screen	VirtualArea	VirtualArea.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+7f7ad587-4151-9f7f-399a-f80ba7ed715d	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	entityAttribute	GatewayType	GatewayType.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+3e03d255-8aa6-c5c7-a5bd-eef8433e00fb	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	entity	VirtualArea	VirtualArea	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8a6cfe5a-72ae-588a-fdf5-53246d2ad7d7	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	screen	VirtualArea	VirtualArea.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+6a54735f-ced8-e605-4f58-8d42be299cf6	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	screen	PortalService	PortalService.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+cdde28c1-495f-1d60-1bfe-8eae7c0d5f08	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	entityAttribute	VirtualArea	VirtualArea.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+e27a443a-fa37-f084-38ed-0e414dbfc568	1	2022-04-27 15:05:33.776	admin	2022-04-27 15:05:33.776	\N	\N	\N	entity	PortalService	PortalService	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+e8fbb4b2-0128-896d-b117-25c2bf2c687f	1	2022-04-27 15:05:33.776	admin	2022-04-27 15:05:33.776	\N	\N	\N	screen	GatewayService	GatewayService.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+262e075d-e663-e4f1-03f5-ca68a2fc6668	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	entity	GatewayService	GatewayService	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+f29a4daf-f912-8e16-4679-e68a064e14ea	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	entity	GatewayType	GatewayType	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8fcd5ce9-7c76-c4bd-5b2e-91dbd0091d89	1	2022-04-27 15:05:33.777	admin	2022-04-27 15:05:33.777	\N	\N	\N	entityAttribute	GatewayService	GatewayService.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+c592454d-d890-21dd-e7d8-44e0f2d15cb6	1	2022-04-27 15:05:33.776	admin	2022-04-27 15:05:33.776	\N	\N	\N	screen	PortalService	PortalService.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+e8417566-abee-2586-e8ed-e578b333e02a	1	2022-04-27 15:08:41.554	admin	2022-04-27 15:08:41.554	\N	\N	\N	entityAttribute	PortalService	PortalService.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+eb2e672c-e538-344d-fa55-749b023660a6	1	2022-04-27 21:03:53.216	admin	2022-04-27 21:03:53.216	\N	\N	\N	entity	Catalog_	Catalog_	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+7f48bc24-84d0-91cf-731a-a67d97dbba71	1	2022-04-27 21:03:53.216	admin	2022-04-27 21:03:53.216	\N	\N	\N	entity	Catalog_	Catalog_	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+cee30f43-07d1-e338-39c1-e7f27e17d66d	1	2022-04-27 21:03:53.214	admin	2022-04-27 21:03:53.214	\N	\N	\N	entityAttribute	Catalog_	Catalog_.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+27671a12-c279-7905-880a-e443f87a1261	1	2022-04-27 21:03:53.216	admin	2022-04-27 21:03:53.216	\N	\N	\N	entity	Catalog_	Catalog_	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+98add881-a100-459b-1f70-69cdb6145d83	1	2022-04-27 21:03:53.216	admin	2022-04-27 21:03:53.216	\N	\N	\N	entity	Catalog_	Catalog_	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+7085482f-6046-fe5f-e0a2-ac0bc9ceb71b	1	2022-04-27 21:06:39.891	admin	2022-04-27 21:06:39.891	\N	\N	\N	screen	Catalog_	Catalog_.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+603e4002-c77b-9339-2d85-78181f8e882e	1	2022-04-27 21:06:39.891	admin	2022-04-27 21:06:39.891	\N	\N	\N	screen	Catalog_	Catalog_.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+80d999ee-600f-3d2d-551e-2e68df2b0078	1	2022-04-28 14:22:36.581	admin	2022-04-28 14:22:36.581	\N	\N	\N	screen	ApiRegister	ApiRegister.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8ad76a41-6fd3-f982-cebe-8d445df5cc62	1	2022-04-28 14:22:36.581	admin	2022-04-28 14:22:36.581	\N	\N	\N	screen	ApiRegister	ApiRegister.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+38d1d0b0-eb3e-d338-f126-784cb37d1780	1	2022-04-28 14:22:36.581	admin	2022-04-28 14:22:36.581	\N	\N	\N	entity	ApiRegister	ApiRegister	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+06876006-796c-25e8-b0fd-8789b390fb78	1	2022-04-28 14:22:36.58	admin	2022-04-28 14:22:36.58	\N	\N	\N	entityAttribute	ApiRegister	ApiRegister.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+fddad660-5a3e-1b3b-8428-6c4247154d27	1	2022-04-28 14:22:36.581	admin	2022-04-28 14:22:36.581	\N	\N	\N	entity	ApiRegister	ApiRegister	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+c8a7e897-4106-f8e0-8078-3d3682a4e5ee	1	2022-04-28 14:22:36.581	admin	2022-04-28 14:22:36.581	\N	\N	\N	entity	ApiRegister	ApiRegister	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+ea03fe1e-3080-6b5e-511b-cd4c110d97aa	1	2022-04-28 14:22:36.581	admin	2022-04-28 14:22:36.581	\N	\N	\N	entity	ApiRegister	ApiRegister	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+db233f91-96b9-65f6-dd86-3d1b1c00192b	2	2022-04-28 14:22:36.581	admin	2022-04-28 14:22:36.581	\N	2022-04-29 09:09:45.428	admin	menu	ApiRegister	ApiRegister.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+e4f22c96-7991-a839-971f-0582e221d116	1	2022-04-29 10:13:46.704	admin	2022-04-29 10:13:46.704	\N	\N	\N	entity	PublishedProduct	PublishedProduct	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+24f4d639-1299-32d6-7f60-e81da1e0fefd	1	2022-04-29 10:13:46.704	admin	2022-04-29 10:13:46.704	\N	\N	\N	entity	PublishedProduct	PublishedProduct	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+4de4840f-c203-46bf-5270-033bf573399b	1	2022-04-29 10:13:46.704	admin	2022-04-29 10:13:46.704	\N	\N	\N	entityAttribute	PublishedProduct	PublishedProduct.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8fc98abc-9294-b890-a6ed-39157ab2302a	1	2022-04-29 10:13:46.703	admin	2022-04-29 10:13:46.703	\N	\N	\N	entity	PublishedProduct	PublishedProduct	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+6ace3fba-9bcb-09d5-75f4-3604032bd089	1	2022-04-29 10:13:46.704	admin	2022-04-29 10:13:46.704	\N	\N	\N	screen	PublishedProduct	PublishedProduct.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+49011b77-e3a6-af1b-91b6-f5dc4b84f16e	1	2022-04-29 10:13:46.704	admin	2022-04-29 10:13:46.704	\N	\N	\N	entity	PublishedProduct	PublishedProduct	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+536c97d2-f872-d149-7240-1cc2a0116b02	1	2022-04-29 10:13:46.704	admin	2022-04-29 10:13:46.704	\N	\N	\N	screen	PublishedProduct	PublishedProduct.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+417632b7-471c-867c-b6fe-ee074661df31	1	2022-05-03 15:19:19.143	admin	2022-05-03 15:19:19.143	\N	\N	\N	menu	\N	GettingstartedScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+9b2ed49b-e7d2-7739-8df9-1d3c18da9723	1	2022-05-03 15:19:19.143	admin	2022-05-03 15:19:19.143	\N	\N	\N	menu	\N	AboutScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5d614b5e-cb55-214b-443f-d58a62080205	1	2022-05-03 15:19:19.143	admin	2022-05-03 15:19:19.143	\N	\N	\N	screen	\N	GettingstartedScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+35d3d39c-51e8-25ba-5185-db9afc165d8f	1	2022-05-03 15:19:19.143	admin	2022-05-03 15:19:19.143	\N	\N	\N	screen	\N	AboutScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+622e0f76-8916-adb6-068b-a01de3b45276	1	2022-05-03 15:19:40.422	admin	2022-05-03 15:19:40.422	\N	\N	\N	screen	\N	GettingstartedScreen	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+f7016ca8-227b-b142-2377-bc05a83301b9	1	2022-05-03 15:19:40.422	admin	2022-05-03 15:19:40.422	\N	\N	\N	menu	\N	GettingstartedScreen	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+f9456b8a-81ec-0009-81c1-ad1413b9c356	1	2022-05-03 15:19:40.422	admin	2022-05-03 15:19:40.422	\N	\N	\N	screen	\N	AboutScreen	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+90b3793f-93c1-c9fa-0765-3bc0fc802883	1	2022-05-03 15:19:40.422	admin	2022-05-03 15:19:40.422	\N	\N	\N	menu	\N	AboutScreen	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+70b02f94-0817-ce33-714f-bd2409fa1ee2	1	2022-05-03 15:37:30.86	admin	2022-05-03 15:37:30.86	\N	\N	\N	screen	\N	ChangepassScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+2ebbd749-8eb8-906a-7520-0c02db0e0fe3	1	2022-05-03 15:37:30.86	admin	2022-05-03 15:37:30.86	\N	\N	\N	menu	\N	ChangepassScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+8dbf0e58-2c0d-cfb9-9085-95e8f2b1094e	1	2022-05-03 15:37:54.378	admin	2022-05-03 15:37:54.378	\N	\N	\N	menu	\N	ChangepassScreen	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+1b1b5679-a951-75a0-6667-c82e614f2610	1	2022-05-03 15:37:54.378	admin	2022-05-03 15:37:54.378	\N	\N	\N	screen	\N	ChangepassScreen	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+5c1b7d69-9d7f-7f63-dee3-76401201bdb9	1	2022-05-05 16:41:00.72	admin	2022-05-05 16:41:00.72	\N	\N	\N	entity	Consumer	Consumer	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+a0bc7218-b64f-f938-b048-23b95531e94a	1	2022-05-05 16:41:00.72	admin	2022-05-05 16:41:00.72	\N	\N	\N	entity	Consumer	Consumer	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+9651427c-6873-5fad-2c47-3f0ffe113664	1	2022-05-05 16:41:00.72	admin	2022-05-05 16:41:00.72	\N	\N	\N	entityAttribute	Consumer	Consumer.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+666ca215-61a0-3bef-fe49-230c1a35be0f	1	2022-05-05 16:41:00.72	admin	2022-05-05 16:41:00.72	\N	\N	\N	screen	Consumer	Consumer.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+d0c8f7d4-454a-d013-f592-357d906bd96a	1	2022-05-05 16:41:00.72	admin	2022-05-05 16:41:00.72	\N	\N	\N	menu	Consumer	Consumer.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+0de410fa-8304-2253-86a0-94c7d1cda0c0	1	2022-05-05 16:41:00.72	admin	2022-05-05 16:41:00.72	\N	\N	\N	screen	Consumer	Consumer.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+56656794-ec6f-fb14-207e-188fd6ceab4a	1	2022-05-05 16:41:00.721	admin	2022-05-05 16:41:00.721	\N	\N	\N	entity	Consumer	Consumer	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+50cf485b-4bc7-474c-43e8-59355b6f01cc	1	2022-05-05 16:41:00.72	admin	2022-05-05 16:41:00.72	\N	\N	\N	entity	Consumer	Consumer	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+dead0ee3-1e6c-99b7-7d5b-5e283140363b	1	2022-05-08 19:57:48.364	admin	2022-05-08 19:57:48.364	\N	\N	\N	entityAttribute	ProductSubscription	ProductSubscription.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+912bbf25-fbba-a76c-5149-1357ccb0cd01	1	2022-05-08 19:57:48.363	admin	2022-05-08 19:57:48.363	\N	\N	\N	entity	ProductSubscription	ProductSubscription	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+613b3c6c-67e8-f9ee-c3c0-6b3470f98fd7	1	2022-05-08 19:57:48.364	admin	2022-05-08 19:57:48.364	\N	\N	\N	entity	ProductSubscription	ProductSubscription	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+87d8f223-8cca-5ee7-e00f-6fb24f85000f	1	2022-05-08 19:57:48.364	admin	2022-05-08 19:57:48.364	\N	\N	\N	entity	ProductSubscription	ProductSubscription	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+f8b49be2-5aec-f3e7-2c99-fb953b24e6a4	1	2022-05-08 19:57:48.364	admin	2022-05-08 19:57:48.364	\N	\N	\N	entity	ProductSubscription	ProductSubscription	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+b6942e4e-9d11-c70f-aed5-be4d3f9a63ae	1	2022-05-08 20:02:27.719	admin	2022-05-08 20:02:27.719	\N	\N	\N	screen	ProductSubscription	ProductSubscription.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+9fe46f40-730c-1699-8b29-5575c99d12b6	1	2022-05-08 20:02:27.718	admin	2022-05-08 20:02:27.718	\N	\N	\N	screen	ProductSubscription	ProductSubscription.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+e7e4672e-07a9-28b7-8e2b-bde42cffb4dc	2	2022-05-08 20:02:27.718	admin	2022-05-08 20:02:27.718	\N	2022-05-11 09:13:21.126	admin	menu	ProductSubscription	ProductSubscription.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+ddb3d1a3-c0df-ec77-e10e-a5aa04657bb1	1	2022-05-18 10:19:31.731	admin	2022-05-18 10:19:31.731	\N	\N	\N	entityAttribute	ApiInSite	ApiInSite.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+6457f3bb-4466-6616-da24-ee244e78b9a7	1	2022-05-18 10:19:31.731	admin	2022-05-18 10:19:31.731	\N	\N	\N	entity	ApiInSite	ApiInSite	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+98c28fdd-2592-5fe0-62e0-91ae778f7b1a	1	2022-05-18 10:19:31.731	admin	2022-05-18 10:19:31.731	\N	\N	\N	entity	ApiInSite	ApiInSite	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+4c356310-dbca-bf9c-bea2-8ebb2e43bca9	1	2022-05-18 10:19:31.731	admin	2022-05-18 10:19:31.731	\N	\N	\N	screen	ApiInSite	ApiInSite.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+f6c1a3b9-afa8-eec6-9a8c-0c3c2eebd7ae	1	2022-05-18 10:19:31.731	admin	2022-05-18 10:19:31.731	\N	\N	\N	entity	ApiInSite	ApiInSite	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+2ab71fae-bd9c-836b-7e6b-9c09a39ff221	1	2022-05-18 10:19:31.73	admin	2022-05-18 10:19:31.73	\N	\N	\N	entity	ApiInSite	ApiInSite	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5547d012-6845-0cb8-4aa8-edbc79aff15a	1	2022-05-19 16:35:34.999	admin	2022-05-19 16:35:34.999	\N	\N	\N	screen	GatewayUsagePermission	GatewayUsagePermission.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+d07b94f7-dfe1-cfaa-5c3a-cd69cd9fcc3c	1	2022-05-19 16:35:34.999	admin	2022-05-19 16:35:34.999	\N	\N	\N	entity	GatewayUsagePermission	GatewayUsagePermission	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+d24678bf-37e3-73eb-b4ff-2bf2807cd687	1	2022-05-19 16:35:34.999	admin	2022-05-19 16:35:34.999	\N	\N	\N	entityAttribute	GatewayUsagePermission	GatewayUsagePermission.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+b5d065be-e18b-90f1-811c-1fac508f9a3f	1	2022-05-19 16:35:34.999	admin	2022-05-19 16:35:34.999	\N	\N	\N	screen	GatewayUsagePermission	GatewayUsagePermission.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+4e8d6044-3388-7b30-9256-1900839e305f	1	2022-05-19 16:35:35	admin	2022-05-19 16:35:35	\N	\N	\N	entity	GatewayUsagePermission	GatewayUsagePermission	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+71da56b3-b0f0-a881-dce2-6480856032fa	1	2022-05-19 16:35:35	admin	2022-05-19 16:35:35	\N	\N	\N	entity	GatewayUsagePermission	GatewayUsagePermission	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+45a4a889-dadd-62cc-99cd-aec480fb9d9a	1	2022-05-19 16:35:34.999	admin	2022-05-19 16:35:34.999	\N	\N	\N	entity	GatewayUsagePermission	GatewayUsagePermission	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+58f25d6f-bbfc-6613-f9a9-935219d5accb	1	2022-05-19 20:47:19.66	admin	2022-05-19 20:47:19.66	\N	\N	\N	entity	GatewayUsagePermission	GatewayUsagePermission	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+c66f2dd6-552e-1494-1835-e3fc647472e5	1	2022-05-19 20:47:19.66	admin	2022-05-19 20:47:19.66	\N	\N	\N	entityAttribute	GatewayUsagePermission	GatewayUsagePermission.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+383b996a-3336-74c8-e4a5-3725b89772f8	2	2022-05-19 16:35:34.999	admin	2022-05-19 16:35:34.999	\N	2022-05-20 10:33:39.394	admin	menu	GatewayUsagePermission	GatewayUsagePermission.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+fec28c92-458a-a23b-b2a4-ea19b03ed66e	1	2022-05-20 10:33:39.512	admin	2022-05-20 10:33:39.512	\N	\N	\N	entityAttribute	PortalUsagePermission	PortalUsagePermission.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+44a88100-0fe2-4611-b720-3fca5aa87753	1	2022-05-20 10:33:39.513	admin	2022-05-20 10:33:39.513	\N	\N	\N	screen	PortalUsagePermission	PortalUsagePermission.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+aca43fa8-d0d6-54ad-508d-748083b7d443	1	2022-05-20 10:33:39.512	admin	2022-05-20 10:33:39.512	\N	\N	\N	screen	PortalUsagePermission	PortalUsagePermission.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+60d115e1-4773-8f5e-ca0c-4cc5d13597b1	1	2022-05-20 10:33:39.513	admin	2022-05-20 10:33:39.513	\N	\N	\N	entity	PortalUsagePermission	PortalUsagePermission	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+8888c2a0-9c29-a7a7-407d-04fee7817944	1	2022-05-20 10:33:39.513	admin	2022-05-20 10:33:39.513	\N	\N	\N	entity	PortalUsagePermission	PortalUsagePermission	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+abc43350-f86b-2633-a0e6-53af4242e7da	1	2022-05-20 10:33:39.513	admin	2022-05-20 10:33:39.513	\N	\N	\N	entity	PortalUsagePermission	PortalUsagePermission	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+9a77baf0-6503-fa9d-ebd3-bb8df983759a	1	2022-05-20 10:33:39.513	admin	2022-05-20 10:33:39.513	\N	\N	\N	entity	PortalUsagePermission	PortalUsagePermission	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+f3c4f213-42fd-eeec-4fc3-996800c000a0	1	2022-05-20 10:35:02.259	admin	2022-05-20 10:35:02.259	\N	\N	\N	entityAttribute	PortalUsagePermission	PortalUsagePermission.*	view	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+3dba66db-54a1-c125-7d01-4ef09014fca5	1	2022-05-20 10:35:02.259	admin	2022-05-20 10:35:02.259	\N	\N	\N	entity	PortalUsagePermission	PortalUsagePermission	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+e62d73e2-9aa8-e228-a2fa-a2e766fac9b2	1	2022-05-26 09:43:46.035	admin	2022-05-26 09:43:46.035	\N	\N	\N	screen	SiteGateway	SiteGateway.browse	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+952647a9-e428-f21d-b8b7-a2af64dcdad4	1	2022-05-26 09:43:46.036	admin	2022-05-26 09:43:46.036	\N	\N	\N	entity	SiteGateway	SiteGateway	delete	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+18dc21cb-1652-1cf2-e67e-df24b6ab1f89	1	2022-05-26 09:43:46.036	admin	2022-05-26 09:43:46.036	\N	\N	\N	entityAttribute	SiteGateway	SiteGateway.*	modify	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+34782c9c-c357-baa4-9d9a-3440d9495f48	1	2022-05-26 09:43:46.036	admin	2022-05-26 09:43:46.036	\N	\N	\N	entity	SiteGateway	SiteGateway	read	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+4c262579-ce14-2849-4641-fe1455314193	1	2022-05-26 09:43:46.036	admin	2022-05-26 09:43:46.036	\N	\N	\N	entity	SiteGateway	SiteGateway	create	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+72bd38da-c2aa-b668-28d4-0ddeadab3963	1	2022-05-26 09:43:46.036	admin	2022-05-26 09:43:46.036	\N	\N	\N	entity	SiteGateway	SiteGateway	update	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+acca442d-625b-d380-e1cb-29b5fcaf177e	1	2022-05-26 09:43:46.036	admin	2022-05-26 09:43:46.036	\N	\N	\N	screen	SiteGateway	SiteGateway.edit	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+0cdabcae-5001-1d76-f08f-32d05cda34b3	1	2022-05-26 12:38:06.252	admin	2022-05-26 12:38:06.252	\N	\N	\N	screen	\N	PublishToOtherGatewayScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+dcff3de9-b4a4-56bf-1f91-d513d603f277	1	2022-05-27 11:00:35.321	admin	2022-05-27 11:00:35.321	\N	\N	\N	screen	\N	TestIframeScreen	access	allow	f1090c99-ac6a-6533-14df-ef6b12bc5c79
+5dae8b45-411f-ab7a-8229-76e394d1844e	1	2022-06-08 13:52:18.436	admin	2022-06-08 13:52:18.436	\N	\N	\N	entityAttribute	Site	Site.*	modify	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+62920a88-996c-2aaf-28d0-70734ccc1e29	1	2022-06-08 13:52:18.435	admin	2022-06-08 13:52:18.435	\N	\N	\N	entity	Site	Site	update	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+37c15113-3fbe-7c23-ca2c-b4f60be13b46	1	2022-06-08 13:52:18.436	admin	2022-06-08 13:52:18.436	\N	\N	\N	screen	Site	Site.browse	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+6ecc05b5-b779-cc28-4315-db1cd0499bc7	1	2022-06-08 13:52:18.436	admin	2022-06-08 13:52:18.436	\N	\N	\N	entity	Site	Site	create	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+686c7163-4fb8-c6f5-ddb9-e4375d7bbe84	1	2022-06-08 13:52:18.436	admin	2022-06-08 13:52:18.436	\N	\N	\N	entity	Site	Site	delete	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+fd1adb7c-5303-0449-dd7f-62b06047cd84	1	2022-06-08 13:52:18.436	admin	2022-06-08 13:52:18.436	\N	\N	\N	screen	Site	Site.edit	access	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+08357e63-3383-779e-d6db-00b5b919d51b	1	2022-06-08 13:52:18.436	admin	2022-06-08 13:52:18.436	\N	\N	\N	entity	Site	Site	read	allow	effb1f83-208c-701b-dac3-d1cd1fbcb621
+\.
+
+
+--
+-- TOC entry 3626 (class 0 OID 21214)
+-- Dependencies: 231
+-- Data for Name: sec_resource_role; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.sec_resource_role (id, version, create_ts, created_by, update_ts, updated_by, delete_ts, deleted_by, name, code, child_roles, sys_tenant_id, description, scopes) FROM stdin;
+f1090c99-ac6a-6533-14df-ef6b12bc5c79	2	2022-04-17 15:05:33.939	admin	2022-04-17 15:06:50.65	admin	\N	\N	API Provider organization owner	api_provider_owner	"ui-minimal"	\N	API Provider organization owner	"UI"
+effb1f83-208c-701b-dac3-d1cd1fbcb621	2	2022-04-17 15:03:26.506	admin	2022-04-17 15:07:01.3	admin	\N	\N	Topology Administrator	topo_admin	"ui-minimal"	\N	Topology Administrator	"UI"
+\.
+
+
+--
+-- TOC entry 3627 (class 0 OID 21220)
+-- Dependencies: 232
+-- Data for Name: sec_role_assignment; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.sec_role_assignment (id, version, create_ts, created_by, update_ts, updated_by, delete_ts, deleted_by, username, role_code, role_type) FROM stdin;
+6c9e420a-2b7a-4c42-8654-a9027ee14083	1	\N	\N	\N	\N	\N	\N	admin	system-full-access	resource
+e9ad0a2f-baed-1988-181c-668547df685a	1	2022-04-17 15:06:26.434	admin	2022-04-17 15:06:26.434	\N	\N	\N	bidv	api_provider_owner	resource
+f9c6cc27-3ce0-0e56-26a9-d6e99575913c	1	2022-04-17 15:08:56.091	admin	2022-04-17 15:08:56.091	\N	\N	\N	hdbank	api_provider_owner	resource
+2b671f8c-e5dc-1894-7a3e-c00f00b42f52	2	2022-04-18 17:11:50.962	admin	2022-04-18 17:11:50.962	\N	2022-04-18 17:26:01.717	admin	provider1	api_provider_owner	resource
+ba5aa947-f844-85de-781d-8945f9d90362	2	2022-04-18 17:05:43.51	admin	2022-04-18 17:05:43.51	\N	2022-04-18 17:26:13.713	admin	ss	api_provider_owner	resource
+9e730222-7cb2-4148-e2f6-b639353b09b3	2	2022-04-18 10:08:59.841	admin	2022-04-18 10:08:59.841	\N	2022-04-18 17:26:29.217	admin	bidv	topo_admin	resource
+3683bcbc-a212-2194-7abf-047049b026d2	2	2022-04-18 17:26:57.787	admin	2022-04-18 17:26:57.787	\N	2022-04-18 17:27:19.9	admin	topo_admin	api_provider_owner	resource
+798de45c-a103-f1d1-b352-eddd8376ed95	2	2022-04-18 17:47:13.207	topo_admin	2022-04-18 17:47:13.207	\N	2022-04-18 17:53:42.941	admin	test10	api_provider_owner	resource
+6e6a9a86-9970-b756-ae96-dab13dbbd6cf	2	2022-05-25 16:46:29.514	topo_admin	2022-05-25 16:46:29.514	\N	2022-05-25 16:46:35.214	topo_admin	abc;fasgf	api_provider_owner	resource
+1e4a1f1b-5804-ff03-5e59-0e1fbd7f4786	1	2022-06-08 13:09:38.809	topo_admin	2022-06-08 13:09:38.809	\N	\N	\N	ncb	api_provider_owner	resource
+213e177a-30ff-8b9e-0473-d22ad23db75b	2	2022-06-09 14:29:06.904	topo_admin	2022-06-09 14:29:06.904	\N	2022-06-09 14:29:13.657	topo_admin	user1	api_provider_owner	resource
+67a42247-1587-870d-aa89-d47ffbd37a13	2	2022-06-09 14:33:18.572	topo_admin	2022-06-09 14:33:18.572	\N	2022-06-09 14:42:04.522	topo_admin	User1	api_provider_owner	resource
+3bab31f9-1d71-b3f6-4730-a706333cdadd	2	2022-04-18 17:24:13.928	bidv	2022-04-18 17:24:13.928	\N	2022-06-09 14:42:09.037	topo_admin	provider3	api_provider_owner	resource
+7fe2e69f-06a3-c4ae-ea7c-211ba420ff9e	1	2022-06-09 14:42:43.735	topo_admin	2022-06-09 14:42:43.735	\N	\N	\N	pilotvcb	api_provider_owner	resource
+eb7c35bc-c934-8d02-f1de-950f52253682	1	2022-06-14 13:13:01.767	topo_admin	2022-06-14 13:13:01.767	\N	\N	\N	ssi	api_provider_owner	resource
+9e406b39-f5a2-8638-5518-af977958d3f9	1	2022-06-14 14:15:16.522	admin	2022-06-14 14:15:16.522	\N	\N	\N	topoadmin	topo_admin	resource
+c02af3b9-eeac-e0af-94f7-2d040837c978	2	2022-04-18 17:27:19.898	admin	2022-04-18 17:27:19.898	\N	2022-06-14 14:18:00.005	admin	topo_admin	topo_admin	resource
+\.
+
+
+--
+-- TOC entry 3628 (class 0 OID 21226)
+-- Dependencies: 233
+-- Data for Name: sec_row_level_policy; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.sec_row_level_policy (id, version, create_ts, created_by, update_ts, updated_by, delete_ts, deleted_by, type_, action_, entity_name, where_clause, join_clause, script_, role_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3629 (class 0 OID 21232)
+-- Dependencies: 234
+-- Data for Name: sec_row_level_role; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.sec_row_level_role (id, version, create_ts, created_by, update_ts, updated_by, delete_ts, deleted_by, name, code, child_roles, sys_tenant_id, description) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3630 (class 0 OID 21238)
+-- Dependencies: 235
+-- Data for Name: sec_user_substitution; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.sec_user_substitution (id, version, create_ts, created_by, update_ts, updated_by, delete_ts, deleted_by, username, substituted_username, start_date, end_date) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3631 (class 0 OID 21244)
+-- Dependencies: 236
+-- Data for Name: site; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.site (id, name, owner_id, portal_admin, oauth_provider, gateway_id, portal_id, owner_sitename, virtual_area_id, title, production_mode) FROM stdin;
+20d6cb9a-fc75-dd97-345e-108f5d8f944b	Partner	360b0248-8451-11c5-331b-49eb46906431	abc	\N	ac9344d6-50a7-f6ce-0de4-a7f720990a74	c7d5b859-7039-bbbd-dcd0-df5b11761a0b	hdbank_Partner	9d924865-db8d-9c07-df43-10c3a65ba5b8	Partner site	t
+8d44c1aa-a6da-f7fe-d5fb-e4931449390b	Closed	d77976e9-650d-86e5-8f92-253572aa26a9	closed_admin	\N	ac9344d6-50a7-f6ce-0de4-a7f720990a74	c7d5b859-7039-bbbd-dcd0-df5b11761a0b	bidv_Closed	9d924865-db8d-9c07-df43-10c3a65ba5b8	Closed	f
+56806724-14fb-9cfa-3b6a-8e740b34bc5b	Public	385e698c-d84e-7fdb-9bf8-1223fdb95aab	admin		5a34119b-ea7a-9623-db83-1ac05e423115	c7d5b859-7039-bbbd-dcd0-df5b11761a0b	ncb_Public	9d924865-db8d-9c07-df43-10c3a65ba5b8	Public ste	t
+051c5504-a197-b9e7-bdd1-299c9604e478	Public	7ed6d4af-93e5-07dc-f084-204f7b581bb0	admin		1da33840-8c2d-8a99-7609-99c55ebdb71c	4612c8d6-ba42-046d-78e5-568a5844cc97	pilotvcb_Public	5a4bed22-296d-4201-b1a7-8e26d479111d	Public ste	t
+\.
+
+
+--
+-- TOC entry 3632 (class 0 OID 21249)
+-- Dependencies: 237
+-- Data for Name: site_gateway; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.site_gateway (id, name, site_id, gateway_id, site_gateway_id) FROM stdin;
+7885eca6-0f5f-d41c-7506-115b2126a706	GW2	8d44c1aa-a6da-f7fe-d5fb-e4931449390b	5a34119b-ea7a-9623-db83-1ac05e423115	8d44c1aa-a6da-f7fe-d5fb-e4931449390b_5a34119b-ea7a-9623-db83-1ac05e423115
+\.
+
+
+--
+-- TOC entry 3633 (class 0 OID 21252)
+-- Dependencies: 238
+-- Data for Name: ui_filter_configuration; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.ui_filter_configuration (id, component_id, configuration_id, username, root_condition, sys_tenant_id, name, default_for_all) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3634 (class 0 OID 21257)
+-- Dependencies: 239
+-- Data for Name: ui_setting; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.ui_setting (id, create_ts, created_by, username, name, value_) FROM stdin;
+6248bdcc-74de-b864-fa8a-596ff207955a	2022-04-17 15:02:03.751	admin	admin	VirtualArea.browse	[{"groupProperties":[],"id":"virtualAreasTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+f968b15a-fdee-33f1-09bb-cd9bd64b9d1e	2022-04-17 15:07:18.896	admin	admin	GatewayType.browse	[{"groupProperties":[],"id":"gatewayTypesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true}]}]
+f1346601-2c27-79ab-c4f0-b7f2c21eefed	2022-04-17 22:32:43.642	bidv	bidv	ApiSecurityMethod.browse	[{"groupProperties":[],"id":"apiSecurityMethodsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"description","visible":true}]}]
+81b84d94-160b-cf2d-a530-fbd6df9555be	2022-04-17 22:34:19.604	hdbank	hdbank	ApiSecurityMethod.browse	[{"groupProperties":[],"id":"apiSecurityMethodsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"description","visible":true}]}]
+34247f6c-d76b-142e-2b53-73148a98c4fd	2022-04-18 10:14:28.661	admin	admin	sec_RoleAssignmentEntity.browse	[{"groupProperties":[],"id":"roleAssignmentEntitiesTable","textSelection":false,"columns":[{"id":"username","visible":true},{"id":"roleCode","visible":true},{"id":"roleType","visible":true}]}]
+98d66b5d-f10f-7c98-6d73-9cad512ff208	2022-04-18 11:05:22.443	admin	admin	Provider.browse	[{"groupProperties":[],"id":"usersTable","textSelection":false,"columns":[{"id":"username","visible":true},{"id":"firstName","visible":true},{"id":"lastName","visible":true},{"id":"email","visible":true},{"id":"active","visible":true},{"id":"timeZoneId","visible":true}]}]
+06426154-abd4-bdbd-d45d-39f8d980461b	2022-04-18 13:46:38.199	admin	admin	PortalService.browse	[{"groupProperties":[],"id":"portalServicesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"management_endpoint","visible":true},{"id":"virtualArea","visible":true}]}]
+061c685a-b53c-7d31-9110-564fa1736562	2022-04-18 16:27:09.342	bidv	bidv	VirtualArea.browse	[{"groupProperties":[],"id":"virtualAreasTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+309de853-56a0-43d7-6f5e-3e2f6133d2e3	2022-04-18 17:18:50.869	bidv	bidv	Provider.browse	[{"groupProperties":[],"id":"usersTable","textSelection":false,"columns":[{"id":"username","visible":true},{"id":"firstName","visible":true},{"id":"lastName","visible":true},{"id":"email","visible":true},{"id":"active","visible":true},{"id":"timeZoneId","visible":true}]}]
+a10a46f2-7641-beb8-f386-07f7575e697c	2022-04-17 21:08:59.381	admin	admin	ApiSecurityMethod.browse	[{"groupProperties":[],"id":"apiSecurityMethodsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"description","visible":true}]}]
+b3c1fbd0-9278-f6fa-7616-d112e4779af1	2022-04-17 21:09:10.205	admin	admin	AnalyticsService.browse	[{"groupProperties":[],"id":"analyticsServicesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"management_endpoint","visible":true},{"id":"virtualArea","visible":true}]}]
+56381766-2cc8-923c-b038-8c4769d5dcfc	2022-04-21 11:06:07.936	admin	admin	GatewayService.browse	[{"groupProperties":[],"id":"gatewayServicesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"management_endpoint","visible":true},{"id":"invocation_endpoint","visible":true},{"id":"gateway_type","visible":true},{"id":"title","visible":true},{"id":"analyticsAssociated","visible":true},{"id":"virtualArea","visible":true}]}]
+cb0b2122-9237-4703-e7e8-0a50124b9587	2022-04-17 16:05:03.433	admin	admin	RestApi.browse	[{"groupProperties":[],"id":"restApisTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"basepath","visible":true},{"id":"version","visible":true},{"id":"security_method","visible":true}]}]
+0305119e-f506-e969-b07d-615e13c7a63c	2022-04-21 11:18:34.404	admin	admin	VirtualArea.edit	[{"id":"gatewaysBox","expanded":true},{"id":"portalsBox","expanded":true},{"id":"analyticsBox","expanded":true},{"id":"gatewaysTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"management_endpoint","visible":true},{"id":"invocation_endpoint","visible":true},{"id":"title","visible":true}]},{"id":"portalsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"management_endpoint","visible":true}]},{"id":"analyticsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"management_endpoint","visible":true}]}]
+be700a09-6ebe-0d3a-35f3-d12c1105d7b6	2022-04-17 21:18:07.804	admin	admin	Product.browse	[{"groupProperties":[],"id":"productsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"visibility_type","visible":true},{"id":"owner_prdname","visible":true}]}]
+172d2b4c-25a7-af95-a29c-a982c30a4069	2022-04-17 15:08:14.606	bidv	bidv	RestApi.browse	[{"groupProperties":[],"id":"restApisTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"base_path","visible":true},{"id":"target_endpoint","visible":true},{"id":"security_method","visible":true}]}]
+6c6bee34-7fa6-6460-69c2-5a0cfc9a1b3d	2022-04-19 14:44:20.645	admin	admin	DraftProduct.edit	[{"id":"plansBox","expanded":true},{"id":"plansTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"ratelimit","visible":true}]}]
+983d9d95-56dd-41ad-4124-6b47db47a82f	2022-04-19 14:44:21.638	admin	admin	DraftProduct.browse	[{"groupProperties":[],"id":"draftProductsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true}]}]
+80b51446-e79b-0f4c-c374-e034b5a01ed1	2022-04-17 15:10:04.543	hdbank	hdbank	RestApi.browse	[{"groupProperties":[],"id":"restApisTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"base_path","visible":true},{"id":"target_endpoint","visible":true},{"id":"security_method","visible":true}]}]
+99cf24c3-7a88-c9c8-ba2b-1b7a1606e746	2022-05-05 16:42:20.69	bidv	bidv	Consumer.browse	[{"groupProperties":[],"id":"consumersTable","textSelection":false,"sortProperty":"name","sortAscending":true,"columns":[{"id":"name","visible":true},{"id":"site","visible":true},{"id":"title","visible":true},{"id":"security_method","visible":true}]}]
+af473b9d-4e43-4359-d661-b47a476511e6	2022-04-27 21:07:41.691	bidv	bidv	Site.edit	[{"id":"catalogsBox","expanded":true},{"id":"catalogsTable","textSelection":false,"sortProperty":"name","sortAscending":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+7851af8c-34fb-2f41-1920-64e829cb0f62	2022-05-18 10:42:37.262	bidv	bidv	ApiInSite.browse	[{"groupProperties":[],"id":"apiInSitesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"host","visible":true},{"id":"path","visible":true}]}]
+6826ce2a-f76c-dc00-f1dd-36a38be0077d	2022-04-22 14:30:17.294	admin	admin	ProductState.browse	[{"groupProperties":[],"id":"productStatesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"description","visible":true}]}]
+1bb0e19b-5418-7c5a-a815-90d1f4840d0b	2022-04-22 15:32:03.98	admin	admin	VisibilyType.browse	[{"groupProperties":[],"id":"visibilyTypesTable","textSelection":false,"columns":[{"id":"name","visible":true}]}]
+b1f9547a-1fe0-a75e-f034-05684cd1faaf	2022-04-22 15:48:36.768	hdbank	hdbank	ProductState.browse	[{"groupProperties":[],"id":"productStatesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"description","visible":true}]}]
+002b7abe-ab09-a790-ea0c-c5a77918696e	2022-04-22 15:49:27.705	admin	admin	Product.edit	[{"id":"plansBox","expanded":true},{"id":"plansTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"persecond","visible":true},{"id":"perminute","visible":true},{"id":"perhour","visible":true}]}]
+23e478a8-b0ac-a420-76d4-4425278abe6c	2022-04-22 16:01:00.237	bidv	bidv	Product.edit	[{"id":"plansBox","expanded":true},{"id":"plansTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"persecond","visible":true},{"id":"perminute","visible":true},{"id":"perhour","visible":true}]}]
+6ea2ae50-8bc0-429d-1ea2-8becbd580de8	2022-04-22 16:05:21.904	bidv	bidv	VisibilyType.browse	[{"groupProperties":[],"id":"visibilyTypesTable","textSelection":false,"columns":[{"id":"name","visible":true}]}]
+71df492b-d27a-15b3-acb5-c9cdfe08dcec	2022-04-22 15:54:56.964	bidv	bidv	Product.browse	[{"groupProperties":[],"id":"productsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"visibility_type","visible":true}]}]
+9b5f410c-6769-6ba4-a1e5-9b1f3baedb15	2022-04-22 16:43:06.302	hdbank	hdbank	VisibilyType.browse	[{"groupProperties":[],"id":"visibilyTypesTable","textSelection":false,"columns":[{"id":"name","visible":true}]}]
+420f2d0d-3b73-e8a6-5606-64dc3118df12	2022-04-22 16:43:11.597	hdbank	hdbank	Product.edit	[{"id":"plansBox","expanded":true},{"id":"plansTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"persecond","visible":true},{"id":"perminute","visible":true},{"id":"perhour","visible":true}]}]
+cb909d78-b0cd-a6e0-34b5-55f3b9dca542	2022-04-22 16:43:13.752	hdbank	hdbank	Product.browse	[{"groupProperties":[],"id":"productsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"visibility_type","visible":true}]}]
+34708c2e-94de-1b2a-7c84-da5db27a169b	2022-04-27 14:52:13.53	admin	admin	Site.browse	[{"groupProperties":[],"id":"sitesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"portal_admin","visible":true},{"id":"oauth_provider","visible":true},{"id":"gateway","visible":true},{"id":"portal","visible":true},{"id":"owner_sitename","visible":true},{"id":"virtual_area","visible":true}]}]
+80d56e26-52fa-db95-e410-4b2ebb3c7126	2022-04-27 15:05:51.304	bidv	bidv	GatewayService.browse	[{"groupProperties":[],"id":"gatewayServicesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"management_endpoint","visible":true},{"id":"invocation_endpoint","visible":true},{"id":"gateway_type","visible":true},{"id":"title","visible":true},{"id":"analyticsAssociated","visible":true},{"id":"virtualArea","visible":true}]}]
+aff605a0-50ee-ff1e-7a72-802260ce2451	2022-04-27 15:05:54.025	bidv	bidv	PortalService.browse	[{"groupProperties":[],"id":"portalServicesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"management_endpoint","visible":true},{"id":"virtualArea","visible":true}]}]
+ba543654-fbef-3c8e-4712-c36c30c75a89	2022-04-27 14:56:38.893	bidv	bidv	Site.browse	[{"groupProperties":[],"id":"sitesTable","textSelection":false,"columns":[{"id":"title","visible":true},{"id":"name","visible":true},{"id":"portal_admin","visible":true},{"id":"oauth_provider","visible":true},{"id":"gateway","visible":true},{"id":"portal","visible":true},{"id":"virtual_area","visible":true}]}]
+64862e62-6328-4aef-1578-23d445463c81	2022-04-28 11:03:10.322	hdbank	hdbank	Site.browse	[{"groupProperties":[],"id":"sitesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"portal_admin","visible":true},{"id":"oauth_provider","visible":true},{"id":"gateway","visible":true},{"id":"portal","visible":true},{"id":"virtual_area","visible":true}]}]
+e52afaa4-60f9-7ba8-d2cf-4d3a011c3397	2022-06-09 15:02:55.067	pilotvcb	pilotvcb	ApiRegister.browse	[{"groupProperties":[],"id":"apiRegistersTable","textSelection":false,"columns":[{"id":"api","visible":true},{"id":"register_datetime","visible":true}]}]
+994f9b37-6e6c-bd45-b3c7-76f9ce361b22	2022-05-04 18:02:47.875	hdbank	hdbank	VirtualArea.browse	[{"groupProperties":[],"id":"virtualAreasTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+1a45ca1e-f30e-4d0c-ed13-c46b58841b6e	2022-05-05 17:09:16.694	hdbank	hdbank	Consumer.browse	[{"groupProperties":[],"id":"consumersTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"site","visible":true},{"id":"title","visible":true},{"id":"security_method","visible":true}]}]
+f0a4167d-550a-337a-e3b6-44b46c655ecc	2022-04-28 14:22:57.939	bidv	bidv	ApiRegister.browse	[{"groupProperties":[],"id":"apiRegistersTable","textSelection":false,"sortProperty":"api","sortAscending":false,"columns":[{"id":"api","visible":true},{"id":"register_datetime","visible":true}]}]
+5d941251-e7b8-63ae-b93c-423c1ebf0091	2022-05-04 18:03:03.234	hdbank	hdbank	Site.edit	[{"id":"catalogsBox","expanded":true},{"id":"catalogsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+a90274ac-fe6e-2c66-cecf-feffcdd67fe0	2022-05-08 20:03:36.89	bidv	bidv	ProductSubscription.browse	[{"groupProperties":[],"id":"productSubscriptionsTable","textSelection":false,"sortProperty":"consumer","sortAscending":false,"columns":[{"id":"consumer","visible":true},{"id":"published_product","visible":true},{"id":"subcription_date","visible":true}]}]
+89c2a77f-3846-a2d8-7313-b367299b9409	2022-04-28 14:25:45.735	hdbank	hdbank	ApiRegister.browse	[{"groupProperties":[],"id":"apiRegistersTable","textSelection":false,"columns":[{"id":"api","visible":true},{"id":"register_datetime","visible":true}]}]
+d2429df7-5f1c-a0bf-c137-437f0ede96d6	2022-06-09 15:32:53.187	pilotvcb	pilotvcb	ApiSecurityMethod.browse	[{"groupProperties":[],"id":"apiSecurityMethodsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"description","visible":true}]}]
+6f2aef5f-2a78-1ef2-4d90-5783ce5ac8b7	2022-06-08 13:15:50.825	ncb	ncb	Site.edit	[{"id":"catalogsBox","expanded":true},{"id":"catalogsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+30b86baa-8b2f-79ac-1307-1f125b1e7169	2022-05-14 11:05:58.676	hdbank	hdbank	PublishedProduct.browse	[{"groupProperties":[],"id":"publishedProductsTable","textSelection":false,"columns":[{"id":"product","visible":true},{"id":"state","visible":true},{"id":"published_date","visible":true}]}]
+bf9e67b7-3723-a958-227a-77a3260216cc	2022-06-08 13:15:51.756	ncb	ncb	Product.browse	[{"groupProperties":[],"id":"productsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"visibility_type","visible":true}]}]
+5082d81a-c012-cd5d-a84e-42307ef05cf9	2022-06-08 13:15:51.765	ncb	ncb	Site.browse	[{"groupProperties":[],"id":"sitesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"portal_admin","visible":true},{"id":"oauth_provider","visible":true},{"id":"gateway","visible":true},{"id":"portal","visible":true},{"id":"virtual_area","visible":true}]}]
+c76a9ac0-fdef-2b17-57d5-80b28a7531c1	2022-05-26 21:10:06.103	hdbank	hdbank	SiteGateway.browse	[{"groupProperties":[],"id":"siteGatewaysTable","textSelection":false,"columns":[{"id":"site","visible":true},{"id":"gateway","visible":true}]}]
+e82ef732-7ed4-0620-b5ff-a0bc281f88ca	2022-05-26 09:44:37.819	bidv	bidv	SiteGateway.browse	[{"groupProperties":[],"id":"siteGatewaysTable","textSelection":false,"sortProperty":"site","sortAscending":false,"columns":[{"id":"site","visible":true},{"id":"gateway","visible":true}]}]
+1ea63a5a-48fc-013a-606b-cf967e3e40b2	2022-06-08 16:11:17.117	ncb	ncb	ApiSecurityMethod.browse	[{"groupProperties":[],"id":"apiSecurityMethodsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"description","visible":true}]}]
+15b3a86f-a79c-5974-6022-d9e1c493c857	2022-06-08 16:11:43.34	ncb	ncb	VisibilyType.browse	[{"groupProperties":[],"id":"visibilyTypesTable","textSelection":false,"columns":[{"id":"name","visible":true}]}]
+696c3e71-d612-f274-416d-d4863da38d8e	2022-06-08 16:11:56.401	ncb	ncb	Product.edit	[{"id":"plansBox","expanded":true},{"id":"plansTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"persecond","visible":true},{"id":"perminute","visible":true},{"id":"perhour","visible":true}]}]
+92b81988-36ab-18b7-6392-bbee48da60c5	2022-06-08 16:19:15.213	ncb	ncb	RestApi.browse	[{"groupProperties":[],"id":"restApisTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"base_path","visible":true},{"id":"target_endpoint","visible":true},{"id":"security_method","visible":true}]}]
+ce3f1346-a242-b2e4-9c35-c1c86dafd459	2022-06-08 16:19:15.221	ncb	ncb	PublishedProduct.browse	[{"groupProperties":[],"id":"publishedProductsTable","textSelection":false,"columns":[{"id":"product","visible":true},{"id":"state","visible":true},{"id":"published_date","visible":true}]}]
+cc1ebbc8-9d61-dbfe-4b67-6cfa9fbf083e	2022-06-09 14:43:26.585	pilotvcb	pilotvcb	VisibilyType.browse	[{"groupProperties":[],"id":"visibilyTypesTable","textSelection":false,"columns":[{"id":"name","visible":true}]}]
+d2538393-0eb0-f71f-cae9-269707acd148	2022-06-08 13:15:42.972	ncb	ncb	VirtualArea.browse	[{"groupProperties":[],"id":"virtualAreasTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+6f742575-2c9b-e889-3762-074b7c3883f2	2022-06-09 11:29:53.475	ncb	ncb	Consumer.browse	[{"groupProperties":[],"id":"consumersTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"site","visible":true},{"id":"title","visible":true},{"id":"security_method","visible":true}]}]
+3703ea81-4486-00d8-b2a9-f530efe478d2	2022-06-09 14:43:34.178	pilotvcb	pilotvcb	Product.edit	[{"id":"plansBox","expanded":true},{"id":"plansTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"persecond","visible":true},{"id":"perminute","visible":true},{"id":"perhour","visible":true}]}]
+9df960da-33a2-a13f-64de-e8fcfeacbd6a	2022-06-09 14:43:37.614	pilotvcb	pilotvcb	Product.browse	[{"groupProperties":[],"id":"productsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"visibility_type","visible":true}]}]
+a73cb7d9-2a2a-d2fa-efcf-faedcc546a0b	2022-06-09 14:43:47.316	pilotvcb	pilotvcb	RestApi.browse	[{"groupProperties":[],"id":"restApisTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"base_path","visible":true},{"id":"target_endpoint","visible":true},{"id":"security_method","visible":true}]}]
+da4eb8e3-1d21-048b-8478-77125645377b	2022-06-09 15:52:46.69	pilotvcb	pilotvcb	Consumer.browse	[{"groupProperties":[],"id":"consumersTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"site","visible":true},{"id":"title","visible":true},{"id":"security_method","visible":true}]}]
+044afb2f-ac31-545e-03bc-4655e21dd331	2022-06-09 15:53:01.302	pilotvcb	pilotvcb	Site.browse	[{"groupProperties":[],"id":"sitesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"portal_admin","visible":true},{"id":"oauth_provider","visible":true},{"id":"gateway","visible":true},{"id":"portal","visible":true},{"id":"virtual_area","visible":true}]}]
+485d3f88-588f-964c-73b2-4f2822470b31	2022-06-13 18:08:05.825	ncb	ncb	ApiRegister.browse	[{"groupProperties":[],"id":"apiRegistersTable","textSelection":false,"columns":[{"id":"api","visible":true},{"id":"register_datetime","visible":true}]}]
+fc6b59d1-bf67-273e-f060-bcf56e84a15a	2022-06-14 11:07:49.21	pilotvcb	pilotvcb	PublishedProduct.browse	[{"groupProperties":[],"id":"publishedProductsTable","textSelection":false,"sortProperty":"product","sortAscending":false,"columns":[{"id":"product","visible":true},{"id":"state","visible":true},{"id":"published_date","visible":true}]}]
+8f4c9408-3fa6-dd08-bb17-05e7bf0c0aec	2022-04-17 15:07:15.447	admin	admin	User.browse	[{"groupProperties":[],"id":"usersTable","textSelection":false,"columns":[{"id":"username","visible":true},{"id":"firstName","visible":true},{"id":"lastName","visible":true},{"id":"email","visible":true},{"id":"providerPlan","visible":true},{"id":"active","visible":true}]}]
+bedf0d91-fb12-38af-2c0d-762d9b133ef9	2022-06-14 14:15:43.122	topoadmin	topoadmin	VirtualArea.browse	[{"groupProperties":[],"id":"virtualAreasTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"description","visible":true}]}]
+e6c1ab45-1932-4863-bc33-40af8d0d2a4f	2022-06-14 14:15:51.384	topoadmin	topoadmin	Site.edit	[{"id":"catalogsBox","expanded":true},{"id":"catalogsTable","textSelection":false,"columns":[]}]
+ce7f2787-27bb-cebc-3ebe-500ffefa897e	2022-06-14 14:15:51.393	topoadmin	topoadmin	Site.browse	[{"groupProperties":[],"id":"sitesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"portal_admin","visible":true},{"id":"oauth_provider","visible":true},{"id":"gateway","visible":true},{"id":"portal","visible":true},{"id":"virtual_area","visible":true}]}]
+ddfd90b3-6d90-e279-8bb5-480762e027fd	2022-06-14 14:15:51.397	topoadmin	topoadmin	Provider.browse	[{"groupProperties":[],"id":"usersTable","textSelection":false,"columns":[{"id":"username","visible":true},{"id":"firstName","visible":true},{"id":"lastName","visible":true},{"id":"email","visible":true},{"id":"active","visible":true}]}]
+b0a3743b-7d6a-fa8b-cd2f-cc6f2a05e784	2022-06-14 14:18:56.547	ssi	ssi	Product.browse	[{"groupProperties":[],"id":"productsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"visibility_type","visible":true}]}]
+f2566d94-1a7f-bf6a-f310-22054e5418cb	2022-06-14 14:19:14.713	ssi	ssi	RestApi.browse	[{"groupProperties":[],"id":"restApisTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"base_path","visible":true},{"id":"target_endpoint","visible":true},{"id":"security_method","visible":true}]}]
+45a86eee-2a38-e6ee-df01-d20216bc4693	2022-06-14 14:19:14.722	ssi	ssi	Consumer.browse	[{"groupProperties":[],"id":"consumersTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"site","visible":true},{"id":"title","visible":true},{"id":"security_method","visible":true}]}]
+8deb74dc-f4b0-d6d0-a8a4-20df925a4f02	2022-06-14 14:20:45.936	topoadmin	topoadmin	GatewayUsagePermission.browse	[{"groupProperties":[],"id":"gatewayUsagePermissionsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"api_provider","visible":true},{"id":"gateway","visible":true}]}]
+d93c7b84-c7c1-8e41-4e80-aa4a149ab462	2022-06-14 14:20:56.328	topoadmin	topoadmin	PortalUsagePermission.browse	[{"groupProperties":[],"id":"portalUsagePermissionsTable","textSelection":false,"columns":[{"id":"api_provider","visible":true},{"id":"portal","visible":true}]}]
+5c4aecf1-dd96-3a46-f41b-77ddb8c8d54a	2022-06-14 14:21:07.793	topoadmin	topoadmin	GatewayService.browse	[{"groupProperties":[],"id":"gatewayServicesTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"management_endpoint","visible":true},{"id":"invocation_endpoint","visible":true},{"id":"gateway_type","visible":true},{"id":"title","visible":true},{"id":"analyticsAssociated","visible":true},{"id":"virtualArea","visible":true}]}]
+b2225384-cec6-a5c1-65db-76e706bfbc0f	2022-06-14 14:21:24.48	topoadmin	topoadmin	VirtualArea.edit	[{"id":"gatewaysBox","expanded":true},{"id":"portalsBox","expanded":true},{"id":"analyticsBox","expanded":true},{"id":"gatewaysTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"management_endpoint","visible":true},{"id":"invocation_endpoint","visible":true},{"id":"title","visible":true}]},{"id":"portalsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"management_endpoint","visible":true}]},{"id":"analyticsTable","textSelection":false,"columns":[{"id":"name","visible":true},{"id":"title","visible":true},{"id":"management_endpoint","visible":true}]}]
+1f90e0f0-00cd-8491-c9cb-f206c14304bd	2022-04-29 10:51:08.529	bidv	bidv	PublishedProduct.browse	[{"groupProperties":[],"id":"publishedProductsTable","textSelection":false,"sortProperty":"product","sortAscending":true,"columns":[{"id":"product","visible":true},{"id":"state","visible":true},{"id":"published_date","visible":true}]}]
+\.
+
+
+--
+-- TOC entry 3635 (class 0 OID 21262)
+-- Dependencies: 240
+-- Data for Name: ui_table_presentation; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.ui_table_presentation (id, create_ts, created_by, component, name, settings, username, is_auto_save, update_ts, updated_by, sys_tenant_id, is_default) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3636 (class 0 OID 21267)
+-- Dependencies: 241
+-- Data for Name: user_; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.user_ (id, version, username, first_name, last_name, password, email, active, time_zone_id, provider_plan) FROM stdin;
+60885987-1b61-4247-94c7-dff348347f93	1	admin	\N	\N	{noop}admin	\N	t	\N	\N
+7309aed6-9ac7-c6ec-c45a-de74fce8072a	1	tpb	TPBank	\N	{bcrypt}$2a$10$ZcK003pI6uqgmtWgMxrGuOZ8eiIPLJvOPURazar3gepJyqUec7rnK	\N	t	\N	\N
+94a3c8e5-2457-15b7-1ec1-671efbb8a512	1	test1	\N	\N	{bcrypt}$2a$10$4vKw64zqHlNMqR03wd9Z4uQkoW3qCMgmoxfxm6aOOWl3SLzef8WUm	\N	t	\N	\N
+d77976e9-650d-86e5-8f92-253572aa26a9	6	bidv	BIDV	Bank	{bcrypt}$2a$10$A5VRNRCrBm9HGIklVRjb9uD2Tz21fbFlyoiP0VluMlqIVdv1WGluS	\N	t	Africa/Abidjan	Enterprise
+360b0248-8451-11c5-331b-49eb46906431	4	hdbank	HDBank	HDBank	{bcrypt}$2a$10$.Mn3pDoGqIKkjcanjIMGO.FriWXdz0CiIf5WWLFmq3WKLhfnFIbVu	admin@hdbank.com.vn	t	\N	Enterprise
+385e698c-d84e-7fdb-9bf8-1223fdb95aab	1	ncb	NCB	Bank	{bcrypt}$2a$10$FpUpKzFs6Z6qPw75e/BPeexHIL1irTHTy6goWZbYiHERtuazJ9beG	\N	t	\N	Normal
+7ed6d4af-93e5-07dc-f084-204f7b581bb0	1	pilotvcb	Pilot	for VCB	{bcrypt}$2a$10$yq0rk/zUraiFfLiU5qLtVug4o7GtZgVbKU.RUm/bztjccscA2t5Sq	\N	t	\N	Pilot
+eb2ab42b-1b40-e232-4ab9-5a8f93039027	1	ssi	SSI	Company	{bcrypt}$2a$10$Pq3ViF3Q.ziSkAmDk9RbaOqsyuPJt3aL6qaHoFDamCJqK0HOV8JU2	\N	t	\N	Normal
+280719f2-9ba9-73db-1e44-c54ed49406e9	1	topoadmin	Topology	Admin	{bcrypt}$2a$10$oNAj14xBZJO0WeWeCPVSQ.J3jYX7ulLSH9g1uXmdYHLBHS2P22IJa	\N	t	\N	Enterprise
+\.
+
+
+--
+-- TOC entry 3637 (class 0 OID 21272)
+-- Dependencies: 242
+-- Data for Name: virtual_area; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.virtual_area (id, name, title, description) FROM stdin;
+9d924865-db8d-9c07-df43-10c3a65ba5b8	North	DC in Hanoi	Hanoi DC
+5a4bed22-296d-4201-b1a7-8e26d479111d	HCM	HCM DC	HCM
+\.
+
+
+--
+-- TOC entry 3638 (class 0 OID 21275)
+-- Dependencies: 243
+-- Data for Name: visibily_type; Type: TABLE DATA; Schema: public; Owner: user1
+--
+
+COPY public.visibily_type (id, name) FROM stdin;
+eca9f38b-d354-999a-fc50-a52acead4cf1	Public
+ac7aede4-fb73-fe5e-4a78-79aad6898030	Subcribed
+\.
+
+
+--
+-- TOC entry 3391 (class 2606 OID 21279)
+-- Name: sec_resource_policy SEC_RESOURCE_POLICY_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_resource_policy
+    ADD CONSTRAINT "SEC_RESOURCE_POLICY_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3393 (class 2606 OID 21281)
+-- Name: sec_resource_role SEC_RESOURCE_ROLE_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_resource_role
+    ADD CONSTRAINT "SEC_RESOURCE_ROLE_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3396 (class 2606 OID 21283)
+-- Name: sec_role_assignment SEC_ROLE_ASSIGNMENT_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_role_assignment
+    ADD CONSTRAINT "SEC_ROLE_ASSIGNMENT_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3398 (class 2606 OID 21285)
+-- Name: sec_row_level_policy SEC_ROW_LEVEL_POLICY_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_row_level_policy
+    ADD CONSTRAINT "SEC_ROW_LEVEL_POLICY_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3400 (class 2606 OID 21287)
+-- Name: sec_row_level_role SEC_ROW_LEVEL_ROLE_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_row_level_role
+    ADD CONSTRAINT "SEC_ROW_LEVEL_ROLE_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3403 (class 2606 OID 21289)
+-- Name: sec_user_substitution SEC_USER_SUBSTITUTION_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_user_substitution
+    ADD CONSTRAINT "SEC_USER_SUBSTITUTION_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3417 (class 2606 OID 21291)
+-- Name: ui_filter_configuration UI_FILTER_CONFIGURATION_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.ui_filter_configuration
+    ADD CONSTRAINT "UI_FILTER_CONFIGURATION_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3419 (class 2606 OID 21293)
+-- Name: ui_setting UI_SETTING_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.ui_setting
+    ADD CONSTRAINT "UI_SETTING_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3421 (class 2606 OID 21295)
+-- Name: ui_table_presentation UI_TABLE_PRESENTATION_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.ui_table_presentation
+    ADD CONSTRAINT "UI_TABLE_PRESENTATION_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3423 (class 2606 OID 21297)
+-- Name: user_ USER__pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.user_
+    ADD CONSTRAINT "USER__pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3329 (class 2606 OID 21299)
+-- Name: databasechangeloglock databasechangeloglock_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.databasechangeloglock
+    ADD CONSTRAINT databasechangeloglock_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3347 (class 2606 OID 21301)
+-- Name: persistent_logins persistent_logins_pkey; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.persistent_logins
+    ADD CONSTRAINT persistent_logins_pkey PRIMARY KEY (series);
+
+
+--
+-- TOC entry 3307 (class 2606 OID 21303)
+-- Name: analytics_service pk_analytics_service; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.analytics_service
+    ADD CONSTRAINT pk_analytics_service PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3313 (class 2606 OID 21305)
+-- Name: api_register pk_api_register; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_register
+    ADD CONSTRAINT pk_api_register PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3317 (class 2606 OID 21307)
+-- Name: api_security_method pk_api_security_method; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_security_method
+    ADD CONSTRAINT pk_api_security_method PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3322 (class 2606 OID 21309)
+-- Name: api_subcription pk_api_subcription; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_subcription
+    ADD CONSTRAINT pk_api_subcription PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3327 (class 2606 OID 21313)
+-- Name: consumer pk_consumer; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.consumer
+    ADD CONSTRAINT pk_consumer PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3332 (class 2606 OID 21315)
+-- Name: draft_plan pk_draft_plan; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.draft_plan
+    ADD CONSTRAINT pk_draft_plan PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3334 (class 2606 OID 21317)
+-- Name: draft_product pk_draft_product; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.draft_product
+    ADD CONSTRAINT pk_draft_product PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3337 (class 2606 OID 21319)
+-- Name: gateway_service pk_gateway_service; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_service
+    ADD CONSTRAINT pk_gateway_service PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3341 (class 2606 OID 21321)
+-- Name: gateway_type pk_gateway_type; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_type
+    ADD CONSTRAINT pk_gateway_type PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3343 (class 2606 OID 21323)
+-- Name: gateway_usage_permission pk_gateway_usage_permission; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_usage_permission
+    ADD CONSTRAINT pk_gateway_usage_permission PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3350 (class 2606 OID 21325)
+-- Name: plan_ pk_plan_; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.plan_
+    ADD CONSTRAINT pk_plan_ PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3353 (class 2606 OID 21327)
+-- Name: portal_service pk_portal_service; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.portal_service
+    ADD CONSTRAINT pk_portal_service PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3357 (class 2606 OID 21329)
+-- Name: portal_usage_permission pk_portal_usage_permission; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.portal_usage_permission
+    ADD CONSTRAINT pk_portal_usage_permission PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3363 (class 2606 OID 21331)
+-- Name: product pk_product; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product
+    ADD CONSTRAINT pk_product PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3368 (class 2606 OID 21333)
+-- Name: product_api_register pk_product_api_register; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_api_register
+    ADD CONSTRAINT pk_product_api_register PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3373 (class 2606 OID 21337)
+-- Name: product_subscription pk_product_subscription; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_subscription
+    ADD CONSTRAINT pk_product_subscription PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3381 (class 2606 OID 21339)
+-- Name: published_product pk_published_product; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.published_product
+    ADD CONSTRAINT pk_published_product PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3387 (class 2606 OID 21341)
+-- Name: rest_api pk_rest_api; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.rest_api
+    ADD CONSTRAINT pk_rest_api PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3409 (class 2606 OID 21343)
+-- Name: site pk_site; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site
+    ADD CONSTRAINT pk_site PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3413 (class 2606 OID 21345)
+-- Name: site_gateway pk_site_gateway; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site_gateway
+    ADD CONSTRAINT pk_site_gateway PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3426 (class 2606 OID 21347)
+-- Name: virtual_area pk_virtual_area; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.virtual_area
+    ADD CONSTRAINT pk_virtual_area PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3428 (class 2606 OID 21349)
+-- Name: visibily_type pk_visibily_type; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.visibily_type
+    ADD CONSTRAINT pk_visibily_type PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3309 (class 2606 OID 21351)
+-- Name: analytics_service uc_analytics_service_name; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.analytics_service
+    ADD CONSTRAINT uc_analytics_service_name UNIQUE (name);
+
+
+--
+-- TOC entry 3315 (class 2606 OID 21353)
+-- Name: api_register uc_api_register_api_product; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_register
+    ADD CONSTRAINT uc_api_register_api_product UNIQUE (api_product_id);
+
+
+--
+-- TOC entry 3319 (class 2606 OID 21355)
+-- Name: api_security_method uc_api_security_method_name; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_security_method
+    ADD CONSTRAINT uc_api_security_method_name UNIQUE (name);
+
+
+--
+-- TOC entry 3339 (class 2606 OID 21357)
+-- Name: gateway_service uc_gateway_service_name; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_service
+    ADD CONSTRAINT uc_gateway_service_name UNIQUE (name);
+
+
+--
+-- TOC entry 3345 (class 2606 OID 21359)
+-- Name: gateway_usage_permission uc_gatewayusagep_providergatew; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_usage_permission
+    ADD CONSTRAINT uc_gatewayusagep_providergatew UNIQUE (provider_gateway_id);
+
+
+--
+-- TOC entry 3355 (class 2606 OID 21361)
+-- Name: portal_service uc_portal_service_name; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.portal_service
+    ADD CONSTRAINT uc_portal_service_name UNIQUE (name);
+
+
+--
+-- TOC entry 3359 (class 2606 OID 21363)
+-- Name: portal_usage_permission uc_portalusagepe_providerporta; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.portal_usage_permission
+    ADD CONSTRAINT uc_portalusagepe_providerporta UNIQUE (provider_portal_id);
+
+
+--
+-- TOC entry 3365 (class 2606 OID 21365)
+-- Name: product uc_product_owner_prdname; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product
+    ADD CONSTRAINT uc_product_owner_prdname UNIQUE (owner_prdname);
+
+
+--
+-- TOC entry 3370 (class 2606 OID 21367)
+-- Name: product_api_register uc_productapiregist_productapi; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_api_register
+    ADD CONSTRAINT uc_productapiregist_productapi UNIQUE (product_api);
+
+
+--
+-- TOC entry 3375 (class 2606 OID 21369)
+-- Name: product_subscription uc_productsubscr_kongconsumerg; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_subscription
+    ADD CONSTRAINT uc_productsubscr_kongconsumerg UNIQUE (kong_consumer_group_id);
+
+
+--
+-- TOC entry 3377 (class 2606 OID 21371)
+-- Name: product_subscription uc_productsubscr_productconsum; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_subscription
+    ADD CONSTRAINT uc_productsubscr_productconsum UNIQUE (product_consumer_id);
+
+
+--
+-- TOC entry 3383 (class 2606 OID 21373)
+-- Name: published_product uc_publishedproduc_productsite; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.published_product
+    ADD CONSTRAINT uc_publishedproduc_productsite UNIQUE (product_site_id);
+
+
+--
+-- TOC entry 3389 (class 2606 OID 21375)
+-- Name: rest_api uc_rest_api_owner_apiname; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.rest_api
+    ADD CONSTRAINT uc_rest_api_owner_apiname UNIQUE (owner_apiname);
+
+
+--
+-- TOC entry 3415 (class 2606 OID 21377)
+-- Name: site_gateway uc_site_gateway_site_gateway; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site_gateway
+    ADD CONSTRAINT uc_site_gateway_site_gateway UNIQUE (site_gateway_id);
+
+
+--
+-- TOC entry 3411 (class 2606 OID 21379)
+-- Name: site uc_site_owner_sitename; Type: CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site
+    ADD CONSTRAINT uc_site_owner_sitename UNIQUE (owner_sitename);
+
+
+--
+-- TOC entry 3305 (class 1259 OID 21380)
+-- Name: idx_analyticsservice; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_analyticsservice ON public.analytics_service USING btree (virtual_area_id);
+
+
+--
+-- TOC entry 3310 (class 1259 OID 21381)
+-- Name: idx_apiregister_api_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_apiregister_api_id ON public.api_register USING btree (api_id);
+
+
+--
+-- TOC entry 3311 (class 1259 OID 21382)
+-- Name: idx_apiregister_product_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_apiregister_product_id ON public.api_register USING btree (product_id);
+
+
+--
+-- TOC entry 3320 (class 1259 OID 21383)
+-- Name: idx_apisubcription; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_apisubcription ON public.api_subcription USING btree (subcribed_api_id);
+
+
+--
+-- TOC entry 3323 (class 1259 OID 21385)
+-- Name: idx_consumer; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_consumer ON public.consumer USING btree (security_method_id);
+
+
+--
+-- TOC entry 3324 (class 1259 OID 21386)
+-- Name: idx_consumer_provider_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_consumer_provider_id ON public.consumer USING btree (provider_id);
+
+
+--
+-- TOC entry 3325 (class 1259 OID 21387)
+-- Name: idx_consumer_site_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_consumer_site_id ON public.consumer USING btree (site_id);
+
+
+--
+-- TOC entry 3330 (class 1259 OID 21388)
+-- Name: idx_draftplan; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_draftplan ON public.draft_plan USING btree (draft_product_id);
+
+
+--
+-- TOC entry 3335 (class 1259 OID 21389)
+-- Name: idx_gatewayservice; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_gatewayservice ON public.gateway_service USING btree (analytics_associated_id);
+
+
+--
+-- TOC entry 3348 (class 1259 OID 21390)
+-- Name: idx_plan_product_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_plan_product_id ON public.plan_ USING btree (product_id);
+
+
+--
+-- TOC entry 3351 (class 1259 OID 21391)
+-- Name: idx_portalservice; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_portalservice ON public.portal_service USING btree (virtual_area_id);
+
+
+--
+-- TOC entry 3360 (class 1259 OID 21392)
+-- Name: idx_product; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_product ON public.product USING btree (visibility_type_id);
+
+
+--
+-- TOC entry 3361 (class 1259 OID 21393)
+-- Name: idx_product_owner_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_product_owner_id ON public.product USING btree (owner_id);
+
+
+--
+-- TOC entry 3366 (class 1259 OID 21394)
+-- Name: idx_productapiregister; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_productapiregister ON public.product_api_register USING btree (rest_api_id);
+
+
+--
+-- TOC entry 3371 (class 1259 OID 21395)
+-- Name: idx_productsubscription; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_productsubscription ON public.product_subscription USING btree (published_product_id);
+
+
+--
+-- TOC entry 3378 (class 1259 OID 21396)
+-- Name: idx_publishedproduct; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_publishedproduct ON public.published_product USING btree (product_id);
+
+
+--
+-- TOC entry 3379 (class 1259 OID 21397)
+-- Name: idx_publishedproduct_site_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_publishedproduct_site_id ON public.published_product USING btree (site_id);
+
+
+--
+-- TOC entry 3394 (class 1259 OID 21398)
+-- Name: idx_resource_role_un_c; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_resource_role_un_c ON public.sec_resource_role USING btree (code) WHERE (delete_ts IS NULL);
+
+
+--
+-- TOC entry 3384 (class 1259 OID 21399)
+-- Name: idx_restapi; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_restapi ON public.rest_api USING btree (security_method_id);
+
+
+--
+-- TOC entry 3385 (class 1259 OID 21400)
+-- Name: idx_restapi_owner_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_restapi_owner_id ON public.rest_api USING btree (owner_id);
+
+
+--
+-- TOC entry 3401 (class 1259 OID 21401)
+-- Name: idx_row_level_role_un_c; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_row_level_role_un_c ON public.sec_row_level_role USING btree (code) WHERE (delete_ts IS NULL);
+
+
+--
+-- TOC entry 3404 (class 1259 OID 21402)
+-- Name: idx_site_gateway_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_site_gateway_id ON public.site USING btree (gateway_id);
+
+
+--
+-- TOC entry 3405 (class 1259 OID 21403)
+-- Name: idx_site_owner_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_site_owner_id ON public.site USING btree (owner_id);
+
+
+--
+-- TOC entry 3406 (class 1259 OID 21404)
+-- Name: idx_site_portal_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_site_portal_id ON public.site USING btree (portal_id);
+
+
+--
+-- TOC entry 3407 (class 1259 OID 21405)
+-- Name: idx_site_virtual_area_id; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE INDEX idx_site_virtual_area_id ON public.site USING btree (virtual_area_id);
+
+
+--
+-- TOC entry 3424 (class 1259 OID 21406)
+-- Name: idx_user__on_username; Type: INDEX; Schema: public; Owner: user1
+--
+
+CREATE UNIQUE INDEX idx_user__on_username ON public.user_ USING btree (username);
+
+
+--
+-- TOC entry 3429 (class 2606 OID 21407)
+-- Name: analytics_service fk_analyticsser_on_virtualarea; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.analytics_service
+    ADD CONSTRAINT fk_analyticsser_on_virtualarea FOREIGN KEY (virtual_area_id) REFERENCES public.virtual_area(id);
+
+
+--
+-- TOC entry 3430 (class 2606 OID 21412)
+-- Name: api_register fk_api_register_on_api; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_register
+    ADD CONSTRAINT fk_api_register_on_api FOREIGN KEY (api_id) REFERENCES public.rest_api(id);
+
+
+--
+-- TOC entry 3431 (class 2606 OID 21417)
+-- Name: api_register fk_api_register_on_product; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_register
+    ADD CONSTRAINT fk_api_register_on_product FOREIGN KEY (product_id) REFERENCES public.product(id);
+
+
+--
+-- TOC entry 3432 (class 2606 OID 21422)
+-- Name: api_subcription fk_api_subcription_on_consumer; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_subcription
+    ADD CONSTRAINT fk_api_subcription_on_consumer FOREIGN KEY (consumer_id) REFERENCES public.consumer(id);
+
+
+--
+-- TOC entry 3433 (class 2606 OID 21427)
+-- Name: api_subcription fk_apisubcript_on_subcribedap; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.api_subcription
+    ADD CONSTRAINT fk_apisubcript_on_subcribedap FOREIGN KEY (subcribed_api_id) REFERENCES public.rest_api(id);
+
+
+--
+-- TOC entry 3434 (class 2606 OID 21437)
+-- Name: consumer fk_consumer_on_provider; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.consumer
+    ADD CONSTRAINT fk_consumer_on_provider FOREIGN KEY (provider_id) REFERENCES public.user_(id);
+
+
+--
+-- TOC entry 3435 (class 2606 OID 21442)
+-- Name: consumer fk_consumer_on_security_method; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.consumer
+    ADD CONSTRAINT fk_consumer_on_security_method FOREIGN KEY (security_method_id) REFERENCES public.api_security_method(id);
+
+
+--
+-- TOC entry 3436 (class 2606 OID 21447)
+-- Name: consumer fk_consumer_on_site; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.consumer
+    ADD CONSTRAINT fk_consumer_on_site FOREIGN KEY (site_id) REFERENCES public.site(id);
+
+
+--
+-- TOC entry 3437 (class 2606 OID 21452)
+-- Name: draft_plan fk_draft_plan_on_draft_product; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.draft_plan
+    ADD CONSTRAINT fk_draft_plan_on_draft_product FOREIGN KEY (draft_product_id) REFERENCES public.draft_product(id);
+
+
+--
+-- TOC entry 3438 (class 2606 OID 21457)
+-- Name: gateway_service fk_gatewayserv_on_analyticsas; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_service
+    ADD CONSTRAINT fk_gatewayserv_on_analyticsas FOREIGN KEY (analytics_associated_id) REFERENCES public.analytics_service(id);
+
+
+--
+-- TOC entry 3439 (class 2606 OID 21462)
+-- Name: gateway_service fk_gatewayservi_on_gatewaytype; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_service
+    ADD CONSTRAINT fk_gatewayservi_on_gatewaytype FOREIGN KEY (gateway_type_id) REFERENCES public.gateway_type(id);
+
+
+--
+-- TOC entry 3440 (class 2606 OID 21467)
+-- Name: gateway_service fk_gatewayservi_on_virtualarea; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_service
+    ADD CONSTRAINT fk_gatewayservi_on_virtualarea FOREIGN KEY (virtual_area_id) REFERENCES public.virtual_area(id);
+
+
+--
+-- TOC entry 3441 (class 2606 OID 21472)
+-- Name: gateway_usage_permission fk_gatewayusage_on_apiprovider; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_usage_permission
+    ADD CONSTRAINT fk_gatewayusage_on_apiprovider FOREIGN KEY (api_provider_id) REFERENCES public.user_(id);
+
+
+--
+-- TOC entry 3442 (class 2606 OID 21477)
+-- Name: gateway_usage_permission fk_gatewayusageperm_on_gateway; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.gateway_usage_permission
+    ADD CONSTRAINT fk_gatewayusageperm_on_gateway FOREIGN KEY (gateway_id) REFERENCES public.gateway_service(id);
+
+
+--
+-- TOC entry 3443 (class 2606 OID 21482)
+-- Name: plan_ fk_plan__on_product; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.plan_
+    ADD CONSTRAINT fk_plan__on_product FOREIGN KEY (product_id) REFERENCES public.product(id);
+
+
+--
+-- TOC entry 3444 (class 2606 OID 21487)
+-- Name: portal_service fk_portalservic_on_virtualarea; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.portal_service
+    ADD CONSTRAINT fk_portalservic_on_virtualarea FOREIGN KEY (virtual_area_id) REFERENCES public.virtual_area(id);
+
+
+--
+-- TOC entry 3445 (class 2606 OID 21492)
+-- Name: portal_usage_permission fk_portalusagep_on_apiprovider; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.portal_usage_permission
+    ADD CONSTRAINT fk_portalusagep_on_apiprovider FOREIGN KEY (api_provider_id) REFERENCES public.user_(id);
+
+
+--
+-- TOC entry 3446 (class 2606 OID 21497)
+-- Name: portal_usage_permission fk_portalusagepermis_on_portal; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.portal_usage_permission
+    ADD CONSTRAINT fk_portalusagepermis_on_portal FOREIGN KEY (portal_id) REFERENCES public.portal_service(id);
+
+
+--
+-- TOC entry 3447 (class 2606 OID 21502)
+-- Name: product fk_product_on_owner; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product
+    ADD CONSTRAINT fk_product_on_owner FOREIGN KEY (owner_id) REFERENCES public.user_(id);
+
+
+--
+-- TOC entry 3448 (class 2606 OID 21507)
+-- Name: product fk_product_on_visibility_type; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product
+    ADD CONSTRAINT fk_product_on_visibility_type FOREIGN KEY (visibility_type_id) REFERENCES public.visibily_type(id);
+
+
+--
+-- TOC entry 3449 (class 2606 OID 21512)
+-- Name: product_api_register fk_productapiregist_on_product; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_api_register
+    ADD CONSTRAINT fk_productapiregist_on_product FOREIGN KEY (product_id) REFERENCES public.product(id);
+
+
+--
+-- TOC entry 3450 (class 2606 OID 21517)
+-- Name: product_api_register fk_productapiregist_on_restapi; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_api_register
+    ADD CONSTRAINT fk_productapiregist_on_restapi FOREIGN KEY (rest_api_id) REFERENCES public.rest_api(id);
+
+
+--
+-- TOC entry 3451 (class 2606 OID 21522)
+-- Name: product_subscription fk_productsubs_on_publishedpr; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_subscription
+    ADD CONSTRAINT fk_productsubs_on_publishedpr FOREIGN KEY (published_product_id) REFERENCES public.published_product(id);
+
+
+--
+-- TOC entry 3452 (class 2606 OID 21527)
+-- Name: product_subscription fk_productsubscrip_on_consumer; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.product_subscription
+    ADD CONSTRAINT fk_productsubscrip_on_consumer FOREIGN KEY (consumer_id) REFERENCES public.consumer(id);
+
+
+--
+-- TOC entry 3453 (class 2606 OID 21532)
+-- Name: published_product fk_published_product_on_site; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.published_product
+    ADD CONSTRAINT fk_published_product_on_site FOREIGN KEY (site_id) REFERENCES public.site(id);
+
+
+--
+-- TOC entry 3454 (class 2606 OID 21537)
+-- Name: published_product fk_publishedproduct_on_product; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.published_product
+    ADD CONSTRAINT fk_publishedproduct_on_product FOREIGN KEY (product_id) REFERENCES public.product(id);
+
+
+--
+-- TOC entry 3457 (class 2606 OID 21542)
+-- Name: sec_resource_policy fk_res_policy_role; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_resource_policy
+    ADD CONSTRAINT fk_res_policy_role FOREIGN KEY (role_id) REFERENCES public.sec_resource_role(id);
+
+
+--
+-- TOC entry 3455 (class 2606 OID 21547)
+-- Name: rest_api fk_rest_api_on_owner; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.rest_api
+    ADD CONSTRAINT fk_rest_api_on_owner FOREIGN KEY (owner_id) REFERENCES public.user_(id);
+
+
+--
+-- TOC entry 3456 (class 2606 OID 21552)
+-- Name: rest_api fk_rest_api_on_security_method; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.rest_api
+    ADD CONSTRAINT fk_rest_api_on_security_method FOREIGN KEY (security_method_id) REFERENCES public.api_security_method(id);
+
+
+--
+-- TOC entry 3458 (class 2606 OID 21557)
+-- Name: sec_row_level_policy fk_row_level_policy_role; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.sec_row_level_policy
+    ADD CONSTRAINT fk_row_level_policy_role FOREIGN KEY (role_id) REFERENCES public.sec_row_level_role(id);
+
+
+--
+-- TOC entry 3463 (class 2606 OID 21562)
+-- Name: site_gateway fk_site_gateway_on_gateway; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site_gateway
+    ADD CONSTRAINT fk_site_gateway_on_gateway FOREIGN KEY (gateway_id) REFERENCES public.gateway_service(id);
+
+
+--
+-- TOC entry 3464 (class 2606 OID 21567)
+-- Name: site_gateway fk_site_gateway_on_site; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site_gateway
+    ADD CONSTRAINT fk_site_gateway_on_site FOREIGN KEY (site_id) REFERENCES public.site(id);
+
+
+--
+-- TOC entry 3459 (class 2606 OID 21572)
+-- Name: site fk_site_on_gateway; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site
+    ADD CONSTRAINT fk_site_on_gateway FOREIGN KEY (gateway_id) REFERENCES public.gateway_service(id);
+
+
+--
+-- TOC entry 3460 (class 2606 OID 21577)
+-- Name: site fk_site_on_owner; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site
+    ADD CONSTRAINT fk_site_on_owner FOREIGN KEY (owner_id) REFERENCES public.user_(id);
+
+
+--
+-- TOC entry 3461 (class 2606 OID 21582)
+-- Name: site fk_site_on_portal; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site
+    ADD CONSTRAINT fk_site_on_portal FOREIGN KEY (portal_id) REFERENCES public.portal_service(id);
+
+
+--
+-- TOC entry 3462 (class 2606 OID 21587)
+-- Name: site fk_site_on_virtual_area; Type: FK CONSTRAINT; Schema: public; Owner: user1
+--
+
+ALTER TABLE ONLY public.site
+    ADD CONSTRAINT fk_site_on_virtual_area FOREIGN KEY (virtual_area_id) REFERENCES public.virtual_area(id);
+
+
+-- Completed on 2022-06-17 16:59:56
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://draftProductEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="draftProductDc"
+                  class="com.company.apimanager.entity.DraftProduct">
+            <fetchPlan extends="_base">
+                <property name="plans" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="plansDc" property="plans"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="draftProductDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="titleField" property="title"/>
+            </column>
+        </form>
+        <groupBox id="plansBox" caption="msg://com.company.apimanager.entity/DraftProduct.plans">
+            <table id="plansTable" dataContainer="plansDc" width="100%" height="200px">
+                <actions>
+                    <action id="create" type="create"/>
+                    <action id="edit" type="edit"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <columns>
+                    <column id="name"/>
+                    <column id="ratelimit"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="plansTable.create"/>
+                    <button action="plansTable.edit"/>
+                    <button action="plansTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

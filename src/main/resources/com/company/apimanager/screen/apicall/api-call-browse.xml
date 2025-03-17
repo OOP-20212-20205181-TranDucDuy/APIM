@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://apiCallBrowse.caption"
+        focusComponent="apiCallsTable">
+    <data readOnly="true">
+        <collection id="apiCallsDc"
+                    class="com.company.apimanager.entity.ApiCall"/>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="apiCallsTable" spacing="true">
+        <groupTable id="apiCallsTable"
+                    width="100%"
+                    dataContainer="apiCallsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="method"/>
+                <column id="endpoint"/>
+                <column id="authorization_type"/>
+                <column id="request_body"/>
+                <column id="basic_authen_user"/>
+                <column id="basic_authen_password"/>
+                <column id="key_authen_name"/>
+                <column id="key_authen_value"/>
+                <column id="bearer_authen_token"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="apiCallsTable.create"/>
+                <button id="editBtn" action="apiCallsTable.edit"/>
+                <button id="removeBtn" action="apiCallsTable.remove"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

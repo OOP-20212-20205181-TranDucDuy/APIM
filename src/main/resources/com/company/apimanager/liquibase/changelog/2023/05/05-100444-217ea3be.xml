@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="ApiManager">
+        <createTable tableName="PRICING_PLAN">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRICING_PLAN"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RATE_LIMIT" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DEVELOPER_PORTAL" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CUSTOM_DOMAIN" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SELF_HOSTED_GATEWAY" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MESSAGE_SIZE" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LOGING_RETENTION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SLA" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRICE" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="ApiManager">
+        <addColumn tableName="USER_">
+            <column name="PRICING_PLAN" type="UUID"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="3" author="ApiManager">
+        <createIndex indexName="IDX_PRICING_PLAN_UNQ_NAME" tableName="PRICING_PLAN" unique="true">
+            <column name="NAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="4" author="ApiManager">
+        <createIndex indexName="IDX_USER__PRICING_PLAN" tableName="USER_">
+            <column name="PRICING_PLAN"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PRICING_PLAN" baseTableName="USER_"
+                                 constraintName="FK_USER__ON_PRICING_PLAN" referencedColumnNames="ID"
+                                 referencedTableName="PRICING_PLAN"/>
+    </changeSet>
+
+    <changeSet id="5" author="ApiManager">
+        <addColumn tableName="SITE">
+            <column name="PORTAL_ABOUT_PAGE_CONTENT" type="VARCHAR(500)"/>
+            <column name="PORTAL_HOME_PAGE_PAGE_CONTENT" type="VARCHAR(500)"/>
+            <column name="PORTAL_HOME_PAGE_PAGE_TITLE" type="VARCHAR(50)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="7" author="ApiManager">
+        <addColumn tableName="SITE">
+            <column name="PORTAL_ABOUT_PAGE_IMAGE_ID" type="VARCHAR(10)"/>
+            <column name="PORTAL_ABOUT_PAGE_IMAGE_URL" type="VARCHAR(200)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

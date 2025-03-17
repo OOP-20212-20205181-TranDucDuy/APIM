@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://testpageScreen.caption">
+    <actions>
+        <action id="testAction"/>
+    </actions>
+    <layout>
+        <button id="testBtn" caption="msg://testBtn.caption" action="testAction"/>
+    </layout>
+</window>

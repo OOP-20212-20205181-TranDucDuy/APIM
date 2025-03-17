@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="ApiManager">
+        <dropForeignKeyConstraint baseTableName="DRUPAL_LINK" constraintName="FK_DRUPAL_LINK_ON_REST_API"/>
+        <addForeignKeyConstraint baseColumnNames="rest_api_id" baseTableName="DRUPAL_LINK" constraintName="FK_DRUPAL_LINK_ON_REST_API"
+                                 referencedColumnNames="id" referencedTableName="REST_API" deleteCascade="true"/>
+
+        <dropForeignKeyConstraint baseTableName="DRUPAL_LINK" constraintName="FK_DRUPAL_LINK_ON_PUBLISHED_PRODUCT"/>
+        <addForeignKeyConstraint baseColumnNames="published_product_id" baseTableName="DRUPAL_LINK" constraintName="FK_DRUPAL_LINK_ON_PUBLISHED_PRODUCT"
+                                 referencedColumnNames="id" referencedTableName="PUBLISHED_PRODUCT" deleteCascade="true"/>
+    </changeSet>
+</databaseChangeLog>

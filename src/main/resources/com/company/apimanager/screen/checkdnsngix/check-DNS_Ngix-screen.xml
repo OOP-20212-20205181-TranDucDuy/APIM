@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://checkDnsNgixScreen.caption">
+    <layout>
+        <hbox>
+            <form>
+                <column>
+                    <textField id="dnsHostNameField" caption="DNS hostname"/>
+                </column>
+            </form>
+            <button id="dnsBtn" caption="Create DNS"/>
+            <button id="nginxBtn" caption="Create Nginx"/>
+        </hbox>
+    </layout>
+</window>

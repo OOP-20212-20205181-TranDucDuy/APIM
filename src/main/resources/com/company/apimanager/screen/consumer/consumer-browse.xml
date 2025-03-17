@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://consumerBrowse.caption"
+        focusComponent="consumersTable">
+    <data readOnly="true">
+        <collection id="consumersDc"
+                    class="com.company.apimanager.entity.Consumer">
+            <fetchPlan extends="_base">
+                <property name="site" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="consumersDl">
+                <query>
+                    <![CDATA[select e from Consumer e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.provider = :user</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+        <action id="subcriptionAction"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="consumersTable" spacing="true">
+        <!--
+        <filter id="filter"
+                dataLoader="consumersDl">
+            <properties include=".*"/>
+        </filter>
+        -->
+        <groupTable id="consumersTable"
+                    width="100%"
+                    dataContainer="consumersDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="site"/>
+                <column id="api_key" visible="false"/>
+                <column id="title"/>
+                <column id="password" visible="false"/>
+                <column id="provider_site_consumer_name" visible="false"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="consumersTable.create"/>
+                <button id="editBtn" action="consumersTable.edit"/>
+                <button id="oAuthBtn" caption="Create OAuth client"/>
+                <button id="jwtBtn" caption="Create JWT client"/>
+                <button id="removeBtn" action="consumersTable.remove" visible="false"/>
+                <button id="remove1Btn" caption="msg://com.company.apimanager.screen.consumer/remove1Btn.caption"/>
+                <button id="subcriptionBtn" caption="msg://subcriptionBtn.caption" action="subcriptionAction"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://apiRegisterBrowse.caption"
+        focusComponent="apiRegistersTable">
+    <data readOnly="true">
+        <collection id="apiRegistersDc"
+                    class="com.company.apimanager.screen.brandlogin.ApiRegister">
+            <fetchPlan extends="_base">
+                <property name="api" fetchPlan="_base"/>
+                <property name="product" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="apiRegistersDl">
+                <query>
+                    <![CDATA[select e from ApiRegister e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.product = :product</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="apiRegistersTable" spacing="true">
+        <label id="productLabel" value="msg://productLabel.value"/>
+        <!--
+        <filter id="filter"
+                dataLoader="apiRegistersDl">
+            <properties include=".*"/>
+        </filter>
+        -->
+        <groupTable id="apiRegistersTable"
+                    width="100%"
+                    dataContainer="apiRegistersDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit" visible="false"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="api"/>
+                <column id="product" visible="false"/>
+                <column id="register_datetime"/>
+                <column id="api_product_id" visible="false"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="apiRegistersTable.create" caption="msg://createBtn.caption"/>
+                <button id="editBtn" action="apiRegistersTable.edit"/>
+                <button id="removeBtn" action="apiRegistersTable.remove" caption="Unregister"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

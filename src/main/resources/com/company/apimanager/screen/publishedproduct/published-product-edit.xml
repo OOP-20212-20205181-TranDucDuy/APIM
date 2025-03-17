@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://publishedProductEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="publishedProductDc"
+                  class="com.company.apimanager.entity.PublishedProduct">
+            <fetchPlan extends="_base">
+                <property name="product" fetchPlan="_base"/>
+                <property name="site" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="sitesDc" class="com.company.apimanager.entity.Site">
+            <fetchPlan extends="_base"/>
+            <loader id="sitesDl">
+                <query>
+                    <![CDATA[select e from Site e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.owner = :owner</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e not in :sitelist</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <label id="editorLabel"/>
+        <form id="form" dataContainer="publishedProductDc">
+            <column width="350px">
+                <entityPicker id="productField" property="product" editable="false">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <entityPicker id="siteField" property="site" visible="false">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <entityComboBox id="siteComboBox" optionsContainer="sitesDc" caption="msg://siteComboBox.caption"/>
+                <dateField id="published_dateField" property="published_date" visible="false"/>
+                <textField id="product_site_idField" property="product_site_id" visible="false"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://publishedRestApiBrowse.caption"
+        focusComponent="publishedRestApisTable">
+    <data readOnly="true">
+        <collection id="publishedRestApisDc"
+                    class="com.company.apimanager.entity.PublishedRestApi">
+            <fetchPlan extends="_base"/>
+            <loader id="publishedRestApisDl">
+                <query>
+                    <![CDATA[select e from PublishedRestApi e]]>
+                    <condition>
+                        <c:jpql>
+                            <c:where>e.product = :product</c:where>
+                        </c:jpql>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="publishedRestApisTable" spacing="true">
+        <filter id="filter"
+                dataLoader="publishedRestApisDl">
+            <properties include=".*"/>
+        </filter>
+        <groupTable id="publishedRestApisTable"
+                    width="100%"
+                    dataContainer="publishedRestApisDc">
+            <actions>
+                <action id="create" type="create" visible="false"/>
+                <action id="edit" type="edit" visible="true" enable="true" caption="View"/>
+                <action id="remove" type="remove" visible="false"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="host" caption="Target API"/>
+                <column id="kongServiceId" visible="false"/>
+                <column id="consent_url"/>
+                <column id="oauthProvisionKey"/>
+            </columns>
+            <simplePagination/>
+
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="publishedRestApisTable.create"/>
+                <button id="editBtn" action="publishedRestApisTable.edit" caption="View" icon="font-icon:EYE"/>
+            </buttonsPanel>
+
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

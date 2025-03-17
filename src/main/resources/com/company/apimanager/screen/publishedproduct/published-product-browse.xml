@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://publishedProductBrowse.caption"
+        focusComponent="publishedProductsTable">
+    <data readOnly="true">
+
+        <collection id="publishedProductsDc"
+                    class="com.company.apimanager.entity.PublishedProduct">
+            <fetchPlan extends="_base">
+                <property name="product" fetchPlan="_base"/>
+                <property name="site" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="publishedProductsDl">
+                <query>
+                    <![CDATA[select e from PublishedProduct e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.product = :product</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.site = :site</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.state = :state</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.state &lt;&gt;:archive_state</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+<!--            <collection id="publishedRestApiDc" property=""/>-->
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="publishedProductsTable" spacing="true">
+        <label id="productLabel"/>
+        <!--
+        <filter id="filter"
+                dataLoader="publishedProductsDl">
+            <properties include=".*"/>
+        </filter>
+        -->
+        <groupTable id="publishedProductsTable"
+                    width="100%"
+                    dataContainer="publishedProductsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="product"/>
+                <column id="site"/>
+                <column id="state" caption="State"/>
+                <column id="published_date" caption="Staged date"/>
+                <column id="product_site_id" visible="false"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="publishedProductsTable.create" caption= "msg://stageInCatalog.caption"/>
+                <button id="editBtn" action="publishedProductsTable.edit" visible="false"/>
+                <button id="removeBtn" action="publishedProductsTable.remove" caption="Remove" visible="false"/>
+                <hbox>
+                    <button id="updateBtn" caption="Update"/>
+                    <button id="unStagingBtn" caption="UnStaging"/>
+                    <button id="manageApiBtn" caption="Manage Api"/>
+                    <button id="manageApiBrowserBtn" caption="Api Browser" visible="false"/>
+                    <button id="publishBtn" caption="Publish"/>
+                    <button id="publishOtherBtn" caption="Publish Other" visible="false"/>
+                    <button id="deprecateBtn" caption="Deprecate"/>
+                    <button id="retireBtn" caption="Retire"/>
+                    <button id="archiveBtn" caption="Archive"/>
+                </hbox>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+        <hbox id="editActions" caption="Portal update" spacing="true">
+            <button id="updatePortalProductBtn" caption="msg://updatePortalProduct.caption"/>
+            <button id="updatePortalProductNodeBtn" caption="msg://updatePortalProductNode.caption"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

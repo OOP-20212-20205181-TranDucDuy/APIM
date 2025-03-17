@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://changepassScreen.caption">
+    <actions>
+        <action id="submit"
+                caption="msg://changePasswordButton"
+                icon="CHECK"
+                shortcut="ENTER"/>
+    </actions>
+
+    <layout spacing="true" expand="submitActions">
+        <form id="form">
+            <column width="350px">
+                <passwordField id="oldPasswordField"
+                               caption="msg://com.company.apimanager.screen.changepass/old_pass"
+                               htmlName="oldPasswordField"
+                               required="true" />
+                <passwordField id="newPasswordField"
+                               caption="msg://com.company.apimanager.screen.changepass/new_pass"
+                               htmlName="newPasswordField"
+                               required="true" />
+                <passwordField id="confirmPasswordField"
+                               caption="msg://com.company.apimanager.screen.changepass/confirm_pass"
+                               htmlName="confirmPasswordField"
+                               required="true" />
+            </column>
+        </form>
+        <hbox id="submitActions" spacing="true">
+            <button id="commitAndCloseBtn" action="submit"/>
+        </hbox>
+    </layout>
+</window>

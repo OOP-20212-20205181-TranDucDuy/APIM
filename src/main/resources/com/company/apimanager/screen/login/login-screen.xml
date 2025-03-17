@@ -1,0 +1,80 @@
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://caption">
+
+    <actions>
+        <action id="submit"
+                caption="msg://loginButton"
+                icon="CHECK"
+                shortcut="ENTER"/>
+    </actions>
+
+    <layout stylename="jmix-login-main-layout">
+        <vbox id="loginWrapper" height="100%" width="100%" stylename="background-color">
+            <vbox id="loginMainBox"
+                  align="MIDDLE_CENTER"
+                  margin="true"
+                  spacing="true"
+                  stylename="jmix-login-panel"
+                  width="AUTO">
+                <cssLayout stylename="logo-login">
+                    <image scaleMode="SCALE_DOWN"
+                           width="40%"
+                           height="40%">
+                        <resource>
+                            <url url="https://cdn.fpt-is.com/vi/FPT-IS-set-logo-08-1715516291.svg"/>
+                        </resource>
+                    </image>
+                </cssLayout>
+
+                <label id="welcomeLabel"
+                       align="MIDDLE_CENTER"
+                       stylename="v-title-login"
+                       value="msg://welcomeLabel"/>
+                <link  id="backLink"
+                       caption=""
+                       target="_parent"
+                       rel="noopener" visible="false"/>
+
+                <vbox id="loginForm"
+                      spacing="true"
+                      stylename="jmix-login-form">
+                    <cssLayout id="loginCredentials" stylename="jmix-login-credentials">
+                        <!-- Container for Username Field -->
+                        <cssLayout id="usernameContainer" stylename="jmix-login-username-container display-input-login">
+                            <label id="usernameLabel" value="msg://usernameLabel" stylename="login-label"/>
+                            <textField id="usernameField"
+                                       htmlName="usernameField"
+                                       inputPrompt="msg://usernamePlaceholder"
+                                       stylename="input-login"/>
+                        </cssLayout>
+
+                        <!-- Container for Password Field -->
+                        <cssLayout id="passwordContainer" stylename="jmix-login-password-container display-input-login">
+                            <label id="passwordLabel" value="msg://passwordLabel" stylename="login-label"/>
+                            <passwordField id="passwordField"
+                                           autocomplete="true"
+                                           htmlName="passwordField"
+                                           inputPrompt="msg://passwordPlaceholder"
+                                           stylename="input-login"/>
+                        </cssLayout>
+                    </cssLayout>
+                    <hbox id="rememberLocalesBox"
+                          stylename="jmix-login-remember-locales">
+                        <checkBox id="rememberMeCheckBox"
+                                  caption="msg://loginScreen.rememberMe"
+                                  stylename="jmix-login-remember-me"/>
+                        <comboBox id="localesField"
+                                  nullOptionVisible="false"
+                                  stylename="jmix-login-locale"
+                                  textInputAllowed="false"/>
+                    </hbox>
+
+                    <button id="loginButton"
+                            align="MIDDLE_CENTER"
+                            action="submit"
+                            stylename="jmix-login-submit-button"/>
+                </vbox>
+            </vbox>
+        </vbox>
+    </layout>
+</window>

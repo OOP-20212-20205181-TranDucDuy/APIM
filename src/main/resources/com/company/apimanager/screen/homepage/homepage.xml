@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://homepage.caption">
+    <layout>
+        <vbox height="100%" width="100%" stylename="homepage-background">
+            <cssLayout stylename="grid" css="margin-left: auto; margin-right: auto">
+                <cssLayout stylename="card" id="productCard">
+                    <label value="&#128230;" stylename="card-icon"/>
+                    <linkButton id="productButton" caption="Manage product" stylename="card-title">
+                    </linkButton>
+                    <label value="Edit, assemble, secure and test APIs. Package APIs using products for publishing to consumers." stylename="card-description"/>
+                </cssLayout>
+                <cssLayout stylename="card" id="catalogCard">
+                    <label value="&#128193;" stylename="card-icon"/>
+                    <linkButton id="catalogButton" caption="Manage catalogs" stylename="card-title">
+                    </linkButton>
+                    <label value="Manage active APIs and consumers." stylename="card-description"/>
+                </cssLayout>
+                <cssLayout stylename="card" id="gatewayCard">
+                    <label value="&#128421;" stylename="card-icon"/>
+                    <linkButton id="gatewayButton" caption="Gateway types" stylename="card-title">
+                    </linkButton>
+                    <label value="Manage gateway services" stylename="card-description"/>
+                </cssLayout>
+                <cssLayout stylename="card" id="analyticsCard">
+                    <label value="&#128202;" stylename="card-icon"/>
+                    <linkButton id="analyticsButton" caption="Analytics" stylename="card-title">
+                    </linkButton>
+                    <label value="Edit settings for roles, notifications and more." stylename="card-description"/>
+                </cssLayout>
+                <cssLayout stylename="card" id="userCard">
+                    <label value="&#128101;" stylename="card-icon"/>
+                    <linkButton id="userButton" caption="Manage users" stylename="card-title">
+                    </linkButton>
+                    <label value="Documentation and tutorials with step-by-step instructions." stylename="card-description"/>
+                </cssLayout>
+                <cssLayout stylename="card" id="restApiCard">
+                    <label value="&#128241;" stylename="card-icon"/>
+                    <linkButton id="restApiButton" caption="Develop REST APIs" stylename="card-title">
+                    </linkButton>
+                    <label value="Find expert answers in the API Connect community forum." stylename="card-description"/>
+                </cssLayout>
+            </cssLayout>
+        </vbox>
+    </layout>
+</window>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window" xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://siteEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="siteDc"
+                  class="com.company.apimanager.entity.Site">
+            <fetchPlan extends="_base">
+                <property name="virtual_area" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="gatewayServicesDc" class="com.company.apimanager.entity.GatewayService">
+            <fetchPlan extends="_base"/>
+            <loader id="gatewayServicesDl">
+                <query>
+                    <![CDATA[select distinct e from GatewayService e, GatewayUsagePermission g]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.virtualArea = :area</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>g.gateway = e</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>g.api_provider = :user</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+        <collection id="selfHostedGatewayServicesDc" class="com.company.apimanager.entity.SelfHostedGateway">
+            <fetchPlan extends="_base"/>
+            <loader id="selfHostedGatewayServicesDl">
+                <query>
+                    <![CDATA[select distinct e from SelfHostedGateway e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.owner = :user</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+        <collection id="gatewayServicesDc1" class="com.company.apimanager.entity.GatewayService">
+            <fetchPlan extends="_base"/>
+            <loader id="gatewayServicesDl1">
+                <query>
+                    <![CDATA[select distinct e from GatewayService e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.virtualArea = :area</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+        <collection id="portalServicesDc" class="com.company.apimanager.entity.PortalService">
+            <fetchPlan extends="_base"/>
+            <loader id="portalServicesDl">
+                <query>
+                    <![CDATA[select distinct e from PortalService e, PortalUsagePermission p]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.virtualArea = :area</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>p.portal = e</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>p.api_provider = :user</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+        <collection id="portalServicesDc1" class="com.company.apimanager.entity.PortalService">
+            <fetchPlan extends="_base"/>
+            <loader id="portalServicesDl1">
+                <query>
+                    <![CDATA[select distinct e from PortalService e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.virtualArea = :area</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="siteDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="titleField" property="title"/>
+                <!--                <textField id="portal_adminField" property="portal_admin"/>-->
+                <!--                <textField id="oauth_providerField" property="oauth_provider"/>-->
+                <checkBox id="production_modeField"  property="production_mode"/>
+                <textField id="owner_sitenameField" property="owner_sitename" visible="false"/>
+                <entityPicker id="virtual_areaField" property="virtual_area">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <checkBox id="self_hosted_gateway_usedField" property="self_hosted_gateway_used" visible="false"/>
+                <entityComboBox id="gatewaySelector" caption="msg://gatewaySelector.caption"
+                                optionsContainer="gatewayServicesDc"/>
+                <entityComboBox id="selfHostedGatewaySelector" caption="msg://selfhostedgatewaySelector.caption"
+                                optionsContainer="selfHostedGatewayServicesDc" visible="false"/>
+                <entityComboBox id="gatewaySelector1" caption="msg://gatewaySelector.caption"
+                                optionsContainer="gatewayServicesDc1"/>
+                <textField id="managementEndpointField" dataContainer="gatewayServicesDc" caption="msg://gatewayUrl.caption" property="management_endpoint" contextHelpText="msg://gatewaySelector.helpText"/>
+                <entityComboBox id="portalSelector" caption="msg://portalSelector.caption"
+                                optionsContainer="portalServicesDc"/>
+                <textField id="drupalApiField" editable="false" property="drupal_api" visible="false"/>
+                <entityComboBox id="portalSelector1" caption="msg://portalSelector.caption"
+                                optionsContainer="portalServicesDc1"/>
+                <link id="uploadedImageField" target="_blank" caption="Image" visible="false"/>
+                <fileUpload id="imageField"
+                            showFileName="true" caption="About page Image"/>
+                <textField id="portalAboutPageContentField" property="portal_about_page_content"/>
+                <textField id="portalHomePageContentField" property="portal_home_page_content"/>
+                <textField id="portalHomePageTitleField" property="portal_home_page_title"/>
+                <checkBox id="oauth_consent_page" caption="OAuth Consent page"/>
+                <textField id="logoField" property="site_logo" caption="msg://logoField.caption"/>
+                <textField id="ldapUrlField" property="ldap_url" caption="msg://ldapUrlField.caption"/>
+                <textField id="ldapCredentialField" property="ldap_credential" caption="msg://ldapCredentialField.caption"/>
+                <textField id="ldapPrincipalField" property="ldap_principal" caption="msg://ldapPrincipalField.caption"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <!-- <button id="updateProductPageBtn" caption="Update Products"/> -->
+            <button id="closeBtn" action="windowClose"/>
+            <!--            <button id="additionalGatewayBtn" caption="Additional Gateway"/>-->
+        </hbox>
+    </layout>
+</window>

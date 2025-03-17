@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="ApiManager">
+        <createTable tableName="DRUPAL_LINK">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DRUPAL_LINK"/>
+            </column>
+            <column name="published_product_id" type="UUID">
+                <constraints nullable="false" foreignKeyName=""/>
+            </column>
+            <column name="REST_API_ID" type="UUID">
+                <constraints nullable="false" foreignKeyName=""/>
+            </column>
+            <column name="KONG_API_ID" type="VARCHAR(255)" defaultValue="">
+                <constraints nullable="true"/>
+            </column>
+            <column name="DRUPAL_API_ID" type="VARCHAR(255)" defaultValue="">
+                <constraints nullable="true"/>
+            </column>
+            <column name="CREATED_DATE" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+            <column name="LAST_MODIFIED_DATE" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="published_product_id" baseTableName="DRUPAL_LINK"
+                                 constraintName="FK_DRUPAL_LINK_ON_PUBLISHED_PRODUCT" referencedColumnNames="ID"
+                                 referencedTableName="PUBLISHED_PRODUCT"/>
+        <addForeignKeyConstraint baseColumnNames="rest_api_id" baseTableName="DRUPAL_LINK"
+                                 constraintName="FK_DRUPAL_LINK_ON_REST_API" referencedColumnNames="ID"
+                                 referencedTableName="REST_API"/>
+<!--        <createIndex tableName="DRUPAL_LINK" indexName="PUBLISHED_PRODUCT_ID_INDEX">-->
+<!--            <column name="PUBLISHED_PRODUCT_ID"/>-->
+<!--        </createIndex>-->
+        <createIndex tableName="DRUPAL_LINK" indexName="KONG_API_ID_INDEX">
+            <column name="KONG_API_ID"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

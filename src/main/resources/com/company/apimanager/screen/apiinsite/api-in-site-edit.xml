@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://apiInSiteEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="apiInSiteDc"
+                  class="com.company.apimanager.entity.ApiInSite"/>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="apiInSiteDc">
+            <column width="350px">
+                <textField id="api_idField" property="api_id" visible="false"/>
+                <textField id="route_idField" property="route_id" visible="false"/>
+                <textField id="acl_idField" property="acl_id" visible="false"/>
+                <textField id="nameField" property="name" caption="Name" editable="false"/>
+                <textField id="hostField" property="host" caption="Target URL" editable="false"/>
+                <textField id="pathField" property="path" visible="false"/>
+                <textField id="published_product_idField" property="published_product_id" visible="false"/>
+                <textField id="api_urlField" property="api_url" caption="API endpoint" editable="false"/>
+                <textField id="consent_urlField" property="consent_url" caption="OAuth Consent URL" editable="false"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="goToRestApiBtn" caption="msg://goToRestApi.caption"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

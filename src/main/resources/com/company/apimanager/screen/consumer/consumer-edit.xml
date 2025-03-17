@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://consumerEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="consumerDc"
+                  class="com.company.apimanager.entity.Consumer">
+            <fetchPlan extends="_base">
+                <property name="site" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="consumerDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <entityPicker id="siteField" property="site">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <textField id="basicAuthenUser" caption="Basic Authen User"/>
+                <checkBox id="api_keyUsedField" caption="API Key"/>
+                <textField id="api_keyField" property="api_key"/>
+                <textField id="oauthClientIdField" property="oauth_client_id"/>
+                <textField id="oauthClientSecretField" property="oauth_client_secret"/>
+                <textField id="oauthClientNameField" property="oauth_client_name"/>
+                <textField id="oauthRedirectUriField" property="oauth_redirect_uri"/>
+                <textField id="titleField" property="title"/>
+                <passwordField id="passwordField"
+                               caption="msg://com.company.apimanager.entity/User.password"/>
+                <passwordField id="confirmPasswordField"
+                               caption="Confirm Password"/>
+                <textField id="max_per_secondField" property="max_per_second"/>
+                <textField id="max_per_minuteField" property="max_per_minute"/>
+                <textField id="max_per_hourField" property="max_per_hour"/>
+                <textField id="provider_site_consumer_nameField" property="provider_site_consumer_name" visible="false"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

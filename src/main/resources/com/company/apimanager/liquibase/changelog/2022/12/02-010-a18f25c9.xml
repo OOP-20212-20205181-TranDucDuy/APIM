@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="ApiManager">
+        <createTable tableName="ANALYTICS_SERVICE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ANALYTICS_SERVICE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MANAGEMENT_ENDPOINT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VIRTUAL_AREA_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="ApiManager">
+        <createTable tableName="API_REGISTER">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_API_REGISTER"/>
+            </column>
+            <column name="API_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRODUCT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REGISTER_DATETIME" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="API_PRODUCT_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DRUPAL_API_ID" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="ApiManager">
+        <createTable tableName="API_SECURITY_METHOD">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_API_SECURITY_METHOD"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="ApiManager">
+        <createTable tableName="API_SUBCRIPTION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_API_SUBCRIPTION"/>
+            </column>
+            <column name="CONSUMER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SUBCRIBED_API_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SUBCRIBED_DATE" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="ApiManager">
+        <createTable tableName="APP_CONFIGURATION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_APP_CONFIGURATION"/>
+            </column>
+            <column name="NAME" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONFIGVALUE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="ApiManager">
+        <createTable tableName="CONSUMER">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_CONSUMER"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="API_KEY" type="VARCHAR(255)"/>
+            <column name="TITLE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROVIDER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)"/>
+            <column name="PROVIDER_SITE_CONSUMER_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KONG_CONSUMER_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MAX_PER_SECOND" type="BIGINT"/>
+            <column name="MAX_PER_MINUTE" type="BIGINT"/>
+            <column name="MAX_PER_HOUR" type="BIGINT"/>
+            <column name="KONG_RATE_LIMIT_ID" type="VARCHAR(255)"/>
+            <column name="BASE_CREDENTIAL_ID" type="VARCHAR(255)"/>
+            <column name="KEY_CREDENTIAL_ID" type="VARCHAR(255)"/>
+            <column name="KONG_OAUTH_ID" type="VARCHAR(255)"/>
+            <column name="OAUTH_CLIENT_ID" type="VARCHAR(255)"/>
+            <column name="OAUTH_CLIENT_SECRET" type="VARCHAR(255)"/>
+            <column name="OAUTH_CLIENT_NAME" type="VARCHAR(255)"/>
+            <column name="OAUTH_REDIRECT_URI" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="7" author="ApiManager">
+        <createTable tableName="DRAFT_PLAN">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DRAFT_PLAN"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="RATELIMIT" type="INT"/>
+            <column name="DRAFT_PRODUCT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="8" author="ApiManager">
+        <createTable tableName="DRAFT_PRODUCT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DRAFT_PRODUCT"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="9" author="ApiManager">
+        <createTable tableName="GATEWAY_SERVICE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GATEWAY_SERVICE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MANAGEMENT_ENDPOINT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INVOCATION_ENDPOINT" type="VARCHAR(255)"/>
+            <column name="GATEWAY_TYPE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(100)"/>
+            <column name="ANALYTICS_ASSOCIATED_ID" type="UUID"/>
+            <column name="VIRTUAL_AREA_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IP_ADDRESS" type="VARCHAR(100)"/>
+            <column name="IS_DEFAULT" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="10" author="ApiManager">
+        <createTable tableName="GATEWAY_TYPE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GATEWAY_TYPE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="11" author="ApiManager">
+        <createTable tableName="GATEWAY_USAGE_PERMISSION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GATEWAY_USAGE_PERMISSION"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROVIDER_GATEWAY_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="API_PROVIDER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GATEWAY_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="12" author="ApiManager">
+        <createTable tableName="PLAN_">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PLAN_"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PERSECOND" type="BIGINT"/>
+            <column name="PERMINUTE" type="BIGINT"/>
+            <column name="PERHOUR" type="BIGINT"/>
+            <column name="PRODUCT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="13" author="ApiManager">
+        <createTable tableName="PORTAL_SERVICE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PORTAL_SERVICE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="IS_DEFAULT" type="BOOLEAN"/>
+            <column name="MANAGEMENT_ENDPOINT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VIRTUAL_AREA_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="14" author="ApiManager">
+        <createTable tableName="PORTAL_USAGE_PERMISSION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PORTAL_USAGE_PERMISSION"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PROVIDER_PORTAL_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="API_PROVIDER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PORTAL_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="15" author="ApiManager">
+        <createTable tableName="PRODUCT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRODUCT"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="VISIBILITY_TYPE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OWNER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OWNER_PRDNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="16" author="ApiManager">
+        <createTable tableName="PRODUCT_API_REGISTER">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRODUCT_API_REGISTER"/>
+            </column>
+            <column name="PRODUCT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REST_API_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="REGISTER_DATETIME" type="DATE"/>
+            <column name="PRODUCT_API" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="17" author="ApiManager">
+        <createTable tableName="PRODUCT_SUBSCRIPTION">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PRODUCT_SUBSCRIPTION"/>
+            </column>
+            <column name="PRODUCT_CONSUMER_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CONSUMER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PUBLISHED_PRODUCT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SUBCRIPTION_DATE" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KONG_CONSUMER_GROUP_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="18" author="ApiManager">
+        <createTable tableName="PUBLISHED_PRODUCT">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PUBLISHED_PRODUCT"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="PRODUCT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PUBLISHED_DATE" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATE" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRODUCT_SITE_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="KONG_OBJECT_IDS" type="VARCHAR(9000)"/>
+            <column name="KONG_OAUTH_INFO" type="VARCHAR(9000)"/>
+            <column name="KONG_OBJECT_JSON" type="VARCHAR(10000)"/>
+            <column name="DRUPAL_PRODUCT_ID" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="19" author="ApiManager">
+        <createTable tableName="REST_API">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_REST_API"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="BASE_PATH" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TARGET_ENDPOINT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SECURITY_METHOD_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OWNER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OWNER_APINAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PATH_IN_GW" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOCUMENTATION" type="VARCHAR(255)"/>
+            <column name="ENABLE_DOC" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="20" author="ApiManager">
+        <createTable tableName="SELF_HOSTED_GATEWAY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SELF_HOSTED_GATEWAY"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MANAGEMENT_ENDPOINT" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="INVOCATION_ENDPOINT" type="VARCHAR(255)"/>
+            <column name="GATEWAY_TYPE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(100)"/>
+            <column name="TENANT_ID" type="VARCHAR(100)"/>
+            <column name="TENANT_DESCRIPTION" type="VARCHAR(200)"/>
+            <column name="TENANT_SUBNET" type="VARCHAR(100)"/>
+            <column name="OWNER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OWNER_GATEWAYNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="21" author="ApiManager">
+        <createTable tableName="SITE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SITE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="OWNER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PORTAL_ADMIN" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OAUTH_PROVIDER" type="VARCHAR(255)"/>
+            <column name="LDAP_URL" type="VARCHAR(255)"/>
+            <column name="LDAP_PRINCIPAL" type="VARCHAR(255)"/>
+            <column name="LDAP_CREDENTIAL" type="VARCHAR(255)"/>
+            <column name="Site_Logo" type="VARCHAR(255)"/>
+            <column name="PRODUCTION_MODE" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GATEWAY_ID" type="UUID"/>
+            <column name="PORTAL_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="OWNER_SITENAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VIRTUAL_AREA_ID" type="UUID"/>
+            <column name="SELF_HOSTED_GATEWAY_USED" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SELF_HOSTED_GATEWAY_ID" type="UUID"/>
+            <column name="DRUPAL_API" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="22" author="ApiManager">
+        <createTable tableName="SITE_GATEWAY">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SITE_GATEWAY"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITE_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GATEWAY_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SITE_GATEWAY_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="23" author="ApiManager">
+        <createTable tableName="STATISTIC">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_STATISTIC"/>
+            </column>
+            <column name="DATE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TOTAL" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="24" author="ApiManager">
+        <createTable tableName="VIRTUAL_AREA">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VIRTUAL_AREA"/>
+            </column>
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)"/>
+            <column name="IS_DEFAULT" type="BOOLEAN"/>
+            <column name="IS_ACTIVE" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="25" author="ApiManager">
+        <createTable tableName="VISIBILY_TYPE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_VISIBILY_TYPE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="26" author="ApiManager">
+        <addColumn tableName="USER_">
+            <column name="PROVIDER_PLAN" type="VARCHAR(255)"/>
+            <column name="TENANT_NAME" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="27" author="ApiManager">
+        <createIndex indexName="IDX_ANALYTICSSERVICE" tableName="ANALYTICS_SERVICE">
+            <column name="VIRTUAL_AREA_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="VIRTUAL_AREA_ID" baseTableName="ANALYTICS_SERVICE"
+                                 constraintName="FK_ANALYTICSSER_ON_VIRTUALAREA" referencedColumnNames="ID"
+                                 referencedTableName="VIRTUAL_AREA"/>
+    </changeSet>
+    <changeSet id="28" author="ApiManager">
+        <createIndex indexName="IDX_APIREGISTER_API_ID" tableName="API_REGISTER">
+            <column name="API_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="API_ID" baseTableName="API_REGISTER"
+                                 constraintName="FK_API_REGISTER_ON_API" referencedColumnNames="ID"
+                                 referencedTableName="REST_API"/>
+    </changeSet>
+    <changeSet id="29" author="ApiManager">
+        <createIndex indexName="IDX_APIREGISTER_PRODUCT_ID" tableName="API_REGISTER">
+            <column name="PRODUCT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID" baseTableName="API_REGISTER"
+                                 constraintName="FK_API_REGISTER_ON_PRODUCT" referencedColumnNames="ID"
+                                 referencedTableName="PRODUCT"/>
+    </changeSet>
+    <changeSet id="30" author="ApiManager">
+        <createIndex indexName="IDX_APISUBCRIPTION" tableName="API_SUBCRIPTION">
+            <column name="SUBCRIBED_API_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SUBCRIBED_API_ID" baseTableName="API_SUBCRIPTION"
+                                 constraintName="FK_APISUBCRIPT_ON_SUBCRIBEDAP" referencedColumnNames="ID"
+                                 referencedTableName="REST_API"/>
+    </changeSet>
+    <changeSet id="31" author="ApiManager">
+        <createIndex indexName="IDX_CONSUMER_PROVIDER_ID" tableName="CONSUMER">
+            <column name="PROVIDER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PROVIDER_ID" baseTableName="CONSUMER"
+                                 constraintName="FK_CONSUMER_ON_PROVIDER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="32" author="ApiManager">
+        <createIndex indexName="IDX_CONSUMER_SITE_ID" tableName="CONSUMER">
+            <column name="SITE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SITE_ID" baseTableName="CONSUMER" constraintName="FK_CONSUMER_ON_SITE"
+                                 referencedColumnNames="ID" referencedTableName="SITE"/>
+    </changeSet>
+    <changeSet id="33" author="ApiManager">
+        <createIndex indexName="IDX_DRAFTPLAN" tableName="DRAFT_PLAN">
+            <column name="DRAFT_PRODUCT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="DRAFT_PRODUCT_ID" baseTableName="DRAFT_PLAN"
+                                 constraintName="FK_DRAFT_PLAN_ON_DRAFT_PRODUCT" referencedColumnNames="ID"
+                                 referencedTableName="DRAFT_PRODUCT"/>
+    </changeSet>
+    <changeSet id="34" author="ApiManager">
+        <createIndex indexName="IDX_GATEWAYSERVICE" tableName="GATEWAY_SERVICE">
+            <column name="ANALYTICS_ASSOCIATED_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="ANALYTICS_ASSOCIATED_ID" baseTableName="GATEWAY_SERVICE"
+                                 constraintName="FK_GATEWAYSERV_ON_ANALYTICSAS" referencedColumnNames="ID"
+                                 referencedTableName="ANALYTICS_SERVICE"/>
+    </changeSet>
+    <changeSet id="35" author="ApiManager">
+        <createIndex indexName="IDX_PLAN_PRODUCT_ID" tableName="PLAN_">
+            <column name="PRODUCT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID" baseTableName="PLAN_" constraintName="FK_PLAN__ON_PRODUCT"
+                                 referencedColumnNames="ID" referencedTableName="PRODUCT"/>
+    </changeSet>
+    <changeSet id="36" author="ApiManager">
+        <createIndex indexName="IDX_PORTALSERVICE" tableName="PORTAL_SERVICE">
+            <column name="VIRTUAL_AREA_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="VIRTUAL_AREA_ID" baseTableName="PORTAL_SERVICE"
+                                 constraintName="FK_PORTALSERVIC_ON_VIRTUALAREA" referencedColumnNames="ID"
+                                 referencedTableName="VIRTUAL_AREA"/>
+    </changeSet>
+    <changeSet id="37" author="ApiManager">
+        <createIndex indexName="IDX_PRODUCT" tableName="PRODUCT">
+            <column name="VISIBILITY_TYPE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="VISIBILITY_TYPE_ID" baseTableName="PRODUCT"
+                                 constraintName="FK_PRODUCT_ON_VISIBILITY_TYPE" referencedColumnNames="ID"
+                                 referencedTableName="VISIBILY_TYPE"/>
+    </changeSet>
+    <changeSet id="38" author="ApiManager">
+        <createIndex indexName="IDX_PRODUCTAPIREGISTER" tableName="PRODUCT_API_REGISTER">
+            <column name="REST_API_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="REST_API_ID" baseTableName="PRODUCT_API_REGISTER"
+                                 constraintName="FK_PRODUCTAPIREGIST_ON_RESTAPI" referencedColumnNames="ID"
+                                 referencedTableName="REST_API"/>
+    </changeSet>
+    <changeSet id="39" author="ApiManager">
+        <createIndex indexName="IDX_PRODUCTSUBSCRIPTION" tableName="PRODUCT_SUBSCRIPTION">
+            <column name="PUBLISHED_PRODUCT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PUBLISHED_PRODUCT_ID" baseTableName="PRODUCT_SUBSCRIPTION"
+                                 constraintName="FK_PRODUCTSUBS_ON_PUBLISHEDPR" referencedColumnNames="ID"
+                                 referencedTableName="PUBLISHED_PRODUCT"/>
+    </changeSet>
+    <changeSet id="40" author="ApiManager">
+        <createIndex indexName="IDX_PRODUCT_OWNER_ID" tableName="PRODUCT">
+            <column name="OWNER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PRODUCT" constraintName="FK_PRODUCT_ON_OWNER"
+                                 referencedColumnNames="ID" referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="41" author="ApiManager">
+        <createIndex indexName="IDX_PUBLISHEDPRODUCT" tableName="PUBLISHED_PRODUCT">
+            <column name="PRODUCT_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID" baseTableName="PUBLISHED_PRODUCT"
+                                 constraintName="FK_PUBLISHEDPRODUCT_ON_PRODUCT" referencedColumnNames="ID"
+                                 referencedTableName="PRODUCT"/>
+    </changeSet>
+    <changeSet id="42" author="ApiManager">
+        <createIndex indexName="IDX_PUBLISHEDPRODUCT_SITE_ID" tableName="PUBLISHED_PRODUCT">
+            <column name="SITE_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SITE_ID" baseTableName="PUBLISHED_PRODUCT"
+                                 constraintName="FK_PUBLISHED_PRODUCT_ON_SITE" referencedColumnNames="ID"
+                                 referencedTableName="SITE"/>
+    </changeSet>
+    <changeSet id="43" author="ApiManager">
+        <createIndex indexName="IDX_RESTAPI" tableName="REST_API">
+            <column name="SECURITY_METHOD_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="SECURITY_METHOD_ID" baseTableName="REST_API"
+                                 constraintName="FK_REST_API_ON_SECURITY_METHOD" referencedColumnNames="ID"
+                                 referencedTableName="API_SECURITY_METHOD"/>
+    </changeSet>
+    <changeSet id="44" author="ApiManager">
+        <createIndex indexName="IDX_RESTAPI_OWNER_ID" tableName="REST_API">
+            <column name="OWNER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="REST_API"
+                                 constraintName="FK_REST_API_ON_OWNER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="45" author="ApiManager">
+        <createIndex indexName="IDX_SITE_GATEWAY_ID" tableName="SITE">
+            <column name="GATEWAY_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="GATEWAY_ID" baseTableName="SITE" constraintName="FK_SITE_ON_GATEWAY"
+                                 referencedColumnNames="ID" referencedTableName="GATEWAY_SERVICE"/>
+    </changeSet>
+    <changeSet id="46" author="ApiManager">
+        <createIndex indexName="IDX_SITE_OWNER_ID" tableName="SITE">
+            <column name="OWNER_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="SITE" constraintName="FK_SITE_ON_OWNER"
+                                 referencedColumnNames="ID" referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="47" author="ApiManager">
+        <createIndex indexName="IDX_SITE_PORTAL_ID" tableName="SITE">
+            <column name="PORTAL_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="PORTAL_ID" baseTableName="SITE" constraintName="FK_SITE_ON_PORTAL"
+                                 referencedColumnNames="ID" referencedTableName="PORTAL_SERVICE"/>
+    </changeSet>
+    <changeSet id="48" author="ApiManager">
+        <createIndex indexName="IDX_SITE_VIRTUAL_AREA_ID" tableName="SITE">
+            <column name="VIRTUAL_AREA_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="VIRTUAL_AREA_ID" baseTableName="SITE"
+                                 constraintName="FK_SITE_ON_VIRTUAL_AREA" referencedColumnNames="ID"
+                                 referencedTableName="VIRTUAL_AREA"/>
+    </changeSet>
+    <changeSet id="49" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="CONSUMER_ID" baseTableName="API_SUBCRIPTION"
+                                 constraintName="FK_API_SUBCRIPTION_ON_CONSUMER" referencedColumnNames="ID"
+                                 referencedTableName="CONSUMER"/>
+    </changeSet>
+    <changeSet id="50" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="GATEWAY_TYPE_ID" baseTableName="GATEWAY_SERVICE"
+                                 constraintName="FK_GATEWAYSERVI_ON_GATEWAYTYPE" referencedColumnNames="ID"
+                                 referencedTableName="GATEWAY_TYPE"/>
+    </changeSet>
+    <changeSet id="51" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="VIRTUAL_AREA_ID" baseTableName="GATEWAY_SERVICE"
+                                 constraintName="FK_GATEWAYSERVI_ON_VIRTUALAREA" referencedColumnNames="ID"
+                                 referencedTableName="VIRTUAL_AREA"/>
+    </changeSet>
+    <changeSet id="52" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="GATEWAY_ID" baseTableName="GATEWAY_USAGE_PERMISSION"
+                                 constraintName="FK_GATEWAYUSAGEPERM_ON_GATEWAY" referencedColumnNames="ID"
+                                 referencedTableName="GATEWAY_SERVICE"/>
+    </changeSet>
+    <changeSet id="53" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="API_PROVIDER_ID" baseTableName="GATEWAY_USAGE_PERMISSION"
+                                 constraintName="FK_GATEWAYUSAGE_ON_APIPROVIDER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="54" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="PORTAL_ID" baseTableName="PORTAL_USAGE_PERMISSION"
+                                 constraintName="FK_PORTALUSAGEPERMIS_ON_PORTAL" referencedColumnNames="ID"
+                                 referencedTableName="PORTAL_SERVICE"/>
+    </changeSet>
+    <changeSet id="55" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="API_PROVIDER_ID" baseTableName="PORTAL_USAGE_PERMISSION"
+                                 constraintName="FK_PORTALUSAGEP_ON_APIPROVIDER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="56" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="PRODUCT_ID" baseTableName="PRODUCT_API_REGISTER"
+                                 constraintName="FK_PRODUCTAPIREGIST_ON_PRODUCT" referencedColumnNames="ID"
+                                 referencedTableName="PRODUCT"/>
+    </changeSet>
+    <changeSet id="57" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="CONSUMER_ID" baseTableName="PRODUCT_SUBSCRIPTION"
+                                 constraintName="FK_PRODUCTSUBSCRIP_ON_CONSUMER" referencedColumnNames="ID"
+                                 referencedTableName="CONSUMER"/>
+    </changeSet>
+    <changeSet id="58" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="SELF_HOSTED_GATEWAY"
+                                 constraintName="FK_SELFHOSTEDGATEWAY_ON_OWNER" referencedColumnNames="ID"
+                                 referencedTableName="USER_"/>
+    </changeSet>
+    <changeSet id="59" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="GATEWAY_TYPE_ID" baseTableName="SELF_HOSTED_GATEWAY"
+                                 constraintName="FK_SELFHOSTEDGA_ON_GATEWAYTYPE" referencedColumnNames="ID"
+                                 referencedTableName="GATEWAY_TYPE"/>
+    </changeSet>
+    <changeSet id="60" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="GATEWAY_ID" baseTableName="SITE_GATEWAY"
+                                 constraintName="FK_SITE_GATEWAY_ON_GATEWAY" referencedColumnNames="ID"
+                                 referencedTableName="GATEWAY_SERVICE"/>
+    </changeSet>
+    <changeSet id="61" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="SITE_ID" baseTableName="SITE_GATEWAY"
+                                 constraintName="FK_SITE_GATEWAY_ON_SITE" referencedColumnNames="ID"
+                                 referencedTableName="SITE"/>
+    </changeSet>
+    <changeSet id="62" author="ApiManager">
+        <addForeignKeyConstraint baseColumnNames="SELF_HOSTED_GATEWAY_ID" baseTableName="SITE"
+                                 constraintName="FK_SITE_ON_SELF_HOSTED_GATEWAY" referencedColumnNames="ID"
+                                 referencedTableName="SELF_HOSTED_GATEWAY"/>
+    </changeSet>
+</databaseChangeLog>

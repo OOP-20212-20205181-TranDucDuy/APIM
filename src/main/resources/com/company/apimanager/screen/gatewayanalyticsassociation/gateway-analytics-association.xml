@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://gatewayAnalyticsAssociation.caption">
+    <data>
+        <collection id="virtualAreasDc" class="com.company.apimanager.entity.VirtualArea">
+            <fetchPlan extends="_base"/>
+            <loader id="virtualAreasDl">
+                <query>
+                    <![CDATA[select e from VirtualArea e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="gatewayServicesDc" class="com.company.apimanager.entity.GatewayService">
+            <fetchPlan extends="_base"/>
+            <loader id="gatewayServicesDl">
+                <query>
+                    <![CDATA[select e from GatewayService e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.virtualArea = :area</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+        <collection id="analyticsServicesDc" class="com.company.apimanager.entity.AnalyticsService">
+            <fetchPlan extends="_base"/>
+            <loader id="analyticsServicesDl">
+                <query>
+                    <![CDATA[select e from AnalyticsService e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.virtualArea = :area</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <actions>
+        <action id="closeAction"/>
+        <action id="associationAction"/>
+    </actions>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout>
+        <buttonsPanel>
+            <hbox id="topBox">
+                <form id="form">
+                    <column width="400px">
+                        <entityComboBox id="areaSelector" caption="msg://areaSelector.caption"
+                                        optionsContainer="virtualAreasDc"/>
+                        <entityComboBox id="gatewaySelector" caption="msg://gatewaySelector.caption"
+                                        optionsContainer="gatewayServicesDc"/>
+                        <entityComboBox id="analyticsSelector" caption="msg://analyticsSelector.caption"
+                                        optionsContainer="analyticsServicesDc"/>
+                        <buttonsPanel>
+                            <button id="associationBtn" caption="msg://associationBtn.caption"
+                                    action="associationAction"/>
+                            <button id="closeBtn" caption="msg://closeBtn.caption" action="closeAction"/>
+                        </buttonsPanel>
+                    </column>
+                </form>
+            </hbox>
+            <hbox spacing="true" width="AUTO">
+
+            </hbox>
+        </buttonsPanel>
+    </layout>
+
+
+</window>

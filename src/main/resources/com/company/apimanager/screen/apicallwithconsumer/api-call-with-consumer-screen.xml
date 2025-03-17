@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://apiCallWithConsumerScreen.caption">
+    <data>
+        <instance id="apiCallDc"
+                  class="com.company.apimanager.entity.ApiCall"/>
+        <collection id="httpHeadersDc"
+                    class="com.company.apimanager.entity.ApiHttpHeader"/>
+        <collection id="consumersDc" class="com.company.apimanager.entity.Consumer">
+            <fetchPlan extends="_base"/>
+            <loader id="consumersDl">
+                <query>
+                    <![CDATA[select e from Consumer e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.site = :site</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="scrollBox">
+        <scrollBox id="scrollBox" spacing="true">
+            <form id="form">
+                <column width="350px">
+                    <entityComboBox id="consumerField" optionsContainer="consumersDc" caption="Consumer"/>
+                    <comboBox id="methodField" caption="HTTP method"/>
+                    <textField id="endpointField" caption="Endpoint"/>
+                    <comboBox id="authorization_typeField" caption="Authorization type"/>
+                    <textArea id="request_bodyField" caption="Body"/>
+                </column>
+                <column>
+                    <textField id="authenParam1"/>
+                    <textField id="authenParam2"/>
+                    <comboBox id="algorithmField" caption="Algorithm"/>
+                    <checkBox id="encodedField" caption="Secret Base64 encoded"/>
+                    <textArea id="payloadField" caption="Payload"/>
+                    <textArea id="jwtHeadersField" caption="JWT headers" />
+                </column>
+            </form>
+            <groupBox id="headerBox" caption="Headers">
+                <table id="httpHeadersTable"
+                       width="100%"
+                       dataContainer="httpHeadersDc">
+                    <actions>
+                        <action id="create" type="create"/>
+                        <action id="edit" type="edit"/>
+                        <action id="remove" type="remove"/>
+                    </actions>
+                    <columns>
+                        <column id="header_name"/>
+                        <column id="header_value"/>
+                    </columns>
+                    <simplePagination/>
+                    <buttonsPanel id="buttonsPanel"
+                                  alwaysVisible="true">
+                        <button id="createBtn" action="httpHeadersTable.create"/>
+                        <button id="editBtn" action="httpHeadersTable.edit"/>
+                        <button id="remove Btn" action="httpHeadersTable.remove"/>
+                    </buttonsPanel>
+                </table>
+            </groupBox>
+        </scrollBox>
+        <hbox id="editActions" spacing="true">
+            <button id="callBtn" caption="Call"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+        <textArea id="responseField" width="75%"  rows="10" caption="Response"/>
+    </layout>
+</window>

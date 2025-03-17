@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://userPlan.caption"
+        focusComponent="usersTable">
+    <data readOnly="true">
+        <collection id="usersDc"
+                    class="com.company.apimanager.entity.User">
+            <fetchPlan extends="_instance_name">
+                <property name="providerPlan"/>
+                <property name="pricingPlan" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="usersDl">
+                <query>
+                    <![CDATA[select e from User e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e = :user</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="usersTable" spacing="true">
+        <groupTable id="usersTable"
+                    width="100%"
+                    dataContainer="usersDc">
+            <columns>
+                <column id="firstName"/>
+                <column id="lastName"/>
+                <column id="providerPlan"/>
+                <column id="pricingPlan"/>
+                <column id="pricingPlan.rate_limit"/>
+                <column id="pricingPlan.custom_domain"/>
+                <column id="pricingPlan.developer_portal"/>
+                <column id="pricingPlan.self_hosted_gateway"/>
+                <column id="pricingPlan.loging_retention"/>
+                <column id="pricingPlan.message_size"/>
+                <column id="pricingPlan.sla"/>
+                <column id="pricingPlan.price"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="false">
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

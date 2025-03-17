@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://testIframeScreen.caption">
+    <layout>
+        <browserFrame id="frame1" width="780px" height="580px">
+            <resource>
+                <url url="https://demo.elastic.co/app/dashboards#/view/7adfa750-4c81-11e8-b3d7-01146121b73d?_g=(refreshInterval:(pause:!f,value:900000),time:(from:now-7d,to:now))	
+&#38;_a=(description:'Analyze%20mock%20flight%20data%20for%20ES-Air,%20Logstash%20Airways,%20Kibana%20Airlines%20and%20JetBeats',filters:!(),fullScreenMode:!f,options:(darkTheme:!f,hidePanelTitles:!f,useMargins:!t),query:(language:lucene,query:''),timeRestore:!t,title:'%5BFlights%5D%20Global%20Flight%20Dashboard',viewMode:view)"/>
+            </resource>
+        </browserFrame>
+    </layout>
+</window>

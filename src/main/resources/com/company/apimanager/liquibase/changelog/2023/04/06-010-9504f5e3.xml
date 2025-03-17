@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="ApiManager">
+        <modifyDataType columnName="ALLOW_CONTENT_TYPE" newDataType="VARCHAR(255)" tableName="REST_API"/>
+    </changeSet>
+    <changeSet id="2" author="ApiManager">
+        <modifyDataType columnName="BODY_SCHEMA" newDataType="VARCHAR(255)" tableName="REST_API"/>
+    </changeSet>
+    <changeSet id="4" author="ApiManager">
+        <modifyDataType columnName="PARAMETER_SCHEMA" newDataType="VARCHAR(255)" tableName="REST_API"/>
+    </changeSet>
+</databaseChangeLog>

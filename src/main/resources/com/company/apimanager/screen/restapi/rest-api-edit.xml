@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://restApiEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="restApiDc"
+                  class="com.company.apimanager.entity.RestApi">
+            <fetchPlan extends="_base">
+                <property name="security_method" fetchPlan="_base"/>
+                <property name="balancedHosts" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="balancedHostDc" property="balancedHosts"/>
+        </instance>
+
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <tabSheet>
+            <tab id="tab1"
+                 caption="Basic"
+                 margin="true"
+                 spacing="true">
+                <form id="form" dataContainer="restApiDc">
+                    <column width="500px">
+                        <!--                        <groupBox caption="Rest Api"-->
+                        <!--                                  spacing="true"-->
+                        <!--                                  width="500px">-->
+                        <textField id="nameField" property="name" caption="Name" dataContainer="restApiDc"
+                                   width="100%"/>
+                        <textField id="titleField" property="title" caption="Title" dataContainer="restApiDc"
+                                   width="100%"/>
+                        <textField id="base_pathField" property="base_path" caption="Base Path"
+                                   dataContainer="restApiDc"
+                                   width="100%"/>
+                        <checkBox id="use_balancingGroupField" caption="Use host group"/>
+                        <textField id="target_hostGroupPathField" property="host_group_path"
+                                   caption="Host group path" dataContainer="restApiDc"/>
+                        <textField id="target_endpointField" property="target_endpoint" caption="Target Endpoint"
+                                   dataContainer="restApiDc" width="100%"/>"
+                        <entityPicker id="security_methodField" property="security_method" caption="Security Method"
+                                      dataContainer="restApiDc" width="100%">
+                            <actions>
+                                <action id="entityLookup" type="entity_lookup">
+                                    <properties>
+                                        <property name="openMode" value="DIALOG"/>
+                                    </properties>
+                                </action>
+                                <action id="entityClear" type="entity_clear"/>
+                            </actions>
+                        </entityPicker>
+
+
+                        <textField id="owner_apinameField" property="owner_apiname" visible="false" width="100%"/>
+                        <checkBox id="enable_docField" property="enable_doc" dataContainer="restApiDc" width="100%"
+                                  caption="Enable doc"/>
+                        <richTextArea id="documentationField" property="documentation" visible="false"
+                                      dataContainer="restApiDc" width="100%"/>
+                        <checkBox id="enable_validation_schemaField" property="enable_validation_schema"
+                                  dataContainer="restApiDc"/>
+                        <richTextArea id="body_schemaField" property="body_schema" visible="false"
+                                      dataContainer="restApiDc"/>
+                        <richTextArea id="parameter_schemaField" property="parameter_schema" visible="false"
+                                      dataContainer="restApiDc"/>
+                        <textArea id="allow_content_typeField" property="allow_content_type" visible="false"
+                                  dataContainer="restApiDc"/>
+                        <checkBox id="verbose_responseField" property="verbose_response" visible="false"
+                                  dataContainer="restApiDc"/>
+                        <!--                            <checkBox id="request_transformerCheckBox" width="100%" caption="Request Transformer"/>-->
+                        <!--                            <checkBox id="response_transformerCheckBox" width="100%" caption="Response Transformer"/>-->
+                        <!--                        </groupBox>-->
+                    </column>
+
+                </form>
+                ☺
+            </tab>
+            <tab id="tab2"
+                 caption="Advance"
+                 margin="true"
+                 spacing="true">
+                <tabSheet height="100%">
+                    <tab id="tab3"
+                         caption="Transformations"
+                         margin="true"
+                         spacing="true">
+                        <scrollBox height="100%"
+                                   width="100%">
+                            <flowBox height="100%"
+                                     spacing="true"
+                                     width="1000px">
+                                <groupBox caption="Advance"
+                                          spacing="true"
+                                          width="500px">
+                                    <checkBox id="request_transformerCheckBox" width="100%"
+                                              caption="Request Transformer"/>
+                                    <comboBox id="target_securityField" caption="Target security" width="100%"/>
+
+                                    <checkBox id="response_transformerCheckBox" width="100%"
+                                              caption="Response Transformer"/>
+                                </groupBox>
+                                <groupBox caption="Target security: JWT"
+                                          spacing="true"
+                                          id="jwt_target_group"
+                                          width="500px"
+                                          visible="false">
+                                    <groupBox caption="Encode"
+                                              spacing="true"
+                                              id="jwt_sub_group"
+                                              width="450px"
+                                              collapsable="true">
+                                        <textArea id="jwtHeadedrField" caption="Header" rows="7" width="100%"/>
+                                        <textArea id="jwtPayloadrField" caption="Payload" rows="7"
+                                                  width="100%"/>
+                                        <textArea id="jwtSignatureField" caption="Signature" rows="7"
+                                                  width="100%"/>
+                                        <button id="genHs256Button"
+                                                caption="HS256"
+                                                description="HS256!" width="100%"/>
+                                    </groupBox>
+                                    <textArea id="target_jwtValueField" caption="Authorization value" rows="7"
+                                              width="100%"
+                                              description="Key: 'Authorization'"/>
+                                </groupBox>
+
+                                <groupBox caption="Target security: Basic"
+                                          spacing="true"
+                                          id="basic_target_group"
+                                          width="500px"
+                                          visible="false">
+                                    <textField id="target_userField" visible="true" caption="Target user"
+                                               width="100%"/>
+                                    <textField id="target_passwordField" visible="true"
+                                               caption="Target password"
+                                               width="100%"/>
+
+                                </groupBox>
+                                <groupBox caption="Target security: API key"
+                                          spacing="true"
+                                          id="apikey_target_group"
+                                          width="500px"
+                                          visible="false">
+                                    <textField id="target_apiKeyNameField" visible="true"
+                                               caption="Target key name"
+                                               width="100%"/>
+                                    <textField id="target_apiKeyValueField" visible="true"
+                                               caption="Target key value"
+                                               width="100%"/>
+                                </groupBox>
+                            </flowBox>
+                            <form id="form2" dataContainer="restApiDc">
+                                <column>
+                                    <groupBox caption="REQUEST TRANSFORMER"
+                                              spacing="true"
+                                              id="request_transformer_group"
+                                              width="900px"
+                                              visible="false">
+                                        <button id="btnRequestRawView"
+                                                caption="Raw view" icon="EYE"
+                                                description="Request transformer" width="50%" align="MIDDLE_CENTER"/>
+                                        <flowBox height="100%"
+                                                 spacing="true"
+                                                 width="100%">
+                                            <vbox spacing="true" width="30%">
+                                                <!--                    <textArea id="txtRemoveBodyRequestTxt" caption="Remove" rows="4" width="100%">-->
+                                                <!--                        <validators>-->
+                                                <!--                            <regexp regexp="[A-za-z]*"/>-->
+                                                <!--                        </validators>-->
+                                                <!--                    </textArea>-->
+                                                <!--                    <button id="btnGetRemoveBodyRequest"-->
+                                                <!--                            caption="check"-->
+                                                <!--                            width="100%"/>-->
+                                                <!--                    <tagField id="txtRemoveBodyRequestTagField" rowspan="2" suggestionsLimit="15"/>-->
+                                                <!--                    <textArea id="txtRenameBodyRequestTxt" caption="Rename" rows="4" width="100%">-->
+                                                <!--                        <validators>-->
+                                                <!--                            <regexp regexp="[a-z]*"/>-->
+                                                <!--                        </validators>-->
+                                                <!--                    </textArea>-->
+                                                <!--                    <textArea id="txtReplaceBodyRequestTxt" caption="Replace" rows="4" width="100%">-->
+                                                <!--                        <validators>-->
+                                                <!--                            <regexp regexp="[A-za-z]*"/>-->
+                                                <!--                        </validators>-->
+                                                <!--                    </textArea>-->
+                                                <!--                    <textArea id="txtAddBodyRequest" caption="Add" rows="4" width="100%">-->
+                                                <!--                        <validators>-->
+                                                <!--                            <regexp regexp="[A-za-z]*"/>-->
+                                                <!--                        </validators>-->
+                                                <!--                    </textArea>-->
+                                                <label stylename="success"
+                                                       value="Header"
+                                                       width="50%"/>
+                                                <valuesPicker id="vpRemoveHeaderRequestValuePicker" width="100%"
+                                                              caption="Remove" icon="font-icon:REMOVE"
+                                                              description="Remove Header Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpRenameHeaderRequestValuePicker" width="100%"
+                                                              caption="Rename" icon="font-icon:MODX"
+                                                              description="Rename Header Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpReplaceHeaderRequestValuePicker" width="100%"
+                                                              caption="Replace" icon="font-icon:LIST_UL"
+                                                              description="Replace Header Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAddHeaderRequestValuePicker" width="100%"
+                                                              caption="Add" icon="font-icon:PLUS"
+                                                              description="Add Header Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAppendHeaderRequestValuePicker" width="100%"
+                                                              caption="Append" icon="font-icon:CHAIN"
+                                                              description="Append Header Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+                                            </vbox>
+                                            <vbox spacing="true" width="30%">
+                                                <label stylename="success"
+                                                       value="Body"
+                                                       width="50%"/>
+                                                <valuesPicker id="vpRemoveBodyRequestValuePicker" width="100%"
+                                                              caption="Remove" icon="font-icon:REMOVE"
+                                                              description="Remove Body Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpRenameBodyRequestValuePicker" width="100%"
+                                                              caption="Rename" icon="font-icon:MODX"
+                                                              description="Rename Body Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpReplaceBodyRequestValuePicker" width="100%"
+                                                              caption="Replace" icon="font-icon:LIST_UL"
+                                                              description="Replace Body Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAddBodyRequestValuePicker" width="100%"
+                                                              caption="Add" icon="font-icon:PLUS"
+                                                              description="Add Body Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAppendBodyRequestValuePicker" width="100%"
+                                                              caption="Append" icon="font-icon:CHAIN"
+                                                              description="Append Body Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+                                            </vbox>
+                                            <vbox spacing="true" width="30%">
+                                                <label stylename="success"
+                                                       value="Query String"
+                                                       width="70%"/>
+                                                <valuesPicker id="vpRemoveQueryRequestValuePicker" width="100%"
+                                                              caption="Remove" icon="font-icon:REMOVE"
+                                                              description="Remove Query Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpRenameQueryRequestValuePicker" width="100%"
+                                                              caption="Rename" icon="font-icon:ADJUST"
+                                                              description="Rename Query Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpReplaceQueryRequestValuePicker" width="100%"
+                                                              caption="Replace" icon="font-icon:MOON_O"
+                                                              description="Replace Query Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAddQueryRequestValuePicker" width="100%"
+                                                              caption="Add" icon="font-icon:REMOVE"
+                                                              description="Add Query Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAppendQueryRequestValuePicker" width="100%"
+                                                              caption="Append" icon="font-icon:PLUS"
+                                                              description="Append Query Request Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+                                            </vbox>
+                                        </flowBox>
+                                    </groupBox>
+                                    <groupBox caption="RESPONSE TRANSFORMER"
+                                              spacing="true"
+                                              id="response_transformer_group"
+                                              width="900px"
+                                              visible="false">
+                                        <button id="btnResponseRawView"
+                                                caption="Raw view" icon="EYE"
+                                                description="Response transformer" width="50%" align="MIDDLE_CENTER"/>
+                                        <flowBox height="100%"
+                                                 spacing="true"
+                                                 width="100%">
+                                            <vbox spacing="true" width="30%">
+                                                <label stylename="success"
+                                                       value="Header"
+                                                       width="50%"/>
+                                                <valuesPicker id="vpRemoveHeaderResponseValuePicker" width="100%"
+                                                              caption="Remove" icon="font-icon:REMOVE"
+                                                              description="Remove Header Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpRenameHeaderResponseValuePicker" width="100%"
+                                                              caption="Rename" icon="font-icon:MODX"
+                                                              description="Rename Header Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpReplaceHeaderResponseValuePicker" width="100%"
+                                                              caption="Replace" icon="font-icon:LIST_UL"
+                                                              description="Replace Header Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAddHeaderResponseValuePicker" width="100%"
+                                                              caption="Add" icon="font-icon:PLUS"
+                                                              description="Add Header Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAppendHeaderResponseValuePicker" width="100%"
+                                                              caption="Append" icon="font-icon:CHAIN"
+                                                              description="Append Header Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+                                            </vbox>
+                                            <vbox spacing="true" width="30%">
+                                                <label stylename="success"
+                                                       value="Json"
+                                                       width="50%"/>
+                                                <valuesPicker id="vpRemoveJsonResponseValuePicker" width="100%"
+                                                              caption="Remove" icon="font-icon:REMOVE">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpReplaceJsonResponseValuePicker" width="100%"
+                                                              caption="Replace" icon="font-icon:MOON_O">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAddJsonResponseValuePicker" width="100%"
+                                                              caption="Add" icon="font-icon:REMOVE">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAppendJsonResponseValuePicker" width="100%"
+                                                              caption="Append" icon="font-icon:PLUS">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+                                            </vbox>
+                                            <vbox spacing="true" width="30%" visible="false">
+                                                <label stylename="success"
+                                                       value="JSON Types"
+                                                       width="50%"/>
+                                                <valuesPicker id="vpReplaceTypeResponseValuePicker" width="100%"
+                                                              caption="Replace" icon="font-icon:MOON_O"
+                                                              description="Replace Json Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAddTypeResponseValuePicker" width="100%"
+                                                              caption="Add" icon="font-icon:REMOVE"
+                                                              description="Remove Json Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+
+                                                <valuesPicker id="vpAppendTypeResponseValuePicker" width="100%"
+                                                              caption="Append" icon="font-icon:PLUS"
+                                                              description="Append Json Response Transformer">
+                                                    <actions>
+                                                        <action id="select" type="values_select">
+                                                            <properties>
+                                                                <property name="javaClass" value="java.lang.String"/>
+                                                            </properties>
+                                                        </action>
+                                                        <action id="clear" type="value_clear"/>
+                                                    </actions>
+                                                </valuesPicker>
+                                            </vbox>
+                                        </flowBox>
+                                    </groupBox>
+                                </column>
+                            </form>
+                        </scrollBox>
+                    </tab>
+                    <tab id="tab4"
+                         caption="Security"
+                         margin="true"
+                         spacing="true">
+                        <checkBox id="corsCheckBox" caption="Use CORS"/>
+                        <groupBox caption="CORS"
+                                  spacing="true"
+                                  id="corsGroupBox"
+                                  width="500px"
+                                  visible="false">
+                            <valuesPicker id="corsOriginValuePicker" width="100%"
+                                          caption="Access-Control-Allow-Origin" icon="font-icon:STAR">
+                                <actions>
+                                    <action id="select" type="values_select">
+                                        <properties>
+                                            <property name="javaClass" value="java.lang.String"/>
+                                        </properties>
+                                    </action>
+                                    <action id="clear" type="value_clear"/>
+                                </actions>
+                            </valuesPicker>
+                            <valuesPicker id="corsAccessControlAllowHeaderValuePicker" width="100%"
+                                          caption="Access-Control-Allow-Headers" icon="font-icon:ANCHOR">
+                                <actions>
+                                    <action id="select" type="values_select">
+                                        <properties>
+                                            <property name="javaClass" value="java.lang.String"/>
+                                        </properties>
+                                    </action>
+                                    <action id="clear" type="value_clear"/>
+                                </actions>
+                            </valuesPicker>
+                            <valuesPicker id="corsMethodValuePicker" width="100%" visible="false"
+                                          caption="Access-Control-Allow-Methods" icon="font-icon:MAGIC">
+                                <actions>
+                                    <action id="select" type="values_select">
+                                        <properties>
+                                            <property name="enumClass" value="org.springframework.http.HttpMethod"/>
+                                        </properties>
+                                    </action>
+                                    <action id="clear" type="value_clear"/>
+                                </actions>
+                            </valuesPicker>
+                            <valuesPicker id="corsExposeHeaderValuePicker" width="100%"
+                                          caption="Access-Control-Expose-Headers" icon="font-icon:EXCHANGE">
+                                <actions>
+                                    <action id="select" type="values_select">
+                                        <properties>
+                                            <property name="javaClass" value="java.lang.String"/>
+                                        </properties>
+                                    </action>
+                                    <action id="clear" type="value_clear"/>
+                                </actions>
+                            </valuesPicker>
+                            <textField id="corsMaxAgeField"
+                                       datatype="int" width="100%"
+                                       caption="Access-Control-Max-Age" icon="font-icon:BAR_CHART_O"/>
+                            <checkBox id="corsCredentialCheckBox" caption="Access-Control-Allow-Credentials"
+                                      icon="font-icon:CREDIT_CARD"/>
+                        </groupBox>
+                    </tab>
+                </tabSheet>
+            </tab>
+        </tabSheet>
+
+        <groupBox id="hostsBox" caption="Backend hosts" visible="false">
+            <table id="hostsTable" dataContainer="balancedHostDc" width="100%" height="200px">
+                <actions>
+                    <action id="create" type="create"/>
+                    <action id="edit" type="edit"/>
+                    <action id="remove" type="remove"/>
+                </actions>
+                <columns>
+                    <column id="name" caption="Name"/>
+                    <column id="hostname" caption="Host name"/>
+                    <column id="host_port" caption="Host port"/>
+                    <column id="weight" caption="Weight"/>
+                </columns>
+                <buttonsPanel>
+                    <button action="hostsTable.create"/>
+                    <button action="hostsTable.edit"/>
+                    <button action="hostsTable.remove"/>
+                </buttonsPanel>
+            </table>
+        </groupBox>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="testEndpointBtn" caption="Test endpoint"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

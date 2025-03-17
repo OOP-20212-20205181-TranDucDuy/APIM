@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://publishedRestApiEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="publishedRestApiDc"
+                  class="com.company.apimanager.entity.PublishedRestApi">
+            <fetchPlan extends="_base"/>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="publishedRestApiDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="pathField" property="path" visible="false"/>
+                <textField id="hostField" property="host" visible="false"/>
+                <maskedField id="kongServiceIdField" mask="hhhhhhhh-hhhh-hhhh-hhhh-hhhhhhhhhhhh"
+                             property="kongServiceId" visible="false"/>
+                <textArea id="pluginField" property="plugin" rows="5" visible="false"/>
+                <textArea id="routeField" property="route" rows="5" visible="false"/>
+                <textField id="consent_urlField" property="consent_url"/>
+                <textField id="oauthProvisionKeyField" property="oauthProvisionKey"/>
+            </column>
+
+            <column width="350px">
+                <checkBox id="enableIpLimitation" caption="Enable IP Limitation"/>
+
+                <valuesPicker id="vpIpAllow" width="100%"
+                              caption="Allow" icon="font-icon:CHECK">
+                    <actions>
+                        <action id="select" type="values_select">
+                            <properties>
+                                <property name="javaClass" value="java.lang.String"/>
+                            </properties>
+                        </action>
+                        <action id="clear" type="value_clear"/>
+                    </actions>
+                </valuesPicker>
+
+                <valuesPicker id="vpIpDeny" width="100%"
+                              caption="Deny" icon="font-icon:REMOVE">
+                    <actions>
+                        <action id="select" type="values_select">
+                            <properties>
+                                <property name="javaClass" value="java.lang.String"/>
+                            </properties>
+                        </action>
+                        <action id="clear" type="value_clear"/>
+                    </actions>
+                </valuesPicker>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose" visible="true"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

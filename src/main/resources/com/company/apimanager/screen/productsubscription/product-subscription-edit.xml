@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://productSubscriptionEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="productSubscriptionDc"
+                  class="com.company.apimanager.entity.ProductSubscription">
+            <fetchPlan extends="_base">
+                <property name="consumer" fetchPlan="_base"/>
+                <property name="published_product" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+        <collection id="publishedProductsDc" class="com.company.apimanager.entity.PublishedProduct">
+            <fetchPlan extends="_base"/>
+            <loader id="publishedProductsDl">
+                <query>
+                    <![CDATA[select e from PublishedProduct e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.site = :site</c:where>
+                            </c:jpql>
+                            <c:jpql>
+                                <c:where>e.state = :state</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="productSubscriptionDc">
+            <column width="350px">
+                <textField id="product_consumer_idField" property="product_consumer_id" visible="false"/>
+                <entityPicker id="consumerField" property="consumer" editable="false">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <entityPicker id="published_productField" property="published_product" visible="false">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <dateField id="subcription_dateField" property="subcription_date" visible="false"/>
+                <entityComboBox id="publishedProductCombobox" caption="msg://publishedProductCombobox.caption"
+                                optionsContainer="publishedProductsDc"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>

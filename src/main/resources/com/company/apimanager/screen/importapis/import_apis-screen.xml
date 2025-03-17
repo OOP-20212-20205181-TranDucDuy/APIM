@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://importApisScreen.caption">
+    <data>
+        <collection id="dtoRestApiDc"
+                    class="com.company.apimanager.entity.DtoRestApi"/>
+        <collection id="importedDtoRestApiDc"
+                    class="com.company.apimanager.entity.DtoRestApi"/>
+    </data>
+    <layout spacing="true" expand="scrollBox">
+        <scrollBox id="scrollBox" spacing="true">
+            <textArea id="jsonField" rows="20" width="30%" maxLength="40000" caption="JSON text"/>
+            <buttonsPanel id="buttonsPanel">
+                <button id="parseBtn" caption="Parse"/>
+            </buttonsPanel>
+
+            <groupTable id="restApisTable"
+                        width="100%" dataContainer="dtoRestApiDc" caption="Importing APIs">
+                <columns>
+                    <column id="name" caption="Name"/>
+                    <column id="title" caption="Title"/>
+                    <column id="base_path" caption="Base path"/>
+                    <column id="target_endpoint" caption="Target endpoint"/>
+                    <column id="security_method" caption="Security method"/>
+                </columns>
+            </groupTable>
+            <textField id="errorLogField" width="60%" caption="Import Error"/>
+            <buttonsPanel>
+                <button id="importBtn" caption="Import" />
+                <button id="backBtn" caption="Back to Parse" />
+            </buttonsPanel>
+            <groupTable id="importedRestApisTable"
+                        width="100%" dataContainer="importedDtoRestApiDc" caption="Imported APIs">
+                <columns>
+                    <column id="name" caption="Name"/>
+                    <column id="title" caption="Title"/>
+                    <column id="base_path" caption="Base path"/>
+                    <column id="target_endpoint" caption="Target endpoint"/>
+                    <column id="security_method" caption="Security method"/>
+                </columns>
+                <simplePagination/>
+            </groupTable>
+        </scrollBox>
+    </layout>
+</window>

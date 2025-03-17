@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        xmlns:c="http://jmix.io/schema/ui/jpql-condition"
+        caption="msg://productBrowse.caption"
+        focusComponent="productsTable">
+    <data readOnly="true">
+        <collection id="productsDc"
+                    class="com.company.apimanager.entity.Product">
+            <fetchPlan extends="_base">
+                <property name="visibility_type" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="productsDl">
+                <query>
+                    <![CDATA[select e from Product e]]>
+                    <condition>
+                        <and>
+                            <c:jpql>
+                                <c:where>e.owner = :user</c:where>
+                            </c:jpql>
+                        </and>
+                    </condition>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="lookupSelectAction"
+                caption="msg:///actions.Select"
+                icon="LOOKUP_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="lookupCancelAction"
+                caption="msg:///actions.Cancel"
+                icon="LOOKUP_CANCEL"/>
+        <action id="registerAction"/>
+        <action id="stagingAction"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="productsTable" spacing="true">
+        <!--
+        <filter id="filter"
+                dataLoader="productsDl">
+            <properties include=".*"/>
+        </filter>
+        -->
+        <groupTable id="productsTable"
+                    width="100%"
+                    dataContainer="productsDc">
+            <actions>
+                <action id="create" type="create"/>
+                <action id="edit" type="edit"/>
+                <action id="remove" type="remove"/>
+            </actions>
+            <columns>
+                <column id="name"/>
+                <column id="title"/>
+                <column id="visibility_type"/>
+                <column id="owner_prdname" visible="false"/>
+            </columns>
+            <simplePagination/>
+            <buttonsPanel id="buttonsPanel"
+                          alwaysVisible="true">
+                <button id="createBtn" action="productsTable.create" icon="font-icon:PLUS"/>
+                <button id="editBtn" action="productsTable.edit"/>
+                <button id="registerBtn" caption="msg://registerBtn.caption" action="registerAction"/>
+                <button id="stagingBtn" caption="msg://stagingBtn.caption" action="stagingAction"/>
+                <button id="removeBtn" action="productsTable.remove" visible="false"/>
+                <button id="remove1Btn" caption="msg://remove1Btn.caption"/>
+            </buttonsPanel>
+        </groupTable>
+        <hbox id="lookupActions" spacing="true" visible="false">
+            <button action="lookupSelectAction"/>
+            <button action="lookupCancelAction"/>
+        </hbox>
+    </layout>
+</window>

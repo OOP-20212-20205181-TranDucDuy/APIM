@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://jmix.io/schema/ui/window"
+        caption="msg://gatewayServiceEdit.caption"
+        focusComponent="form">
+    <data>
+        <instance id="gatewayServiceDc"
+                  class="com.company.apimanager.entity.GatewayService">
+            <fetchPlan extends="_base">
+                <property name="gateway_type" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <screenSettings id="settingsFacet" auto="true"/>
+    </facets>
+    <actions>
+        <action id="windowCommitAndClose" caption="msg:///actions.Ok"
+                icon="EDITOR_OK"
+                primary="true"
+                shortcut="${COMMIT_SHORTCUT}"/>
+        <action id="windowClose"
+                caption="msg:///actions.Close"
+                icon="EDITOR_CANCEL"/>
+    </actions>
+    <dialogMode height="600"
+                width="800"/>
+    <layout spacing="true" expand="editActions">
+        <form id="form" dataContainer="gatewayServiceDc">
+            <column width="350px">
+                <textField id="nameField" property="name"/>
+                <textField id="management_endpointField" property="management_endpoint"/>
+                <textField id="invocation_endpointField" property="invocation_endpoint"/>
+                <textField id="ip_addressField" property="ip_address"/>
+                <entityPicker id="gateway_typeField" property="gateway_type">
+                    <actions>
+                        <action id="entityLookup" type="entity_lookup"/>
+                        <action id="entityClear" type="entity_clear"/>
+                    </actions>
+                </entityPicker>
+                <textField id="titleField" property="title"/>
+                <checkBox id="is_defaultField" property="is_default"/>
+            </column>
+        </form>
+        <hbox id="editActions" spacing="true">
+            <button id="commitAndCloseBtn" action="windowCommitAndClose"/>
+            <button id="closeBtn" action="windowClose"/>
+        </hbox>
+    </layout>
+</window>
