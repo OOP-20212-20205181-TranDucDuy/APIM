@@ -839,10 +839,6 @@ public class PublishedProductBrowse extends StandardLookup<PublishedProduct> {
         HandledError handledError2 = new HandledError();
         String consentPageUrl0 = utility.getAppConfigValue("consentPageUrl");
 
-        List<PublishedRestApi> removeList = dataManager.load(PublishedRestApi.class)
-                .query("select e from PublishedRestApi e where  e.product = :product")
-                .parameter("product", publishedProduct)
-                .list();
         for (int i = 0; i < servicesIdList.length; i++) {
             kongServiceDetailsList[i] = kongConnector.getServicebyName(servicesIdList[i], handledError2);
             routeDetails[i] = kongConnector.getRoutebyName(routeIdList[i], handledError2);
@@ -855,10 +851,8 @@ public class PublishedProductBrowse extends StandardLookup<PublishedProduct> {
                             .fromString(kongServiceDetailsList[i].getId())))
                     .optional()
                     .orElse(dataManager.create(PublishedRestApi.class));
-            removeList.remove(restApi);
             restApi.setPath(invocationEndpoint + routePath);
             log.info("Path: " + routePath);
-            System.out.println("Path: " + routePath);
             restApi.setName(kongServiceDetailsList[i].getName());
             restApi.setConsent_url(consentPageUrl0 + "?product=" + publishedProduct.getId().toString()
                     + "&service=" + kongServiceDetailsList[i].getId() +
@@ -872,7 +866,6 @@ public class PublishedProductBrowse extends StandardLookup<PublishedProduct> {
             saveContext.saving(restApi);
         }
         dataManager.save(saveContext);
-        dataManager.remove(removeList);
 
         ///
 
