@@ -54,13 +54,9 @@
             <menu id="report" caption="msg://com.company.apimanager.screen.report/reportScreen.caption">
                 <item screen="ReportScreen" caption="msg://com.company.apimanager.screen.report/reportScreen.caption"/>
                 <item screen="LoggingScreen" caption="msg://com.company.apimanager.screen.report/loggingScreen.caption"/>
-<<<<<<< HEAD
-                <item screen="Dashboard" caption="msg://com.company.apimanager.screen.dashboard/dashboard.caption"/>
-=======
                 <item screen="ApiReportScreen" caption="msg://com.company.apimanager.screen.apireport/apiReportScreen.caption"/>
                 <item screen="StatusReportScreen"
                       caption="msg://com.company.apimanager.screen.statusreport/statusReportScreen.caption"/>
->>>>>>> 25f9c8b1b0b0eacf7670369dcc63d22765e9a0d0
             </menu>
             <menu id="archived" caption="Archived">
                 <item screen="ArchivedProductsScreen"
